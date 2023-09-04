@@ -17,12 +17,10 @@ server.listen(5000);
 io = socketIO(server);
 
 io.on('connection', function (socket) {
-  console.log("new client connected!");
-  socket.emit('greeting-from-server', {
-      greeting: 'Hello Client'
-  });
-  socket.on('greeting-from-client', function (message) {
-    console.log(message);
-  });
+  
 });
+
+io.of('/app').on('connection', function(socket){
+  console.log('new client connected!', socket.id)
+})
 

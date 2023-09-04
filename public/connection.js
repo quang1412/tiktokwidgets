@@ -4,7 +4,7 @@
  */
 class TikTokIOConnection {
     constructor() {
-        this.socket = window.io();
+        this.socket = window.io('/app');
         this.uniqueId = null;
         this.options = null;
 
