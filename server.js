@@ -76,12 +76,19 @@ class TikTokIOConnection {
     on(eventName, eventHandler) {
         this.socket.on(eventName, eventHandler);
     }
+  
+    onAny(eventName, ...args){
+      this.socket.onAny((eventName, ...args) => {
+        
+      });
+    }
 }
 
 io.of('/app').on('connection', function(socket){
   const zerodySocket = new TikTokIOConnection();
-  socket.on("setUniqueId", function(){
-    zerodySocket.setUniqueId()
+  
+  socket.on("setUniqueId", function(uniqueId, options){
+    zerodySocket.connect(uniqueId, options); 
   })
 })
 
