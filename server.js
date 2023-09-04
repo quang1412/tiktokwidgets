@@ -36,7 +36,8 @@ class TikTokIOConnection {
 
       // Reconnect to streamer if uniqueId already set
       if (this.uniqueId) {
-        this.setUniqueId();
+        // this.setUniqueId();
+        this.reConnect()
       }
     })
 
@@ -61,7 +62,7 @@ class TikTokIOConnection {
     });
     
     this.socket.onAny((eventName, ...args) => {
-      io.of("/app").to(this.uniqueId).emit(eventName, args)
+      io.of("/app").to(this.uniqueId).emit(eventName, ...args)
     })
     roomList[uniqueId] = this;
   }
@@ -140,6 +141,6 @@ io.of('/app').on('connection', function(socket) {
 
   //   zerodySocket.on("eventname", function(data){
 
-  //   })
+  //   }) 
 
 })
