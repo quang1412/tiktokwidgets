@@ -82,6 +82,6 @@ io.of('/app').on('connection', function(socket){
   const zerodySocket = new TikTokIOConnection();
   socket.on("setUniqueId", function(){
     zerodySocket.setUniqueId()
-  }) 
+  })
 })
 
