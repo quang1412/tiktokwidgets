@@ -52,19 +52,21 @@ class TikTokIOConnection {
     this.socket.on('streamEnd', () => {
       console.warn("LIVE has ended!");
       this.uniqueId = null;
+      delete roomList[this.uniqueId]
     })
 
     this.socket.on('tiktokDisconnected', (errMsg) => {
       console.warn(errMsg);
       if (errMsg && errMsg.includes('LIVE has ended')) {
         this.uniqueId = null;
+        delete roomList[this.uniqueId]
       }
     });
     
     this.socket.onAny((eventName, ...args) => {
       io.of("/app").to(this.uniqueId).emit(eventName, ...args)
     })
-    roomList[uniqueId] = this;
+    roomList[this.uniqueId] = this;
   }
 
   connect(uniqueId, options) {
