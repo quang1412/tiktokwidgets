@@ -18,10 +18,10 @@ server.listen(5000);
 io = socketIO(server);
 
 class TikTokIOConnection {
-  constructor() {
+  constructor(uniqueId, options) {
     this.socket = client.connect("https://tiktok-chat-reader.zerody.one");
-    this.uniqueId = null;
-    this.options = null;
+    this.uniqueId = uniqueId;
+    this.options = options;
 
     this.socket.on('connect', () => {
       console.info("zerodySocket connected!");
@@ -85,45 +85,15 @@ class TikTokIOConnection {
 }
 
 io.of('/app').on('connection', function(socket) {
-  const zerodySocket = new TikTokIOConnection();
-  let username;
-  
-  function connect() {
-    let uniqueId = username;
-    if (uniqueId !== '') {
-
-      console.log('connecting...')
-
-      zerodySocket.connect(uniqueId, {
-        enableExtendedGiftInfo: true
-      }).then(state => {
-        console.log(`Connected to roomId ${state.roomId}`);
-
-        // reset stats
-        // viewerCount = 0;
-        // likeCount = 0;
-        // diamondsCount = 0;
-        // updateRoomStats();
-
-      }).catch(errorMessage => {
-        console.log(errorMessage);
-
-        // schedule next try if obs username set
-        if (window.settings.username) {
-          setTimeout(() => {
-            connect();
-          }, 30000);
-        }
-      })
-
-    } else {
-      // alert('no username entered');
-    }
-  }
-
+  let _username
 
   socket.on("setUniqueId", function(uniqueId, options) {
-    zerodySocket.connect(uniqueId, options);
-
+    _username = uniqueId;
+    if(!_username) {
+      return
+    }
+    
+    const zerodySocket = new TikTokIOConnection(_username);
+  
   })
 })
