@@ -107,6 +107,7 @@ class TikTokIOConnection {
         this.viewerCount = 0;
         this.likeCount = 0;
         this.diamondsCount = 0;
+        this.state = state;
         // updateRoomStats();
 
       }).catch(errorMessage => {
@@ -141,7 +142,7 @@ io.of('/app').on('connection', function(socket) {
       const existRoom = roomList[uniqueId];
       if(existRoom){
         // existRoom.getState
-        // socket.emit("tiktokConnected");
+        socket.emit("tiktokConnected", existRoom.state);
       } else {
         roomList[uniqueId] = new TikTokIOConnection(uniqueId, options);
       } 
