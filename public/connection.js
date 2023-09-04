@@ -4,7 +4,7 @@
  */
 class TikTokIOConnection {
     constructor() {
-        this.socket = window.io("/app");
+        this.socket = window.io();
         this.uniqueId = null;
         this.options = null;
 
@@ -15,6 +15,10 @@ class TikTokIOConnection {
             if (this.uniqueId) {
                 this.setUniqueId();
             }
+        })
+        
+        this.socket.on('greeting-from-server', (mess) => {
+          console.log(mess);
         })
 
         this.socket.on('disconnect', () => {
