@@ -9,7 +9,7 @@ var express = require('express'),
 app.use(express.static("public"));
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/view/index.html');
+  res.sendFile(__dirname + '/views/index.html');
 });
 
 server = http.Server(app);
@@ -20,10 +20,10 @@ io = socketIO(server);
 console.log('server is running')
 
 class TikTokIOConnection {
-  constructor(uniqueId, options) {
+  constructor( ) {
     this.socket = client.connect("https://tiktok-chat-reader.zerody.one");
-    this.uniqueId = uniqueId;
-    this.options = options;
+    this.uniqueId = null;
+    this.options = null;
 
     this.socket.on('connect', () => {
       console.info("zerodySocket connected!");
@@ -84,13 +84,15 @@ class TikTokIOConnection {
 
 io.of('/app').on('connection', function(socket) {
   let _username
+  const zerodySocket = new TikTokIOConnection();
 
   socket.on("setUniqueId", function(uniqueId, options) {
-    _username = uniqueId;
-    if(!_username) {
-      return
+    if(uniqueId) {
+      _username = uniqueId;
+      
+      zerodySocket.connect(uniqueId, options);
+    }  else {
+      
     }
-    
-    const zerodySocket = new TikTokIOConnection(_username);
   })
 })
