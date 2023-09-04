@@ -21,7 +21,7 @@ console.log('server is running')
 
 
 const roomList = {};
-
+ 
 class TikTokIOConnection {
   constructor(uniqueId, options) {
     this.socket = client.connect("https://tiktok-chat-reader.zerody.one");
@@ -30,6 +30,7 @@ class TikTokIOConnection {
     this.viewerCount = 0;
     this.likeCount = 0;
     this.diamondsCount = 0;
+    this.state = null;
 
     this.socket.on('connect', () => {
       console.info("zerodySocket connected!");
@@ -65,8 +66,7 @@ class TikTokIOConnection {
     
     this.socket.onAny((eventName, ...args) => {
       io.of("/app").to(this.uniqueId).emit(eventName, ...args)
-    })
-    roomList[this.uniqueId] = this;
+    }) 
   }
 
   connect(uniqueId, options) {
@@ -137,7 +137,14 @@ io.of('/app').on('connection', function(socket) {
       socket.join(uniqueId);
       socket.leave(currentUniqueId);
       currentUniqueId = uniqueId
-      !roomList[uniqueId] && new TikTokIOConnection(uniqueId, options)
+      
+      const existRoom = roomList[uniqueId];
+      if(existRoom){
+        // existRoom.getState
+        // socket.emit("tiktokConnected");
+      } else {
+        roomList[uniqueId] = new TikTokIOConnection(uniqueId, options);
+      } 
     }
   })
 
