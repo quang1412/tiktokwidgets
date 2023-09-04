@@ -102,7 +102,7 @@ class TikTokIOConnection {
         enableExtendedGiftInfo: true
       }).then(state => {
         console.log(`Connected to roomId ${state.roomId}`);
-
+        io.of("/app").to(this.uniqueId).emit("tiktokConnected")
         // reset stats
         this.viewerCount = 0;
         this.likeCount = 0;
