@@ -81,52 +81,59 @@ class TikTokIOConnection {
   on(eventName, eventHandler) {
     this.socket.on(eventName, eventHandler);
   }
-  
-  reConnect(){
-    // let uniqueId = this.uniqueId
+
+  reConnect() { 
     if (this.uniqueId !== '') {
 
-        console.log('Connecting...');
+      console.log('Connecting...');
 
-        this.connect(this.uniqueId, {
-            enableExtendedGiftInfo: true
-        }).then(state => {
-          console.log(`Connected to roomId ${state.roomId}`);
+      this.connect(this.uniqueId, {
+        enableExtendedGiftInfo: true
+      }).then(state => {
+        console.log(`Connected to roomId ${state.roomId}`);
 
-            // reset stats
-            this.viewerCount = 0;
-            this.likeCount = 0;
-            this.diamondsCount = 0;
-            // updateRoomStats();
+        // reset stats
+        this.viewerCount = 0;
+        this.likeCount = 0;
+        this.diamondsCount = 0;
+        // updateRoomStats();
 
-        }).catch(errorMessage => {
-            console.log(errorMessage);
+      }).catch(errorMessage => {
+        console.log(errorMessage);
 
-            // schedule next try if obs username set
-            if (window.settings.username) {
-                setTimeout(() => {
-                    this.reConnect();
-                }, 30000);
-            }
-        })
+        // schedule next try if obs username set
+        if (this.uniqueId) {
+          setTimeout(() => {
+            this.reConnect();
+          }, 30000);
+        }
+      })
 
     } else {
-        alert('no username entered');
+      console.log('no username entered');
     }
 
   }
 }
 
+const roomList = {};
+
 io.of('/app').on('connection', function(socket) {
-  let _username
-//   const zerodySocket = new TikTokIOConnection();
+  let _username;
+  let currentUniqueId;
+  //   const zerodySocket = new TikTokIOConnection();
 
   socket.on("setUniqueId", function(uniqueId, options) {
-    
+    if(uniqueId && currentUniqueId != uniqueId){
+      socket.join(uniqueId);
+      socket.leave(currentUniqueId);
+      currentUniqueId = uniqueId
+      !roomList[uniqueId] && new TikTokIOConnection(uniqueId, options)
+    }
   })
-  
-//   zerodySocket.on("eventname", function(data){
-    
-//   })
-  
+
+  //   zerodySocket.on("eventname", function(data){
+
+  //   })
+
 })
