@@ -24,7 +24,7 @@ class TikTokIOConnection {
         this.options = null;
 
         this.socket.on('connect', () => {
-            console.info("Socket connected!");
+            console.info("zerodySocket connected!");
 
             // Reconnect to streamer if uniqueId already set
             if (this.uniqueId) {
@@ -79,7 +79,9 @@ class TikTokIOConnection {
 }
 
 io.of('/app').on('connection', function(socket){
-  // console.log('new client connected!', socket.id)
-  
+  const zerodySocket = new TikTokIOConnection();
+  socket.on("setUniqueId", function(){
+    zerodySocket.setUniqueId()
+  }) 
 })
 
