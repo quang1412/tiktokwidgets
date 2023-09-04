@@ -19,6 +19,9 @@ io = socketIO(server);
 
 console.log('server is running')
 
+
+const roomList = {};
+
 class TikTokIOConnection {
   constructor(uniqueId, options) {
     this.socket = client.connect("https://tiktok-chat-reader.zerody.one");
@@ -56,6 +59,11 @@ class TikTokIOConnection {
         this.uniqueId = null;
       }
     });
+    
+    this.socket.onAny((eventName, ...args) => {
+      io.of("/app").to(this.uniqueId).emit(eventName, args)
+    })
+    roomList[uniqueId] = this;
   }
 
   connect(uniqueId, options) {
@@ -115,8 +123,6 @@ class TikTokIOConnection {
 
   }
 }
-
-const roomList = {};
 
 io.of('/app').on('connection', function(socket) {
   let _username;
