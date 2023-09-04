@@ -42,7 +42,6 @@ function connect() {
         }).catch(errorMessage => {
             $('#stateText').text(errorMessage);
 
-            // schedule next try if obs username set
             if (window.settings.username) {
                 setTimeout(() => {
                     connect(window.settings.username);

@@ -53,6 +53,8 @@ class TikTokIOConnection {
     this.socket.on('streamEnd', () => {
       console.warn("LIVE has ended!");
       this.uniqueId = null;
+      
+      roomList[this.uniqueId] = null
       delete roomList[this.uniqueId]
     })
 
@@ -60,6 +62,8 @@ class TikTokIOConnection {
       console.warn(errMsg);
       if (errMsg && errMsg.includes('LIVE has ended')) {
         this.uniqueId = null;
+        
+        roomList[this.uniqueId] = null
         delete roomList[this.uniqueId]
       }
     });
