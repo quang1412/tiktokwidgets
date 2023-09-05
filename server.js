@@ -151,10 +151,5 @@ io.of('/app').on('connection', function(socket) {
         roomList[uniqueId] = new TikTokIOConnection(uniqueId, options);
       } 
     }
-  })
-
-  //   zerodySocket.on("eventname", function(data){
-
-  //   }) 
-
+  }) 
 })
