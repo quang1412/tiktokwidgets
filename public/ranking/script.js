@@ -303,15 +303,27 @@ $(document).ready(function(){
   item2.setOrder(1)
 })
 
-function createRankItem(userInfo){
-  
-  
-}
+const likeRankItems = {}
+
+// function createRankItem(userInfo = {}){
+//   const {userId} = userInfo;
+//   if(!rankItems[userId]){
+//     rankItems[userId] = new rankItem(userInfo)
+//   }
+// }
 
 connection.on('like', (msg) => {
   const {userId} = msg
   
-  saveUserInfo(msg)
+  let user = likeRankItems[userId]
+  if(!user){
+    likeRankItems[userId] = new rankItem
+    user = likeRankItems[userId]
+    user.appendTo($('#likerank .rankitems'))
+  }
+  
+  
+  // saveUserInfo(msg)
   
   if (typeof msg.totalLikeCount === 'number') {
     likeCount = msg.totalLikeCount;
