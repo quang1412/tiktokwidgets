@@ -225,7 +225,33 @@ connection.on('streamEnd', () => {
 })
 
 
-const usersInfo = {},
-      usersLikeCount = {},
-      usersGiftCount = {},
-      usersShareCount = {}
+let usersInfo = {},
+    usersLikeCount = {},
+    usersGiftCount = {},
+    usersShareCount = {};
+
+function saveUserInfo(data){
+  const {userId, uniqueId, nickname, profilePictureUrl} = data
+  if(!userId || !usersInfo[userId]){
+    usersInfo[userId] = {userId, uniqueId, nickname, profilePictureUrl}
+    usersLikeCount[userId] = usersLikeCount[userId] || 0
+    usersGiftCount[userId] = usersGiftCount[userId] || 0
+    usersShareCount[userId] = usersShareCount[userId] || 0
+  }
+}
+
+connection.on('like', (msg) => {
+  saveUserInfo(msg)
+
+  if (typeof msg.totalLikeCount === 'number') {
+    likeCount = msg.totalLikeCount;
+    // updateRoomStats();
+  }
+
+  // if (window.settings.showLikes === "0") return;
+
+  if (typeof msg.likeCount === 'number') {
+      // addChatItem('#447dd4', msg, msg.label.replace('{0:user}', '').replace('likes', `${msg.likeCount} likes`))
+    
+  }
+})
