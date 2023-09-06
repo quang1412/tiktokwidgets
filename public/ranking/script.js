@@ -285,11 +285,16 @@ class rankItem{
   appendTo(parent){
     this.DOM.appendTo(parent);
   }
+  
+  setOrder(n){
+    this.DOM.css('order', n)
+  }
 }
 
 $(document).ready(function(){
   const item = new rankItem()
   item.appendTo($('#likerank .rankitems'))
+  item.setOrder(0)
 })
 
 

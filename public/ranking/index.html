@@ -67,10 +67,16 @@
         color: gray;
       }
       body * {
-        transition: all 0.1s ease;
+        transition: all 0.3s ease;
       }
       .ranktable{
         max-width: 400px;
+      }
+      .ranktable .rankitems{
+        display: flex;
+        flex-direction: column;
+        
+        position: relative;
       }
       .containerheader{
         margin-bottom: 20px;
@@ -91,6 +97,9 @@
         padding: 10px;
         margin-bottom: 10px;
         border-radius: 10px;
+        
+        position: absolute;
+        width: -webkit-fill-available
       }
       .ranktable .rankitem .number{
         width: 20px;
