@@ -63,18 +63,31 @@
       body{
         background: url(https://img.freepik.com/free-vector/flat-design-abstract-background_23-2149116123.jpg?w=1800&t=st=1693989967~exp=1693990567~hmac=493be717900f114d91104f84589489d7d6ee0754ca648f41da3628b2c2047639) center center no-repeat;
         background-size: cover;
-        
+        font-size:16px;
+        color: gray;
       }
       body * {
         transition: all 0.1s ease;
       }
+      .containerheader{
+        margin-bottom: 20px;
+      }
+      .ranktable .rankcolumntitle{
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        font-size: .8rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
       .ranktable .rankitem{
+        max-width: 400px;
         display: flex;
         gap: 10px;
-        color: gray;
         font-weight: 700;
         align-items: center;
         padding: 10px;
+        margin-bottom: 10px;
         border-radius: 10px;
       }
       .ranktable .rankitem .number{
@@ -129,6 +142,7 @@
                 <span class="name">Name</span>
                 <span class="score">1430</span>
               </div>
+              
             </div>
           </td>
           <td>
