@@ -62,91 +62,90 @@ connection.on('streamEnd', () => {
     }
 }) 
 
-
-class rankItem{
-  constructor(userInfo = {}){
-    this.info = userInfo;
-    this.score = 0;
-    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:100vh;">`).html(`
-      <div class="number">-</div>
-      <img class="image" src="${this.info.profilePictureUrl}">
-      <div class="name">${this.info.nickname}</div>
-      <div class="score animate__animated" style="display:block">${this.score}</div>`)
-  }
+$(document).ready(function(){
+  if(window.setting.showLikeRanking === '0') return
   
-  appendTo(parent){
-    this.DOM.appendTo(parent);
-  }
+  let rankItems = {} 
   
-  addScore(n){
-    const numberDiv = this.DOM.find('div.score')
-    $(numberDiv).addClass("animate__heartBeat")
-    this.score += n;
-    
-    setTimeout(() => {})
-    $(numberDiv).one("webkitAnimationEnd animationend", (evt) => {
-      $(numberDiv).removeClass("animate__heartBeat")
-    });
-  }
-  
-  setOrder(n){
-    if(typeof n != 'number') return
-    this.DOM.show()
-    const order = n+1
-    this.DOM.removeClass('top')
-    if(order <= 3) {
-      this.DOM.addClass('top')
+  class rankItem{
+    constructor(userInfo = {}){
+      this.info = userInfo;
+      this.score = 0;
+      this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:100vh;">`).html(`
+        <div class="number">-</div>
+        <img class="image" src="${this.info.profilePictureUrl}">
+        <div class="name">${this.info.nickname}</div>
+        <div class="score animate__animated" style="display:block">${this.score}</div>`)
     }
+
+    appendTo(parent){
+      this.DOM.appendTo(parent);
+    }
+
+    addScore(n){
+      const numberDiv = this.DOM.find('div.score')
+      $(numberDiv).addClass("animate__heartBeat")
+      this.score += n;
+
+      setTimeout(() => $(numberDiv).text(this.score), 500)
+      $(numberDiv).one("webkitAnimationEnd animationend", (evt) => {
+        $(numberDiv).removeClass("animate__heartBeat")
+      });
+    }
+
+    setOrder(n){
+      if(typeof n != 'number') return
+      this.DOM.show()
+      const order = n+1
+      this.DOM.removeClass('top')
+      if(order <= 3) {
+        this.DOM.addClass('top')
+      }
+
+      const top = (n * this.DOM.outerHeight()) + (n * 10) + 'px';
+      this.DOM.css('top', top);
+      this.DOM.find('.number').text(order)
+    }
+  }
+ 
+  function refreshLikeRanking(){
+    const list = []
+    for (var userId in rankItems) {
+      list.push(rankItems[userId]);
+    } 
+
+    list.sort(function(item_a, item_b) { 
+      return item_b.score - item_a.score;
+    })
     
-    const top = (n * this.DOM.outerHeight()) + (n * 10) + 'px';
-    this.DOM.css('top', top);
-    this.DOM.find('.number').text(order)
+    list.map((item, i) => { 
+      item.setOrder(i) 
+    })
   }
-}
 
-let likeRankItems = {}  
+  connection.on('like', (msg) => {
+    const {userId} = msg
 
-function refreshLikeRanking(){
-  const list = []
-  for (var userId in likeRankItems) {
-    list.push(likeRankItems[userId]);
-  }
-  
-  if(!list.length) return
-  
-  list.sort(function(item_a, item_b) { 
-    return item_b.score - item_a.score;
-  })
-  list.map((item, i) => { 
-    item.setOrder(i) 
-  })
-}
+    let user = rankItems[userId]
+    if(!user){
+      rankItems[userId] = new rankItem(msg)
+      user = rankItems[userId]
+      user.appendTo($('#likerank .rankitems'))
+    } 
 
-connection.on('like', (msg) => {
-  const {userId} = msg
-  
-  let user = likeRankItems[userId]
-  if(!user){
-    likeRankItems[userId] = new rankItem(msg)
-    user = likeRankItems[userId]
-    user.appendTo($('#likerank .rankitems'))
-  } 
-  
-  if (typeof msg.totalLikeCount === 'number') {
-    likeCount = msg.totalLikeCount;
-    // updateRoomStats();
-  } 
-  if (typeof msg.likeCount === 'number') { 
-    user.addScore(msg.likeCount)
-    refreshLikeRanking()
-  }
-}) 
+    if (typeof msg.totalLikeCount === 'number') {
+      likeCount = msg.totalLikeCount;
+      // updateRoomStats();
+    } 
+    if (typeof msg.likeCount === 'number') { 
+      user.addScore(msg.likeCount)
+      refreshLikeRanking()
+    }
+  }) 
 
-setInterval(function(){
-   // for(let userId in likeRankItems){
-   //   likeRankItems[userId].score = 0;
-   // }
-  likeRankItems = {}
-  $('#likerank .rankitems').html(null)
-  console.log('reset')
-}, 2*60*1000)
+  setInterval(function(){
+    rankItems = {}
+    $('#likerank .rankitems').html(null)
+    console.log('reset')
+  }, 2*60*1000)
+})
