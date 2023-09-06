@@ -258,9 +258,8 @@ function topLikeSorting(){
 }
 
 function createRankItem(order = 0, userInfo = {}){
-  const {userId, uniqueId, nickname, profilePictureUrl} = userInfo
-  const rankClass = order <= 3 ? "rankitem top" : "rankitem"
-  let item = $(`<div class="${rankClass}" data-userId="${userId||''}">`).html(`<div class="number">
+  const {userId, uniqueId, nickname, profilePictureUrl} = userInfo 
+  let item = $(`<div class="rankitem" data-userId="${userId||''}">`).html(`<div class="number">
         <span>1</span>
       </div>
       <img class="image" src="https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/default_avatar.webp?v=1693995142209">
@@ -276,16 +275,15 @@ class rankItem{
   constructor(userInfo = {}){
     this.info = userInfo;
     this.score = 0;
-    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}">`).html(`<div class="number">
-        <span>1</span>
-      </div>
+    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}">`).html(`
+      <div class="number">1</div>
       <img class="image" src="https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/default_avatar.webp?v=1693995142209">
-      <span class="name">${this.info.nickname}</span>
-      <span class="score">${this.score}</span>`)
+      <div class="name">${this.info.nickname}</div>
+      <div class="score">${this.score}</div>`)
   }
   
   appendTo(parent){
-    this.Dom.appendTo(parent);
+    this.DOM.appendTo(parent);
   }
 }
 
