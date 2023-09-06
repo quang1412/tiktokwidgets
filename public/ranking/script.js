@@ -359,11 +359,22 @@ function topLikeSorting(){
 }
 
 setInterval(function(){
-  topLikeSorting()
-  topLike.length && topLike.map((item, i) => {
-    const userId = item[0]
-    const likeRankItem = likeRankItems[userId] 
-    likeRankItem.setOrder(i) 
+  // topLikeSorting()
+  const ordered = []
+  for (var userId in likeRankItems) {
+    ordered.push(likeRankItems[userId]);
+  }
+  
+  if(!ordered.length) return
+  
+  ordered.sort(function(item, item_next) {
+    console.log(item)
+    return item.score - item_next.score;
+  })
+  ordered.map((item, i) => {
+    // const userId = item[0]
+    // const item = likeRankItems[userId] 
+    item.setOrder(i) 
   })
 }, 3000)
 
