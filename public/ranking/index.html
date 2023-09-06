@@ -65,6 +65,9 @@
         background-size: cover;
         
       }
+      body * {
+        transition: all 0.2s ease;
+      }
       .ranktable .rankitem{
         display: flex;
         gap: 10px;
@@ -74,10 +77,20 @@
         padding: 10px;
         border-radius: 10px;
       }
+      .ranktable .rankitem .number{
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url(https://cdn-icons-png.flaticon.com/512/1940/1940814.png) center center no-repeat;
+        background-size: contain;
+      }
       .ranktable .rankitem .image{
         width: 32px;
         height: 32px;
         border-radius: 50%;
+        border: 2px solid transparent
       }
       .ranktable .rankitem .name{
         
@@ -92,7 +105,7 @@
         color: white;
       }
       .ranktable .rankitem.top .image{
-        border: 2px solid white
+        border-color: white;
       }
     </style>
     <table class="ranktable">
@@ -102,7 +115,9 @@
             <h3 class="containerheader">Bảng xếp hạng</h3>
 <!--             <div class="like_rank_card"> -->
             <div class="rankitem top">
-              <span class="number">1</span>
+              <div class="number">
+                <span>1</span>
+              </div>
               <img class="image" src="https://t3.ftcdn.net/jpg/04/43/94/64/360_F_443946416_l2xXrFoIuUkItmyscOK5MNh6h0Vai3Ua.jpg">
               <span class="name">Name</span>
               <span class="score">1430</span>
