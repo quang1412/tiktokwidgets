@@ -1,7 +1,9 @@
 // This will use the demo backend if you open index.html locally via file://, otherwise your server will be used
 // let backendUrl = "https://tiktok-chat-reader.zerody.one";
 let backendUrl = location.protocol === 'file:' ? "https://tiktok-chat-reader.zerody.one/" : undefined;
-let connection = new TikTokIOConnection(backendUrl);
+// let connection = new TikTokIOConnection();
+let connection = new TikTokIOConnection("https://tiktok-chat-reader.zerody.one/");
+
 
 // Counter
 let viewerCount = 0;
