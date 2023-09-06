@@ -259,18 +259,6 @@ function saveUserInfo(data){
 //   return item;
 // }
 
-function animateValue(obj, start, end, duration) {
-  let startTimestamp = null;
-  const step = (timestamp) => {
-    if (!startTimestamp) startTimestamp = timestamp;
-    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-    obj.innerHTML = Math.floor(progress * (end - start) + start);
-    if (progress < 1) {
-      window.requestAnimationFrame(step);
-    }
-  };
-  window.requestAnimationFrame(step);
-}
 
 class rankItem{
   constructor(userInfo = {}){
@@ -370,8 +358,6 @@ function topLikeSorting(){
   })
 }
 
-
-
 setInterval(function(){
   topLikeSorting()
   topLike.length && topLike.map((item, i) => {
@@ -386,4 +372,5 @@ setInterval(function(){
    for(let userId in likeRankItems){
      likeRankItems[userId].score = 0;
    }
+  console.log('reset')
 }, 2*60*1000)
