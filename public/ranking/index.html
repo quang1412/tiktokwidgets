@@ -69,7 +69,7 @@
       body * {
         transition: all 0.1s ease;
       }
-      #likerangecontainer{
+      .ranktable{
         max-width: 400px;
       }
       .containerheader{
@@ -126,31 +126,27 @@
         border-color: white;
       }
     </style>
-    <table class="ranktable">
-      <tbody>
-        <tr>
-          
-          <td>
-            <h3 class="containerheader">Gift rank</h3>
-            <div class="">
-              
+    <section>
+      <div class="ranktable">
+        <div id="likerangecontainer">
+          <h3 class="containerheader">Bảng xếp hạng</h3>
+          <div class="rankcolumntitle">
+            <span>Hạng</span>
+            <span><i class="fa-solid fa-heart"></i> Like</span>
+          </div>
+          <div class="rankitems">
+            <div class="rankitem top">
+              <div class="number">
+                <span>1</span>
+              </div>
+              <img class="image" src="https://t3.ftcdn.net/jpg/04/43/94/64/360_F_443946416_l2xXrFoIuUkItmyscOK5MNh6h0Vai3Ua.jpg">
+              <span class="name">Name</span>
+              <span class="score">1430</span>
             </div>
-          </td>
-          <td>
-            <h3 class="containerheader">Share rank</h3>
-            <div class="">
-              
-            </div>
-          </td>
-          <td>
-            <h3 class="containerheader">Chat rank</h3>
-            <div class="">
-              
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </div>
+    </section>
     <table class="splitchattable">
         <tr>
             <td>
