@@ -232,7 +232,8 @@ let usersInfo = {},
 
 function saveUserInfo(data){
   const {userId, uniqueId, nickname, profilePictureUrl} = data
-  if(!userId || !usersInfo[userId]){
+  
+  if(userId){
     usersInfo[userId] = {userId, uniqueId, nickname, profilePictureUrl}
     usersLikeCount[userId] = usersLikeCount[userId] || 0
     usersGiftCount[userId] = usersGiftCount[userId] || 0
@@ -241,8 +242,10 @@ function saveUserInfo(data){
 }
 
 connection.on('like', (msg) => {
+  const {userId} = msg
+  
   saveUserInfo(msg)
-
+  
   if (typeof msg.totalLikeCount === 'number') {
     likeCount = msg.totalLikeCount;
     // updateRoomStats();
@@ -252,6 +255,10 @@ connection.on('like', (msg) => {
 
   if (typeof msg.likeCount === 'number') {
       // addChatItem('#447dd4', msg, msg.label.replace('{0:user}', '').replace('likes', `${msg.likeCount} likes`))
-    
+    usersLikeCount[userId] += msg.likeCount
   }
 })
+
+setInterval(function(){
+  console.log(usersLikeCount);
+}, 1000)

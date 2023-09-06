@@ -150,6 +150,10 @@ io.of('/app').on('connection', function(socket) {
       } else {
         roomList[uniqueId] = new TikTokIOConnection(uniqueId, options);
       } 
-    }
+    } 
   }) 
+  socket.on("disconnect", (reason) => {
+    // ...
+  });
+
 })
