@@ -271,6 +271,14 @@ function createRankItem(order = 0, userInfo = {}){
   return item;
 }
 
+
+class rankItem{
+  constructor(){
+    
+  }
+}
+
+
 connection.on('like', (msg) => {
   const {userId} = msg
   
@@ -289,21 +297,21 @@ connection.on('like', (msg) => {
   }
 })
 
-setInterval(function(){
-  topLikeSorting()
-  console.clear()
-  const table = $('div#likerangecontainer div.rankitems').html('')
-  const top = topLike.slice(0, 6)
-  top.map((item, i) => {
-    const userId = item[0]
-    const userInfo = usersInfo[userId]
-    console.log(userInfo)
-    const rankItem = createRankItem(i, {...userInfo})
-    table.append(rankItem)
-  })
-}, 3000)
+// setInterval(function(){
+//   topLikeSorting()
+//   console.clear()
+//   const table = $('div#likerangecontainer div.rankitems').html('')
+//   const top = topLike.slice(0, 6)
+//   top.length && top.map((item, i) => {
+//     const userId = item[0]
+//     const userInfo = usersInfo[userId]
+//     console.log(userInfo)
+//     const rankItem = createRankItem(i, {...userInfo})
+//     table.append(rankItem)
+//   })
+// }, 3000)
 
 
-setInterval(function(){
-  usersLikeCount = {}
-}, 5*60*1000)
+// setInterval(function(){
+//   usersLikeCount = {}
+// }, 5*60*1000)
