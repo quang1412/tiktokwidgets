@@ -83,11 +83,11 @@ a {
     height: 50px;
     width: 50px;
     margin-right: 10px;
-}
+} 
 
-
-.ranktable{
-  width: 100%
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
 }
 
 body{
@@ -96,11 +96,14 @@ body{
   background-attachment: fixed;
   font-size:18px;
   color: gray;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 body * {
   transition: top 0.5s ease;
 }
 .ranktable{
+  width: 100%;
   max-width: 400px;
 }
 .ranktable .rankitems{

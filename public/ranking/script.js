@@ -63,7 +63,7 @@ connection.on('streamEnd', () => {
 }) 
 
 $(document).ready(function(){
-  if(window.setting.showLikeRanking === '0') return
+  if(window.settings.showLikeRanking === '0') return
   
   let rankItems = {} 
   
@@ -87,7 +87,7 @@ $(document).ready(function(){
       $(numberDiv).addClass("animate__heartBeat")
       this.score += n;
 
-      setTimeout(() => $(numberDiv).text(this.score), 500)
+      setTimeout(() => $(numberDiv).text(this.score), 300)
       $(numberDiv).one("webkitAnimationEnd animationend", (evt) => {
         $(numberDiv).removeClass("animate__heartBeat")
       });
