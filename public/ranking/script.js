@@ -222,42 +222,7 @@ connection.on('streamEnd', () => {
             connect(window.settings.username);
         }, 30000);
     }
-})
-
-
-let usersInfo = {},
-    usersLikeCount = {},
-    usersGiftCount = {},
-    usersShareCount = {};
-
-let topLike = [],
-    topGift = [],
-    topShare = [];
-
-function saveUserInfo(data){
-  const {userId, uniqueId, nickname, profilePictureUrl} = data
-  
-  if(userId){
-    usersInfo[userId] = {userId, uniqueId, nickname, profilePictureUrl}
-    usersLikeCount[userId] = usersLikeCount[userId] || 0
-    usersGiftCount[userId] = usersGiftCount[userId] || 0
-    usersShareCount[userId] = usersShareCount[userId] || 0
-  }
-}
-
-
-// function createRankItem(order = 0, userInfo = {}){
-//   const {userId, uniqueId, nickname, profilePictureUrl} = userInfo 
-//   let item = $(`<div class="rankitem" data-userId="${userId||''}">`).html(`<div class="number">
-//         <span>1</span>
-//       </div>
-//       <img class="image" src="https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/default_avatar.webp?v=1693995142209">
-//       <span class="name">${nickname || 'name'}</span>
-//       <span class="score">1430</span>`)
-//   // $('div.rankitems').append(item) 
-  
-//   return item;
-// }
+}) 
 
 
 class rankItem{
@@ -300,40 +265,20 @@ class rankItem{
   }
 }
 
-// $(document).ready(function(){
-//   const item = new rankItem()
-//   item.appendTo($('#likerank .rankitems'))
-//   item.setOrder(0)
-  
-//   const item2 = new rankItem()
-//   item2.appendTo($('#likerank .rankitems'))
-//   item2.setOrder(1)
-// })
-
-const likeRankItems = {}
-
-// function createRankItem(userInfo = {}){
-//   const {userId} = userInfo;
-//   if(!rankItems[userId]){
-//     rankItems[userId] = new rankItem(userInfo)
-//   }
-// }
-
+const likeRankItems = {}  
 
 function refreshLikeRanking(){
-  const ordered = []
+  const list = []
   for (var userId in likeRankItems) {
-    ordered.push(likeRankItems[userId]);
+    list.push(likeRankItems[userId]);
   }
   
-  if(!ordered.length) return
+  if(!list.length) return
   
-  ordered.sort(function(item_a, item_b) { 
+  list.sort(function(item_a, item_b) { 
     return item_b.score - item_a.score;
   })
-  ordered.map((item, i) => {
-    // const userId = item[0]
-    // const item = likeRankItems[userId] 
+  list.map((item, i) => { 
     item.setOrder(i) 
   })
 }
@@ -346,58 +291,17 @@ connection.on('like', (msg) => {
     likeRankItems[userId] = new rankItem(msg)
     user = likeRankItems[userId]
     user.appendTo($('#likerank .rankitems'))
-  }
-  
-  
-  // saveUserInfo(msg)
+  } 
   
   if (typeof msg.totalLikeCount === 'number') {
     likeCount = msg.totalLikeCount;
     // updateRoomStats();
-  }
-
-  // if (window.settings.showLikes === "0") return;
-
-  if (typeof msg.likeCount === 'number') {
-      // addChatItem('#447dd4', msg, msg.label.replace('{0:user}', '').replace('likes', `${msg.likeCount} likes`))
-    // usersLikeCount[userId] += msg.likeCount
+  } 
+  if (typeof msg.likeCount === 'number') { 
     user.addScore(msg.likeCount)
     refreshLikeRanking()
   }
-})
-
-
-// function topLikeSorting(){
-//   topLike = []
-//   for (var userId in likeRankItems) {
-//     topLike.push([userId, likeRankItems[userId]]);
-//   }
-  
-//   topLike.sort(function(a, b) {
-//     return b[1].score - a[1].score;
-//   })
-// }
-
-
-// setInterval(function(){
-//   // topLikeSorting()
-//   const ordered = []
-//   for (var userId in likeRankItems) {
-//     ordered.push(likeRankItems[userId]);
-//   }
-  
-//   if(!ordered.length) return
-  
-//   ordered.sort(function(item_a, item_b) { 
-//     return item_b.score - item_a.score;
-//   })
-//   ordered.map((item, i) => {
-//     // const userId = item[0]
-//     // const item = likeRankItems[userId] 
-//     item.setOrder(i) 
-//   })
-// }, 3000)
-
+}) 
 
 setInterval(function(){
    for(let userId in likeRankItems){
