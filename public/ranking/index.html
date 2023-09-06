@@ -83,7 +83,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: url(https://cdn-icons-png.flaticon.com/512/1940/1940814.png) center center no-repeat;
+        background: unset center center no-repeat;
         background-size: contain;
       }
       .ranktable .rankitem .image{
@@ -104,6 +104,9 @@
         background-color: #00000073;
         color: white;
       }
+      .ranktable .rankitem.top .number{
+        background-image: url(https://cdn-icons-png.flaticon.com/512/1940/1940814.png)
+      }
       .ranktable .rankitem.top .image{
         border-color: white;
       }
@@ -113,16 +116,20 @@
         <tr>
           <td id="likerangecontainer">
             <h3 class="containerheader">Bảng xếp hạng</h3>
-<!--             <div class="like_rank_card"> -->
-            <div class="rankitem top">
-              <div class="number">
-                <span>1</span>
-              </div>
-              <img class="image" src="https://t3.ftcdn.net/jpg/04/43/94/64/360_F_443946416_l2xXrFoIuUkItmyscOK5MNh6h0Vai3Ua.jpg">
-              <span class="name">Name</span>
-              <span class="score">1430</span>
+            <div class="">
+              <span>Hạng</span>
+              <span><i class="fa-solid fa-heart"></i> Like</span>
             </div>
-<!--             </div> -->
+            <div class="rankitems">
+              <div class="rankitem top">
+                <div class="number">
+                  <span>1</span>
+                </div>
+                <img class="image" src="https://t3.ftcdn.net/jpg/04/43/94/64/360_F_443946416_l2xXrFoIuUkItmyscOK5MNh6h0Vai3Ua.jpg">
+                <span class="name">Name</span>
+                <span class="score">1430</span>
+              </div>
+            </div>
           </td>
           <td>
             <h3 class="containerheader">Gift rank</h3>
