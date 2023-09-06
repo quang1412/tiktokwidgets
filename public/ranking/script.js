@@ -264,9 +264,9 @@ class rankItem{
   constructor(userInfo = {}){
     this.info = userInfo;
     this.score = 0;
-    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}">`).html(`
-      <div class="number">1</div>
-      <img class="image" src="https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/default_avatar.webp?v=1693995142209">
+    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none;">`).html(`
+      <div class="number">-</div>
+      <img class="image" src="${this.info.profilePictureUrl}">
       <div class="name">${this.info.nickname}</div>
       <div class="score">${this.score}</div>`)
   }
@@ -282,8 +282,16 @@ class rankItem{
   
   setOrder(n){
     if(typeof n != 'number') return
+    this.DOM.show()
+    const order = n+1
+    this.DOM.removeClass('top')
+    if(order <= 3) {
+      this.DOM.addClass('top')
+    }
+    
     const top = (n * this.DOM.outerHeight()) + (n * 10) + 'px';
     this.DOM.css('top', top);
+    this.DOM.find('.number').text(order)
   }
 }
 
@@ -329,7 +337,7 @@ connection.on('like', (msg) => {
   if (typeof msg.likeCount === 'number') {
       // addChatItem('#447dd4', msg, msg.label.replace('{0:user}', '').replace('likes', `${msg.likeCount} likes`))
     // usersLikeCount[userId] += msg.likeCount
-    user.score += msg.likeCount
+    user.addScore(msg.likeCount)
   }
 })
 
