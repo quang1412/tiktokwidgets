@@ -245,17 +245,6 @@ function saveUserInfo(data){
   }
 }
 
-function topLikeSorting(){
-  topLike = []
-  for (var userId in usersLikeCount) {
-    topLike.push([userId, usersLikeCount[userId]]);
-  }
-  
-  topLike.sort(function(a, b) {
-    return b[1] - a[1];
-  });
-
-}
 
 // function createRankItem(order = 0, userInfo = {}){
 //   const {userId, uniqueId, nickname, profilePictureUrl} = userInfo 
@@ -286,6 +275,11 @@ class rankItem{
     this.DOM.appendTo(parent);
   }
   
+  addScore(n){
+    this.score += n;
+    this.DOM.find('.score').text(this.score)
+  }
+  
   setOrder(n){
     if(typeof n != 'number') return
     const top = (n * this.DOM.outerHeight()) + (n * 10) + 'px';
@@ -293,15 +287,15 @@ class rankItem{
   }
 }
 
-$(document).ready(function(){
-  const item = new rankItem()
-  item.appendTo($('#likerank .rankitems'))
-  item.setOrder(0)
+// $(document).ready(function(){
+//   const item = new rankItem()
+//   item.appendTo($('#likerank .rankitems'))
+//   item.setOrder(0)
   
-  const item2 = new rankItem()
-  item2.appendTo($('#likerank .rankitems'))
-  item2.setOrder(1)
-})
+//   const item2 = new rankItem()
+//   item2.appendTo($('#likerank .rankitems'))
+//   item2.setOrder(1)
+// })
 
 const likeRankItems = {}
 
@@ -317,7 +311,7 @@ connection.on('like', (msg) => {
   
   let user = likeRankItems[userId]
   if(!user){
-    likeRankItems[userId] = new rankItem
+    likeRankItems[userId] = new rankItem(msg)
     user = likeRankItems[userId]
     user.appendTo($('#likerank .rankitems'))
   }
@@ -334,23 +328,37 @@ connection.on('like', (msg) => {
 
   if (typeof msg.likeCount === 'number') {
       // addChatItem('#447dd4', msg, msg.label.replace('{0:user}', '').replace('likes', `${msg.likeCount} likes`))
-    usersLikeCount[userId] += msg.likeCount
+    // usersLikeCount[userId] += msg.likeCount
+    user.score += msg.likeCount
   }
 })
 
-// setInterval(function(){
-//   topLikeSorting()
-//   console.clear()
-//   const table = $('div#likerangecontainer div.rankitems').html('')
-//   const top = topLike.slice(0, 6)
-//   top.length && top.map((item, i) => {
-//     const userId = item[0]
-//     const userInfo = usersInfo[userId]
-//     console.log(userInfo)
-//     const rankItem = createRankItem(i, {...userInfo})
-//     table.append(rankItem)
-//   })
-// }, 3000)
+
+function topLikeSorting(){
+  topLike = []
+  for (var userId in likeRankItems) {
+    topLike.push([userId, likeRankItems[userId]]);
+  }
+  
+  topLike.sort(function(a, b) {
+    return b[1].score - a[1].score;
+  })
+}
+
+setInterval(function(){
+  topLikeSorting()
+  console.clear()
+  const table = $('div#likerangecontainer div.rankitems').html('')
+  const top = topLike.slice(0, 6)
+  topLike.length && topLike.map((item, i) => {
+    const userId = item[0]
+    const userInfo = likeRankItems[userId]
+    console.log(userInfo.score)
+    userInfo.setOrder(i)
+    // const rankItem = createRankItem(i, {...userInfo})
+    // table.append(rankItem)
+  })
+}, 3000)
 
 
 // setInterval(function(){
