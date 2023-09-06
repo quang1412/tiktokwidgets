@@ -61,13 +61,16 @@
     </table>
     <style>
       body{
-        background: url(https://img.freepik.com/free-vector/flat-design-abstract-background_23-2149116123.jpg?w=1800&t=st=1693989967~exp=1693990567~hmac=493be717900f114d91104f84589489d7d6ee0754ca648f41da3628b2c2047639) center center no-repeat;
+        background: url(https://img.freepik.com/free-vector/flat-design-abstract-background_23-2149116123.jpg?w=1800&t=st=1693989967~exp=1693990567~hmac=493be717900f114d91104f84589489d7d6ee0754ca648f41da3628b2c2047639) top left no-repeat;
         background-size: cover;
         font-size:16px;
         color: gray;
       }
       body * {
         transition: all 0.1s ease;
+      }
+      #likerangecontainer{
+        max-width: 400px;
       }
       .containerheader{
         margin-bottom: 20px;
@@ -81,7 +84,6 @@
         margin-bottom: 10px;
       }
       .ranktable .rankitem{
-        max-width: 400px;
         display: flex;
         gap: 10px;
         font-weight: 700;
@@ -127,24 +129,7 @@
     <table class="ranktable">
       <tbody>
         <tr>
-          <td id="likerangecontainer">
-            <h3 class="containerheader">Bảng xếp hạng</h3>
-            <div class="rankcolumntitle">
-              <span>Hạng</span>
-              <span><i class="fa-solid fa-heart"></i> Like</span>
-            </div>
-            <div class="rankitems">
-              <div class="rankitem top">
-                <div class="number">
-                  <span>1</span>
-                </div>
-                <img class="image" src="https://t3.ftcdn.net/jpg/04/43/94/64/360_F_443946416_l2xXrFoIuUkItmyscOK5MNh6h0Vai3Ua.jpg">
-                <span class="name">Name</span>
-                <span class="score">1430</span>
-              </div>
-              
-            </div>
-          </td>
+          
           <td>
             <h3 class="containerheader">Gift rank</h3>
             <div class="">
