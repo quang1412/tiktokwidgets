@@ -257,6 +257,20 @@ function topLikeSorting(){
 
 }
 
+function createRankItem(order, userInfo = {}){
+  const {userId, uniqueId, nickname, profilePictureUrl} = userInfo
+  const rankClass = order <= 3 ? "rankitem top" : "rankitem"
+  let item = $(`<div class="${rankClass}" data-userId="${userId||''}">`).html(`<div class="number">
+        <span>1</span>
+      </div>
+      <img class="image" src="https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/default_avatar.webp?v=1693995142209">
+      <span class="name">${nickname || 'name'}</span>
+      <span class="score">1430</span>`)
+  // $('div.rankitems').append(item) 
+  
+  return item;
+}
+
 connection.on('like', (msg) => {
   const {userId} = msg
   

@@ -165,15 +165,20 @@
     </table>
     <script>
       $(document).ready(function(){
-        for(let i = 0; i <= 6; i++){
-          const classList = i < 3 ? "rankitem top" : "rankitem"
-          let item = $(`<div class="${classList}">`).html(`<div class="number">
+        function createTopItem(order, userInfo = {}){
+          const {userId, uniqueId, nickname, profilePictureUrl} = userInfo
+          const classList = order <= 3 ? "rankitem top" : "rankitem"
+          let item = $(`<div class="${classList}" data-userId="${userId||''}">`).html(`<div class="number">
                 <span>1</span>
               </div>
               <img class="image" src="https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/default_avatar.webp?v=1693995142209">
-              <span class="name">Name</span>
+              <span class="name">${nickname || 'name'}</span>
               <span class="score">1430</span>`)
-          $('div.rankitems').append(item)
+          $('div.rankitems').append(item) 
+        }
+        
+        for(let i = 0; i <= 6; i++){
+          createTopItem(i+1)
         }
       })
     </script>
