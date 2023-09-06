@@ -41,6 +41,8 @@ a {
     margin-right: 20px;
 }
 
+
+
 .splitchattable, .splitstatetable {
     width: 100%;
 }
@@ -81,4 +83,13 @@ a {
     height: 50px;
     width: 50px;
     margin-right: 10px;
+}
+
+
+.ranktable{
+  width: 100%
+}
+
+.ranktable td{
+  text-align: center;
 }
