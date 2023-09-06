@@ -250,6 +250,11 @@ function topLikeSorting(){
   for (var userId in usersLikeCount) {
     topLike.push([userId, usersLikeCount[userId]]);
   }
+  
+  topLike.sort(function(a, b) {
+    return b[1] - a[1];
+  });
+
 }
 
 connection.on('like', (msg) => {
@@ -271,12 +276,11 @@ connection.on('like', (msg) => {
 })
 
 setInterval(function(){
-  // console.log(usersLikeCount);
-}, 1000)
+  topLikeSorting()
+  console.log(topLike.slice(0, 6));
+}, 3000)
 
 
 setInterval(function(){
   usersLikeCount = {}
-  usersGiftCount = {}
-  usersShareCount = {}
-}, 30*1000)
+}, 5*60*1000)
