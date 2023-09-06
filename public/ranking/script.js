@@ -257,7 +257,7 @@ function topLikeSorting(){
 
 }
 
-function createRankItem(order, userInfo = {}){
+function createRankItem(order = 0, userInfo = {}){
   const {userId, uniqueId, nickname, profilePictureUrl} = userInfo
   const rankClass = order <= 3 ? "rankitem top" : "rankitem"
   let item = $(`<div class="${rankClass}" data-userId="${userId||''}">`).html(`<div class="number">
@@ -291,7 +291,16 @@ connection.on('like', (msg) => {
 
 setInterval(function(){
   topLikeSorting()
-  console.log(topLike.slice(0, 6));
+  console.clear()
+  const table = $('div#likerangecontainer div.rankitems').html('')
+  const top = topLike.slice(0, 6)
+  top.map((item, i) => {
+    const userId = item[0]
+    const userInfo = usersInfo[userId]
+    console.log(userInfo)
+    const rankItem = createRankItem(i, {...userInfo})
+    table.append(rankItem)
+  })
 }, 3000)
 
 
