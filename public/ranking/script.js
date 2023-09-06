@@ -230,6 +230,10 @@ let usersInfo = {},
     usersGiftCount = {},
     usersShareCount = {};
 
+let topLike = [],
+    topGift = [],
+    topShare = [];
+
 function saveUserInfo(data){
   const {userId, uniqueId, nickname, profilePictureUrl} = data
   
@@ -238,6 +242,13 @@ function saveUserInfo(data){
     usersLikeCount[userId] = usersLikeCount[userId] || 0
     usersGiftCount[userId] = usersGiftCount[userId] || 0
     usersShareCount[userId] = usersShareCount[userId] || 0
+  }
+}
+
+function topLikeSorting(){
+  topLike = []
+  for (var userId in usersLikeCount) {
+    topLike.push([userId, usersLikeCount[userId]]);
   }
 }
 
@@ -260,5 +271,12 @@ connection.on('like', (msg) => {
 })
 
 setInterval(function(){
-  console.log(usersLikeCount);
+  // console.log(usersLikeCount);
 }, 1000)
+
+
+setInterval(function(){
+  usersLikeCount = {}
+  usersGiftCount = {}
+  usersShareCount = {}
+}, 30*1000)
