@@ -67,7 +67,7 @@ class rankItem{
   constructor(userInfo = {}){
     this.info = userInfo;
     this.score = 0;
-    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none;">`).html(`
+    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:100vh;">`).html(`
       <div class="number">-</div>
       <img class="image" src="${this.info.profilePictureUrl}">
       <div class="name">${this.info.nickname}</div>
@@ -79,12 +79,13 @@ class rankItem{
   }
   
   addScore(n){
-    const number = this.DOM.find('.score')
-    $(number).addClass("animate__heartBeat")
+    const numberDiv = this.DOM.find('div.score')
+    $(numberDiv).addClass("animate__heartBeat")
     this.score += n;
-    number.text(this.score)
-    $(number).one("webkitAnimationEnd animationend", function(evt) {
-      $(number).removeClass("animate__heartBeat")
+    
+    setTimeout(() => {})
+    $(numberDiv).one("webkitAnimationEnd animationend", (evt) => {
+      $(numberDiv).removeClass("animate__heartBeat")
     });
   }
   
@@ -93,19 +94,13 @@ class rankItem{
     this.DOM.show()
     const order = n+1
     this.DOM.removeClass('top')
+    if(order <= 3) {
+      this.DOM.addClass('top')
+    }
     
     const top = (n * this.DOM.outerHeight()) + (n * 10) + 'px';
     this.DOM.css('top', top);
     this.DOM.find('.number').text(order)
-    
-    if(order <= 3) {
-      this.DOM.addClass('top')
-    }
-    if(order <= 6){
-      this.appendTo($('#likerank .rankitems'))
-    } else {
-      this.DOM.remove()
-    }
   }
 }
 
@@ -134,7 +129,7 @@ connection.on('like', (msg) => {
   if(!user){
     likeRankItems[userId] = new rankItem(msg)
     user = likeRankItems[userId]
-    // user.appendTo($('#likerank .rankitems'))
+    user.appendTo($('#likerank .rankitems'))
   } 
   
   if (typeof msg.totalLikeCount === 'number') {
