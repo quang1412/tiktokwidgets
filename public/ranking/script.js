@@ -257,18 +257,18 @@ function topLikeSorting(){
 
 }
 
-function createRankItem(order = 0, userInfo = {}){
-  const {userId, uniqueId, nickname, profilePictureUrl} = userInfo 
-  let item = $(`<div class="rankitem" data-userId="${userId||''}">`).html(`<div class="number">
-        <span>1</span>
-      </div>
-      <img class="image" src="https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/default_avatar.webp?v=1693995142209">
-      <span class="name">${nickname || 'name'}</span>
-      <span class="score">1430</span>`)
-  // $('div.rankitems').append(item) 
+// function createRankItem(order = 0, userInfo = {}){
+//   const {userId, uniqueId, nickname, profilePictureUrl} = userInfo 
+//   let item = $(`<div class="rankitem" data-userId="${userId||''}">`).html(`<div class="number">
+//         <span>1</span>
+//       </div>
+//       <img class="image" src="https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/default_avatar.webp?v=1693995142209">
+//       <span class="name">${nickname || 'name'}</span>
+//       <span class="score">1430</span>`)
+//   // $('div.rankitems').append(item) 
   
-  return item;
-}
+//   return item;
+// }
 
 
 class rankItem{
@@ -287,7 +287,9 @@ class rankItem{
   }
   
   setOrder(n){
-    this.DOM.css('order', n)
+    if(typeof n != 'number') return
+    const top = (n * this.DOM.outerHeight()) + (n * 10) + 'px';
+    this.DOM.css('top', top);
   }
 }
 
@@ -295,8 +297,16 @@ $(document).ready(function(){
   const item = new rankItem()
   item.appendTo($('#likerank .rankitems'))
   item.setOrder(0)
+  
+  const item2 = new rankItem()
+  item2.appendTo($('#likerank .rankitems'))
+  item2.setOrder(1)
 })
 
+function createRankItem(userInfo){
+  
+  
+}
 
 connection.on('like', (msg) => {
   const {userId} = msg
