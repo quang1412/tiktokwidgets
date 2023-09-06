@@ -59,14 +59,36 @@
         </tr>
     </table>
     <style>
+      body{
+        background: url(https://img.freepik.com/free-vector/flat-design-abstract-background_23-2149116123.jpg?w=1800&t=st=1693989967~exp=1693990567~hmac=493be717900f114d91104f84589489d7d6ee0754ca648f41da3628b2c2047639) center center no-repeat;
+        background-size: cover;
+        
+      }
+      .rankitem{
+      }
       .ranktable .rankitem{
+
         display: flex;
         gap: 10px;
+        color: white;
+        font-weight: 700;
+        align-items: center;
+        background-color: #00000073;
+        padding: 10px;
+        border-radius: 10px;
       }
-      .ranktable .rankitem img.image{
+      .ranktable .rankitem .image{
         width: 32px;
         height: 32px;
         border-radius: 50%;
+        border: 2px solid white
+      }
+      .ranktable .rankitem .name{
+        
+      }
+      .ranktable .rankitem .score{
+        flex-grow:1;
+        text-align: right;
       }
     </style>
     <table class="ranktable">
@@ -77,10 +99,8 @@
 <!--             <div class="like_rank_card"> -->
             <div class="rankitem">
               <img class="image" src="https://t3.ftcdn.net/jpg/04/43/94/64/360_F_443946416_l2xXrFoIuUkItmyscOK5MNh6h0Vai3Ua.jpg">
-              <div class="info">
-                <div style="font-weight:500">Name</div>
-                <div>Like: <span>1000</span></div>
-              </div>
+              <span class="name">Name</span>
+              <span class="score">1430</span>
             </div>
 <!--             </div> -->
           </td>
