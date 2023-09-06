@@ -81,7 +81,7 @@
       }
       .containerheader{
         margin-bottom: 20px;
-        font-size: 1.2em;
+        font-size: 1.5em;
       }
       .ranktable .rankcolumntitle{
         display: flex;
@@ -104,13 +104,11 @@
         width: -webkit-fill-available
       }
       .ranktable .rankitem .number{
-        width: 20px;
-        height: 20px;
+        width: 1.2em;
+        height: 1.2em;
         display: flex;
         justify-content: center;
-        align-items: center;
-        background: unset center center no-repeat;
-        background-size: contain;
+        align-items: center; 
       }
       .ranktable .rankitem .image{
         width: 32px;
@@ -122,8 +120,9 @@
         
       }
       .ranktable .rankitem .score{
-        flex-grow:1;
-        text-align: right;
+/*         flex-grow:1;
+        text-align: right; */
+        margin-left: auto
       }
       
 /*       .ranktable .rankitem:nth-child(-n+3) */
@@ -132,7 +131,8 @@
         color: white;
       }
       .ranktable .rankitem.top .number{
-        background-image: url(https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/medal_icon.webp?v=1693995139474)
+        background: url(https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/medal_icon.webp?v=1693995139474) center center no-repeat;  
+        background-size: contain;
       }
       .ranktable .rankitem.top .image{
         border-color: white;

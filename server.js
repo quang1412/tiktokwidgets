@@ -131,7 +131,7 @@ class TikTokIOConnection {
 
   }
 }
-
+ 
 io.of('/app').on('connection', function(socket) {
   let _username;
   let currentUniqueId;

@@ -268,7 +268,7 @@ class rankItem{
       <div class="number">-</div>
       <img class="image" src="${this.info.profilePictureUrl}">
       <div class="name">${this.info.nickname}</div>
-      <div class="score"><span class="animate__animated animate__heartBeat">${this.score}</span></div>`)
+      <div class="score animate__animated" style="display:block">${this.score}</div>`)
   }
   
   appendTo(parent){
@@ -276,7 +276,7 @@ class rankItem{
   }
   
   addScore(n){
-    const number = this.DOM.find('.scorespan')
+    const number = this.DOM.find('.score')
     $(number).addClass("animate__heartBeat")
     this.score += n;
     number.text(this.score)
@@ -365,15 +365,12 @@ setInterval(function(){
   const top = topLike.slice(0, 6)
   topLike.length && topLike.map((item, i) => {
     const userId = item[0]
-    const userInfo = likeRankItems[userId]
-    console.log(userInfo.score)
-    userInfo.setOrder(i)
-    // const rankItem = createRankItem(i, {...userInfo})
-    // table.append(rankItem)
+    const userInfo = likeRankItems[userId] 
+    userInfo.setOrder(i) 
   })
 }, 3000)
 
 
-// setInterval(function(){
-//   usersLikeCount = {}
-// }, 5*60*1000)
+setInterval(function(){
+   
+}, 5*60*1000)
