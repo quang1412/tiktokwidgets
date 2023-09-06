@@ -273,10 +273,26 @@ function createRankItem(order = 0, userInfo = {}){
 
 
 class rankItem{
-  constructor(){
-    
+  constructor(userInfo = {}){
+    this.info = userInfo;
+    this.score = 0;
+    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}">`).html(`<div class="number">
+        <span>1</span>
+      </div>
+      <img class="image" src="https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/default_avatar.webp?v=1693995142209">
+      <span class="name">${this.info.nickname}</span>
+      <span class="score">${this.score}</span>`)
+  }
+  
+  appendTo(parent){
+    this.Dom.appendTo(parent);
   }
 }
+
+$(document).ready(function(){
+  const item = new rankItem()
+  item.appendTo($('#likerank .rankitems'))
+})
 
 
 connection.on('like', (msg) => {
