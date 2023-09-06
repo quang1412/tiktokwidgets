@@ -319,6 +319,25 @@ const likeRankItems = {}
 //   }
 // }
 
+
+function refreshLikeRanking(){
+  const ordered = []
+  for (var userId in likeRankItems) {
+    ordered.push(likeRankItems[userId]);
+  }
+  
+  if(!ordered.length) return
+  
+  ordered.sort(function(item_a, item_b) { 
+    return item_b.score - item_a.score;
+  })
+  ordered.map((item, i) => {
+    // const userId = item[0]
+    // const item = likeRankItems[userId] 
+    item.setOrder(i) 
+  })
+}
+
 connection.on('like', (msg) => {
   const {userId} = msg
   
@@ -343,40 +362,41 @@ connection.on('like', (msg) => {
       // addChatItem('#447dd4', msg, msg.label.replace('{0:user}', '').replace('likes', `${msg.likeCount} likes`))
     // usersLikeCount[userId] += msg.likeCount
     user.addScore(msg.likeCount)
+    refreshLikeRanking()
   }
 })
 
 
-function topLikeSorting(){
-  topLike = []
-  for (var userId in likeRankItems) {
-    topLike.push([userId, likeRankItems[userId]]);
-  }
+// function topLikeSorting(){
+//   topLike = []
+//   for (var userId in likeRankItems) {
+//     topLike.push([userId, likeRankItems[userId]]);
+//   }
   
-  topLike.sort(function(a, b) {
-    return b[1].score - a[1].score;
-  })
-}
+//   topLike.sort(function(a, b) {
+//     return b[1].score - a[1].score;
+//   })
+// }
 
-setInterval(function(){
-  // topLikeSorting()
-  const ordered = []
-  for (var userId in likeRankItems) {
-    ordered.push(likeRankItems[userId]);
-  }
+
+// setInterval(function(){
+//   // topLikeSorting()
+//   const ordered = []
+//   for (var userId in likeRankItems) {
+//     ordered.push(likeRankItems[userId]);
+//   }
   
-  if(!ordered.length) return
+//   if(!ordered.length) return
   
-  ordered.sort(function(item, item_next) {
-    console.log(item)
-    return item.score - item_next.score;
-  })
-  ordered.map((item, i) => {
-    // const userId = item[0]
-    // const item = likeRankItems[userId] 
-    item.setOrder(i) 
-  })
-}, 3000)
+//   ordered.sort(function(item_a, item_b) { 
+//     return item_b.score - item_a.score;
+//   })
+//   ordered.map((item, i) => {
+//     // const userId = item[0]
+//     // const item = likeRankItems[userId] 
+//     item.setOrder(i) 
+//   })
+// }, 3000)
 
 
 setInterval(function(){
