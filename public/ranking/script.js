@@ -223,3 +223,9 @@ connection.on('streamEnd', () => {
         }, 30000);
     }
 })
+
+
+const usersInfo = {},
+      usersLikeCount = {},
+      usersGiftCount = {},
+      usersShareCount = {}
