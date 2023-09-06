@@ -147,71 +147,71 @@ function addGiftItem(data) {
 }
 
 
-// viewer stats
-connection.on('roomUser', (msg) => {
-    if (typeof msg.viewerCount === 'number') {
-        viewerCount = msg.viewerCount;
-        updateRoomStats();
-    }
-})
+// // viewer stats
+// connection.on('roomUser', (msg) => {
+//     if (typeof msg.viewerCount === 'number') {
+//         viewerCount = msg.viewerCount;
+//         updateRoomStats();
+//     }
+// })
 
-// like stats
-connection.on('like', (msg) => {
-    if (typeof msg.totalLikeCount === 'number') {
-        likeCount = msg.totalLikeCount;
-        updateRoomStats();
-    }
+// // like stats
+// connection.on('like', (msg) => {
+//     if (typeof msg.totalLikeCount === 'number') {
+//         likeCount = msg.totalLikeCount;
+//         updateRoomStats();
+//     }
 
-    if (window.settings.showLikes === "0") return;
+//     if (window.settings.showLikes === "0") return;
 
-    if (typeof msg.likeCount === 'number') {
-        addChatItem('#447dd4', msg, msg.label.replace('{0:user}', '').replace('likes', `${msg.likeCount} likes`))
-    }
-})
+//     if (typeof msg.likeCount === 'number') {
+//         addChatItem('#447dd4', msg, msg.label.replace('{0:user}', '').replace('likes', `${msg.likeCount} likes`))
+//     }
+// })
 
-// Member join
-let joinMsgDelay = 0;
-connection.on('member', (msg) => {
-    if (window.settings.showJoins === "0") return;
+// // Member join
+// let joinMsgDelay = 0;
+// connection.on('member', (msg) => {
+//     if (window.settings.showJoins === "0") return;
 
-    let addDelay = 250;
-    if (joinMsgDelay > 500) addDelay = 100;
-    if (joinMsgDelay > 1000) addDelay = 0;
+//     let addDelay = 250;
+//     if (joinMsgDelay > 500) addDelay = 100;
+//     if (joinMsgDelay > 1000) addDelay = 0;
 
-    joinMsgDelay += addDelay;
+//     joinMsgDelay += addDelay;
 
-    setTimeout(() => {
-        joinMsgDelay -= addDelay;
-        addChatItem('#21b2c2', msg, 'joined', true);
-    }, joinMsgDelay);
-})
+//     setTimeout(() => {
+//         joinMsgDelay -= addDelay;
+//         addChatItem('#21b2c2', msg, 'joined', true);
+//     }, joinMsgDelay);
+// })
 
-// New chat comment received
-connection.on('chat', (msg) => {
-    if (window.settings.showChats === "0") return;
+// // New chat comment received
+// connection.on('chat', (msg) => {
+//     if (window.settings.showChats === "0") return;
 
-    addChatItem('', msg, msg.comment);
-})
+//     addChatItem('', msg, msg.comment);
+// })
 
-// New gift received
-connection.on('gift', (data) => {
-    if (!isPendingStreak(data) && data.diamondCount > 0) {
-        diamondsCount += (data.diamondCount * data.repeatCount);
-        updateRoomStats();
-    }
+// // New gift received
+// connection.on('gift', (data) => {
+//     if (!isPendingStreak(data) && data.diamondCount > 0) {
+//         diamondsCount += (data.diamondCount * data.repeatCount);
+//         updateRoomStats();
+//     }
 
-    if (window.settings.showGifts === "0") return;
+//     if (window.settings.showGifts === "0") return;
 
-    addGiftItem(data);
-})
+//     addGiftItem(data);
+// })
 
-// share, follow
-connection.on('social', (data) => {
-    if (window.settings.showFollows === "0") return;
+// // share, follow
+// connection.on('social', (data) => {
+//     if (window.settings.showFollows === "0") return;
 
-    let color = data.displayType.includes('follow') ? '#ff005e' : '#2fb816';
-    addChatItem(color, data, data.label.replace('{0:user}', ''));
-})
+//     let color = data.displayType.includes('follow') ? '#ff005e' : '#2fb816';
+//     addChatItem(color, data, data.label.replace('{0:user}', ''));
+// })
 
 connection.on('streamEnd', () => {
     $('#stateText').text('Stream ended.');
