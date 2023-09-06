@@ -268,7 +268,7 @@ class rankItem{
       <div class="number">-</div>
       <img class="image" src="${this.info.profilePictureUrl}">
       <div class="name">${this.info.nickname}</div>
-      <div class="score">${this.score}</div>`)
+      <div class="score"><span class="animate__animated animate__heartBeat">${this.score}</span></div>`)
   }
   
   appendTo(parent){
@@ -276,8 +276,13 @@ class rankItem{
   }
   
   addScore(n){
+    const number = this.DOM.find('.scorespan')
+    $(number).addClass("animate__heartBeat")
     this.score += n;
-    this.DOM.find('.score').text(this.score)
+    number.text(this.score)
+    $(number).one("webkitAnimationEnd animationend", function(evt) {
+      $(number).removeClass("animate__heartBeat")
+    });
   }
   
   setOrder(n){
