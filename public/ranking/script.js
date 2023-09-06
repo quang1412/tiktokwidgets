@@ -108,7 +108,7 @@ $(document).ready(function(){
     }
   }
  
-  function refreshLikeRanking(){
+  function reSorthRanking(){
     const list = []
     for (var userId in rankItems) {
       list.push(rankItems[userId]);
@@ -139,7 +139,7 @@ $(document).ready(function(){
     } 
     if (typeof msg.likeCount === 'number') { 
       user.addScore(msg.likeCount)
-      refreshLikeRanking()
+      reSorthRanking()
     }
   }) 
 
