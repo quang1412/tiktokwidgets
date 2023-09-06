@@ -61,7 +61,7 @@
     <style>
       .ranktable .rankitem{
         display: flex;
-        
+        gap: 10px;
       }
       .ranktable .rankitem img.image{
         width: 50px;
@@ -72,16 +72,17 @@
     <table class="ranktable">
       <tbody>
         <tr>
-          <td>
+          <td id="likerangecontainer">
             <h3 class="containerheader">Like rank</h3>
-            <div class="like_rank_card">
-              <div class="rankitem">
-                <img class="image" src="https://t3.ftcdn.net/jpg/04/43/94/64/360_F_443946416_l2xXrFoIuUkItmyscOK5MNh6h0Vai3Ua.jpg">
-                <div class="info">
-                  
-                </div>
+<!--             <div class="like_rank_card"> -->
+            <div class="rankitem">
+              <img class="image" src="https://t3.ftcdn.net/jpg/04/43/94/64/360_F_443946416_l2xXrFoIuUkItmyscOK5MNh6h0Vai3Ua.jpg">
+              <div class="info">
+                <div style="font-weight:500">Name</div>
+                <div>Like: <span>1000</span></div>
               </div>
             </div>
+<!--             </div> -->
           </td>
           <td>
             <h3 class="containerheader">Gift rank</h3>
