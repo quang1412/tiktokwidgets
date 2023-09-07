@@ -114,9 +114,15 @@ class rankItem{
     this.DOM.css('top', top);
     this.DOM.find('.number').text(order)
   }
+  
+  hidden(){
+    this.DOM.hide()
+  }
 }
 
 function sortingRankItems(rankItems){
+  const maxRankItem = 6;
+  
   const list = []
   for (var userId in rankItems) {
     list.push(rankItems[userId]);
@@ -127,10 +133,10 @@ function sortingRankItems(rankItems){
   })
  
   list.map((item, i) => { 
-    if(i < 6){
+    if(i < maxRankItem){
       item.setOrder(i)
     } else {
-      
+      item.hidden()
     }
   })
 }
