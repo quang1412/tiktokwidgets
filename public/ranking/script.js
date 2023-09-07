@@ -24,6 +24,18 @@ $(document).ready(() => {
     if (window.settings.username) connect();
 })
 
+
+connection.on('streamEnd', () => {
+    $('#stateText').text('Stream ended.');
+
+    // schedule next try if obs username set
+    if (window.settings.username) {
+        setTimeout(() => {
+            connect(window.settings.username);
+        }, 30000);
+    }
+}) 
+
 function connect() {
     let uniqueId = window.settings.username || $('#uniqueIdInput').val();
     if (uniqueId !== '') {
@@ -51,7 +63,6 @@ function connect() {
     }
 } 
 
- 
 
 connection.on('streamEnd', () => {
     $('#stateText').text('Stream ended.');
@@ -64,12 +75,7 @@ connection.on('streamEnd', () => {
     }
 }) 
 
-$(document).ready(function(){
-  if(window.settings.showLikeRanking === '0') return
-  
-  let rankItems = {} 
-  
-  class rankItem{
+class rankItem{
     constructor(userInfo = {}){
       this.info = userInfo;
       this.score = 0;
@@ -109,22 +115,28 @@ $(document).ready(function(){
       this.DOM.find('.number').text(order)
     }
   }
+
+function sortingRankItems(rankItems){
+  const list = []
+  for (var userId in rankItems) {
+    list.push(rankItems[userId]);
+  } 
+
+  list.sort(function(item_a, item_b) { 
+    return item_b.score - item_a.score;
+  })
  
-  function reSorthRanking(){
-    const list = []
-    for (var userId in rankItems) {
-      list.push(rankItems[userId]);
-    } 
+  list.map((item, i) => { 
+    item.setOrder(i) 
+  })
+}
 
-    list.sort(function(item_a, item_b) { 
-      return item_b.score - item_a.score;
-    })
-    
-    list.map((item, i) => { 
-      item.setOrder(i) 
-    })
-  }
-
+$(document).ready(function(){
+  if(window.settings.showLikeRanking === '0') return
+  
+  let container = $('#likerank .rankitems');
+  let rankItems = {} 
+   
   connection.on('like', (msg) => {
     const {userId} = msg
 
@@ -132,7 +144,7 @@ $(document).ready(function(){
     if(!user){
       rankItems[userId] = new rankItem(msg)
       user = rankItems[userId]
-      user.appendTo($('#likerank .rankitems'))
+      user.appendTo(container)
     } 
 
     if (typeof msg.totalLikeCount === 'number') {
@@ -141,13 +153,14 @@ $(document).ready(function(){
     } 
     if (typeof msg.likeCount === 'number') { 
       user.addScore(msg.likeCount)
-      reSorthRanking()
+      
+      sortingRankItems(rankItems)
     }
   }) 
 
   setInterval(function(){
     rankItems = {}
-    $('#likerank .rankitems').html(null)
+    container.html(null)
     console.log('reset')
   }, 2*60*1000)
 })
