@@ -76,45 +76,45 @@ connection.on('streamEnd', () => {
 }) 
 
 class rankItem{
-    constructor(userInfo = {}){
-      this.info = userInfo;
-      this.score = 0;
-      this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:100vh;">`).html(`
-        <div class="number">-</div>
-        <img class="image" src="${this.info.profilePictureUrl}">
-        <div class="name">${this.info.nickname}</div>
-        <div class="score animate__animated" style="display:block">${this.score}</div>`)
-    }
-
-    appendTo(parent){
-      this.DOM.appendTo(parent);
-    }
-
-    addScore(n){
-      const numberDiv = this.DOM.find('div.score')
-      $(numberDiv).addClass("animate__heartBeat")
-      this.score += n;
-
-      setTimeout(() => $(numberDiv).text(this.score), 300)
-      $(numberDiv).one("webkitAnimationEnd animationend", (evt) => {
-        $(numberDiv).removeClass("animate__heartBeat")
-      });
-    }
-
-    setOrder(n){
-      if(typeof n != 'number') return
-      this.DOM.show()
-      const order = n+1
-      this.DOM.removeClass('top')
-      if(order <= 3) {
-        this.DOM.addClass('top')
-      }
-
-      const top = (n * this.DOM.outerHeight()) + (n * 10) + 'px';
-      this.DOM.css('top', top);
-      this.DOM.find('.number').text(order)
-    }
+  constructor(userInfo = {}){
+    this.info = userInfo;
+    this.score = 0;
+    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:100vh;">`).html(`
+    <div class="number">-</div>
+    <img class="image" src="${this.info.profilePictureUrl}">
+    <div class="name">${this.info.nickname}</div>
+    <div class="score animate__animated" style="display:block">${this.score}</div>`)
   }
+
+  appendTo(parent){
+    this.DOM.appendTo(parent);
+  }
+
+  addScore(n){
+    const numberDiv = this.DOM.find('div.score')
+    $(numberDiv).addClass("animate__heartBeat")
+    this.score += n;
+
+    setTimeout(() => $(numberDiv).text(this.score), 300)
+    $(numberDiv).one("webkitAnimationEnd animationend", (evt) => {
+      $(numberDiv).removeClass("animate__heartBeat")
+    });
+  }
+
+  setOrder(n){
+    if(typeof n != 'number') return
+    this.DOM.show()
+    const order = n+1
+    this.DOM.removeClass('top')
+    if(order <= 3) {
+      this.DOM.addClass('top')
+    }
+
+    const top = (n * this.DOM.outerHeight()) + (n * 10) + 'px';
+    this.DOM.css('top', top);
+    this.DOM.find('.number').text(order)
+  }
+}
 
 function sortingRankItems(rankItems){
   const list = []
@@ -127,7 +127,11 @@ function sortingRankItems(rankItems){
   })
  
   list.map((item, i) => { 
-    item.setOrder(i) 
+    if(i < 6){
+      item.setOrder(i)
+    } else {
+      
+    }
   })
 }
 
