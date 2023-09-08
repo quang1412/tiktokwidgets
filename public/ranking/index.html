@@ -48,7 +48,7 @@
         <div class="mb-3"> 
 <!--           <label class="form-label">Tiktok id</label> -->
           <div class="input-group">
-            <input type="text" class="form-control" id="uniqueIdInput" placeholder="Nhập @username của kênh đang livestream">
+            <input type="text" class="form-control" id="uniqueIdInput" value="kbc_news" placeholder="Nhập @username của kênh đang livestream">
             <button class="btn btn-primary" type="button" id="connectButton">kết nối</button>
           </div>
           <pre id="stateText">&nbsp</pre>
@@ -56,10 +56,21 @@
         <div class="d-none">
           <div class="mb-3">
             <input class="form-control mb-2" type="number" id="maxItem" placeholder="10">
-          </div>
+          </div>  
+        </div>
+      </div>  
+    </div>
+    
+      
+    <div class="container-fluid">
+      <div style="display: flex; gap: 25px; overflow-y: scroll; height:98vh">
+        
+        <div class="p-3 bg-light border border-1 h-100 pt-4" style="width:400px; min-width:400px; border-radius:10px; ">
+          <h3 class="mb-2 text-center">Cài đặt</h3>
+          
           <div class="mb-3">
             <label class="form-label">Sự kiện xếp hạng</label>
-            <select class="form-select" name="rankEvent">
+            <select class="form-select" id="rankEvent">
               <option value="like" selected>Lượt thả tim</option>
               <option value="share">Lượt share</option>
               <option value="chat">Lượt comment</option>
@@ -68,12 +79,8 @@
           </div> 
           <a href="javascript:void(0)" onclick="generateOverlay()">Generate Overlay URL</a>
         </div>
-      </div>  
-    </div>
-    
-      
-    <div class="container-fluid">
-      <div style="display: flex; gap: 25px; overflow-y: scroll; height:98vh">
+        
+        
         <div class="ranktable" id="likerank">
           <h3 class="mb-2 text-center">Bảng xếp hạng like</h3>
           <div class="tableBg"></div>
