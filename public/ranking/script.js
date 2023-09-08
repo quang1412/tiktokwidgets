@@ -200,7 +200,7 @@ $(document).ready(function(){
       // updateRoomStats();
     } 
     if (typeof msg.comment === 'string') { 
-      user.addScore(1)
+      user.addScore(msg.comment.length)
       
       sortingRankItems(rankItems)
     }

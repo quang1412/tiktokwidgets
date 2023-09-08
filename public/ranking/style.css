@@ -103,8 +103,10 @@ body * {
   transition: top 0.5s ease;
 }
 .ranktable{
-  width: 100%;
+  width: 400px;
   max-width: 400px;
+  min-width: 400px;
+  padding: 10px;
 }
 .ranktable .rankitems{
   display: flex;
