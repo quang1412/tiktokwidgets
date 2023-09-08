@@ -79,7 +79,7 @@ class rankItem{
   constructor(userInfo = {}){
     this.info = userInfo;
     this.score = 0;
-    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:50vh;">`).html(`
+    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:100vh;">`).html(`
     <div class="number">-</div>
     <img class="image" src="${this.info.profilePictureUrl}">
     <div class="name">${this.info.nickname}</div>
@@ -110,8 +110,8 @@ class rankItem{
       this.DOM.addClass('top')
     }
 
-    const top = (n * this.DOM.outerHeight()) + (n * 10) + 'px';
-    this.DOM.css('top', top);
+    const topPx = (n * this.DOM.outerHeight()) + (n * 10) + 'px';
+    this.DOM.css('top', topPx);
     this.DOM.find('.number').text(order)
   }
   
