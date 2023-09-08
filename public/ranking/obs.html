@@ -32,15 +32,26 @@
     <script>
       window.settings = Object.fromEntries(new URLSearchParams(location.search));
       window.addEventListener('load', () => {
-        if (window.settings.fontColor) {
-          $('body').css('color', window.settings.fontColor);
-        }
-        if (window.settings.bgColor) {
-          $('body').css('background-color', window.settings.bgColor);
-        }
-        if (window.settings.fontSize) {
-          $('body').css('font-size', window.settings.fontSize);
-        }
+        // if () {  
+        // }
+        // if (window.settings.bgColor) {
+        // }
+        // if (window.settings.fontSize) {
+        // }
+        window.settings.fontColor && $('body').css('color', window.settings.fontColor);
+        
+        window.settings.bgColor && $('body').css('--bgColor', window.settings.bgColor);
+        
+        window.settings.fontSize && $('body').css('--fontSize', window.settings.fontSize);
+
+        window.settings.textColor && $('body').css('--textColor', window.settings.textColor);
+        
+        
+//         let rankEvent = $('#rankEvent').val();
+//         let rankTitle = $('#rankTitle').val();
+//         let bgColor = $('#bgColor').val();
+//         let textColor = $('#textColor').val();
+//         let fontSize = $('#fontSize').val()+'px';
       })
     </script>
     <script src="/connection.js"></script>
