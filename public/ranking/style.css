@@ -25,6 +25,9 @@ body * {
   max-width: 400px;
   min-width: 400px;
   padding: 10px;
+  
+  background-color: rgba(0, 0, 0, .50);
+  border-radius: 10px;
 }
 .ranktable .rankitems{
   display: flex;
@@ -92,8 +95,9 @@ body * {
 
 /*       .ranktable .rankitem:nth-child(-n+3) */
 .ranktable .rankitem.top{
-  background-color: #00000073;
-  color: white;
+/*   background-color: #00000073; */
+  background-color: rgba(0, 0, 0, .50);
+/*   color: white; */
 }
 .ranktable .rankitem.top .number{
   background: url(https://cdn.glitch.global/7252e33f-9435-4935-b23d-68d0102bb6d5/medal_icon.webp?v=1693995139474) center center no-repeat;  
