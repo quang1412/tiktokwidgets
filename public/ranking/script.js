@@ -146,7 +146,7 @@ function sortingRankItems(rankItems){
 }
 
 $(document).ready(function(){
-  if(window.settings.rankEvent !== 'like') return
+  if(window.settings.rankEvent && window.settings.rankEvent !== 'like') return
   
   let container = $('#likerank .rankitems');
   let rankItems = {} 
@@ -179,7 +179,7 @@ $(document).ready(function(){
 })
 
 $(document).ready(function(){
-  if(window.settings.rankEvent !== 'chat') return
+  if(window.settings.rankEvent && window.settings.rankEvent !== 'chat') return
   
   let container = $('#chatrank .rankitems');
   let rankItems = {} 
@@ -208,7 +208,7 @@ $(document).ready(function(){
 })
 
 $(document).ready(function(){
-  if(window.settings.rankEvent !== 'share') return
+  if(window.settings.rankEvent && window.settings.rankEvent !== 'share') return
   
   let container = $('#sharerank .rankitems');
   let rankItems = {} 
@@ -237,7 +237,7 @@ $(document).ready(function(){
 })
 
 $(document).ready(function(){
-  if(window.settings.rankEvent !== 'gift') return
+  if(window.settings.rankEvent && window.settings.rankEvent !== 'gift') return
   
   let container = $('#giftrank .rankitems');
   let rankItems = {} 

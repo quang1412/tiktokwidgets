@@ -26,7 +26,7 @@
         let fontSize = $('#fontSize').val()+'px';
         // let bgColor = $('#bgColor').val();
         
-        let url = `obs.html?username=${username}&rankEvent=${rankEvent}&rankTitle=${rankTitle}&bgColor=${bgColor}&textColor=${textColor}&fontSize=${fontSize}`;
+        let url = `obs.html?username=${username}&rankEvent=${rankEvent}&rankTitle=${rankTitle}&bgColor=${bgColor}&textColor=${encodeURIComponent(textColor)}&fontSize=${fontSize}`;
         if (username) {
           window.open(url, '_blank');
         } else {
