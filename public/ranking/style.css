@@ -105,7 +105,6 @@ body * {
 .ranktable{
   width: 100%;
   max-width: 400px;
-  overflow:hidden;
 }
 .ranktable .rankitems{
   display: flex;

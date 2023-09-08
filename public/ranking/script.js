@@ -84,6 +84,8 @@ class rankItem{
     <img class="image" src="${this.info.profilePictureUrl}">
     <div class="name">${this.info.nickname}</div>
     <div class="score animate__animated" style="display:block">${this.score}</div>`)
+    
+    this.setOrder(10)
   }
 
   appendTo(parent){
@@ -103,7 +105,6 @@ class rankItem{
 
   setOrder(n){
     if(typeof n != 'number') return
-    this.DOM.show()
     const order = n+1
     this.DOM.removeClass('top')
     if(order <= 3) {
@@ -114,7 +115,9 @@ class rankItem{
     this.DOM.css('top', topPx);
     this.DOM.find('.number').text(order)
   }
-  
+  show(){
+    this.DOM.show()
+  }
   hidden(){
     this.DOM.hide()
   }
@@ -134,6 +137,7 @@ function sortingRankItems(rankItems){
  
   list.map((item, i) => { 
     if(i < maxItemsCount){
+      item.show()
       item.setOrder(i)
     } else {
       item.hidden()
