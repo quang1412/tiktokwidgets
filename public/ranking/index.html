@@ -1,111 +1,97 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TikTok LIVE Viewer Ranking</title>
-
     <meta name="description" content="A chat reader for TikTok LIVE utilizing TikTok-Live-Connector and Socket.IO to forward the data to the client. This demo project uses the unofficial TikTok API to retrieve chat comments, gifts and other events from TikTok LIVE.">
     <meta name="keywords" content="TikTok,Live,Livestream,Chat,Reader,Scraper,Tracker,tiktok.com,broadcast,api,library,node,node.js,javascript">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="style.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://kit.fontawesome.com/d83ecd5594.js" crossorigin="anonymous"></script>
-    
     <script src="/connection.js"></script>
     <script src="script.js"></script>
-
     <script>
-        function generateOverlay() {
-            let username = $('#uniqueIdInput').val();
-            let url = `obs.html?username=${username}&bgColor=&fontColor=rgb(227,229,235)&fontSize=24px`;
-        
-            if(username) {
-                window.open(url, '_blank');
-            } else {
-                alert("Enter username");
-            }
+      function generateOverlay() {
+        let username = $('#uniqueIdInput').val();
+        let url = `obs.html?username=${username}&bgColor=&fontColor=rgb(227,229,235)&fontSize=24px`;
+        if (username) {
+          window.open(url, '_blank');
+        } else {
+          alert("Enter username");
         }
+      }
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="head">
-        <h1>TikTok LIVE Viewer Ranking</h1>
-      <span class="subTitle">By: <a href="https://fb.com/trinhdacquang">trinhdacquang</a> with ❤️</span>      
+      <h1>TikTok LIVE Viewer Ranking</h1>
+      <span class="subTitle">By: <a href="https://fb.com/trinhdacquang">trinhdacquang</a> with ❤️ </span>
     </div>
-
-    <div>
-        A ranking board for <a href="https://www.tiktok.com/live">TikTok LIVE</a>.
-    </div>
-
+    <div> A ranking board for <a href="https://www.tiktok.com/live">TikTok LIVE</a>. </div>
     <div class="inputFields">
-        <p>Enter the <b>@username</b> of a user who is currently live:</p>
-        <input type="text" id="uniqueIdInput">
+      <div style="margin-bottom:10px;">
+        <p>Enter the <b>@username</b> of a user who is currently live: </p>
+        <input type="text" id="uniqueIdInput" value="dodattt">
         <input type="button" id="connectButton" value="connect">
-        <a href="#" onclick="generateOverlay()">Generate Overlay URL</a>
+      </div>
+      <div>
+        <input type="number" id="maxItem" value="10">
+        <a href="javascript:void(0)" onclick="generateOverlay()">Generate Overlay URL</a>
+      </div>
     </div>
-
     <table class="splitstatetable">
-        <tr>
-            <td>
-                <pre id="stateText"></pre>
-            </td>
-            <td>
-                <div id="roomStats"></div>
-            </td>
-        </tr>
+      <tr>
+        <td>
+          <pre id="stateText"></pre>
+        </td>
+        <td>
+          <div id="roomStats"></div>
+        </td>
+      </tr>
     </table>
-  
     <main>
       <div style="display: flex; gap: 25px">
-        
         <div class="ranktable" id="likerank">
-          <h3 class="containerheader">Bảng xếp hạng</h3>
+          <h3 class="containerheader">Bảng xếp hạng like</h3>
           <div class="rankcolumntitle">
             <span>Hạng</span>
-            <span><i class="fa-solid fa-heart"></i> Like</span>
+            <span>
+              <i class="fa-solid fa-heart"></i> Like</span>
           </div>
-          <div class="rankitems"> 
-          </div>
-        </div> 
-      
+          <div class="rankitems"></div>
+        </div>
         <div class="ranktable" id="chatrank">
-          <h3 class="containerheader">Bảng xếp hạng</h3>
+          <h3 class="containerheader">Bảng xếp hạng chat</h3>
           <div class="rankcolumntitle">
             <span>Hạng</span>
-            <span><i class="fa-solid fa-heart"></i> Chat</span>
+            <span>
+              <i class="fa-solid fa-heart"></i> Chat</span>
           </div>
-          <div class="rankitems"> 
-          </div>
+          <div class="rankitems"></div>
         </div>
-      
         <div class="ranktable" id="sharerank">
-          <h3 class="containerheader">Bảng xếp hạng</h3>
+          <h3 class="containerheader">Bảng xếp hạng share</h3>
           <div class="rankcolumntitle">
             <span>Hạng</span>
-            <span><i class="fa-solid fa-heart"></i> Chat</span>
+            <span>
+              <i class="fa-solid fa-heart"></i> Chat</span>
           </div>
-          <div class="rankitems"> 
-          </div>
+          <div class="rankitems"></div>
         </div>
-      
         <div class="ranktable" id="giftrank">
-          <h3 class="containerheader">Bảng xếp hạng</h3>
+          <h3 class="containerheader">Bảng xếp hạng tặng quà</h3>
           <div class="rankcolumntitle">
             <span>Hạng</span>
-            <span><i class="fa-solid fa-heart"></i> Gift</span>
+            <span>
+              <i class="fa-solid fa-heart"></i> Gift</span>
           </div>
-          <div class="rankitems"> 
-          </div>
+          <div class="rankitems"></div>
         </div>
-      
       </div>
     </main>
-  
   </body>
 </html>
