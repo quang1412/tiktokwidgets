@@ -1,7 +1,6 @@
 body {
   font-family:Arial, Helvetica, sans-serif;
-/*   font-size: 16px; */
-/*     min-width: 800px; */
+  --itembg-color: rgba(0, 0, 0, .50);
 } 
 
 /* h1, h3{
@@ -25,9 +24,9 @@ body * {
   width: 400px;
 /*   max-width: 400px; */
   min-width: 400px;
-  padding: 30px 10px 10px;
+  padding: 30px 15px 15px;
   
-  background-color: rgba(0, 0, 0, .50);
+  background-color: var(--itembg-color);
   border-radius: 10px;
 }
 .ranktable .rankitems{
@@ -97,7 +96,7 @@ body * {
 /*       .ranktable .rankitem:nth-child(-n+3) */
 .ranktable .rankitem.top{
 /*   background-color: #00000073; */
-  background-color: rgba(0, 0, 0, .50);
+  background-color: var(--itembg-color);
 /*   color: white; */
 }
 .ranktable .rankitem.top .number{
