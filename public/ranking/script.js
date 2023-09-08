@@ -79,7 +79,7 @@ class rankItem{
   constructor(userInfo = {}){
     this.info = userInfo;
     this.score = 0;
-    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:100%;">`).html(`
+    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:50vh;">`).html(`
     <div class="number">-</div>
     <img class="image" src="${this.info.profilePictureUrl}">
     <div class="name">${this.info.nickname}</div>
