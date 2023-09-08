@@ -60,12 +60,11 @@
     <div class="container-fluid ">
       <div style="display: flex; gap: 25px; overflow-y: scroll; height:98vh">
         
-        //
+<!-- CONFIG -->
         <div class="inputFields p-3 bg-light border border-1 h-100 pt-4" style="width:400px; min-width:400px; border-radius:10px; ">
           <h3 class="mb-2 text-center">Cài đặt</h3>
-          
           <div class="mb-3">
-            <label class="form-label">Sự kiện xếp hạng</label>
+            <label class="form-label" for="rankEvent">Sự kiện xếp hạng</label>
             <select class="form-select" id="rankEvent">
               <option value="like" selected>Lượt thả tim</option>
               <option value="share">Lượt share</option>
@@ -73,21 +72,27 @@
               <option value="gift">Lượt tặng quà</option>
             </select>
           </div> 
-          
           <div class="mb-3">
-            <label class="form-label">Tiêu đề</label>
+            <label class="form-label" for="rankTitle">Tiêu đề</label>
             <input class="form-control mb-2" type="text" id="rankTitle" placeholder="Bảng xếp hạng">
           </div>
-          
           <div class="mb-3">
-            <label for="customRange1" class="form-label">Độ mờ: <small>50</small></label>
-            <input type="range" value="0.5" min="0" max="1" step="0.1" class="form-range" id="bgOpacity" oninput="$('.ranktable, .ranktable .rankitem.top').css('background-color', 'rgba(0, 0, 0, '+this.value+')')">
+            <label for="bgColor" class="form-label">Độ mờ</label>
+            <input type="range" value="0.5" min="0" max="1" step="0.1" class="form-range" id="bgColor" oninput="$('body').css('--bgColor', 'rgba(0, 0, 0, '+this.value+')')">
+          </div>
+          <div>
+            <label for="textColor" class="form-label">Color picker</label>
+            <input type="color" class="form-control form-control-color" id="textColor" value="#ffffff" title="Choose text color" oninput="$('body').css('--textColor', this.value)">
+          </div>
+          <div>
+            <label for="fontSize" class="form-label">Color picker <small>(%)</small></label>
+            <input type="range" value="0.5" min="0" max="1" step="0.1" class="form-range" id="fontSize" oninput="$('body').css('--fontSize', this.value)">
           </div>
           
           <a href="javascript:void(0)" onclick="generateOverlay()">Generate Overlay URL</a>
         </div>
         
-        
+<!-- CONFIG -->
         <div class="ranktable" id="likerank">
           <div class="mb-3 text-center fw-bolder">
             <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
