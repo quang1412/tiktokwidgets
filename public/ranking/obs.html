@@ -46,6 +46,7 @@
 
         window.settings.textColor && $('body').css('--textColor', window.settings.textColor);
         
+        window.settings.rankEvent && $('div.ranktable:not([data-event="'+window.settings.rankEvent+'"])').hide()
         
 //         let rankEvent = $('#rankEvent').val();
 //         let rankTitle = $('#rankTitle').val();
@@ -63,7 +64,7 @@
         
         
         
-        <div class="ranktable" id="likerank">
+        <div class="ranktable" id="likerank" data-event="like">
           <div class="mb-3 text-center fw-bolder">
             <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>
@@ -77,7 +78,7 @@
           <div class="rankitems"></div>
         </div>
         
-        <div class="ranktable" id="chatrank">
+        <div class="ranktable" id="chatrank" data-event="chat">
           <div class="mb-3 text-center fw-bolder">
             <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>
@@ -90,7 +91,7 @@
           <div class="rankitems"></div>
         </div>
         
-        <div class="ranktable" id="sharerank">
+        <div class="ranktable" id="sharerank" data-event="share">
           <div class="mb-3 text-center fw-bolder">
             <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>
@@ -103,7 +104,7 @@
           <div class="rankitems"></div>
         </div>
         
-        <div class="ranktable" id="giftrank">
+        <div class="ranktable" id="giftrank" data-event="gift">
           <div class="mb-3 text-center fw-bolder">
             <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>

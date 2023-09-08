@@ -21,7 +21,7 @@
         let username = $('#uniqueIdInput').val();
         let rankEvent = $('#rankEvent').val();
         let rankTitle = $('#rankTitle').val();
-        let bgColor = 'rgba(0, 0, 0, '+$('#bgColor').val()+')';
+        let bgColor = 'rgba(0,0,0,'+$('#bgColor').val()+')';
         let textColor = $('#textColor').val();
         let fontSize = $('#fontSize').val()+'px';
         // let bgColor = $('#bgColor').val();
@@ -92,7 +92,7 @@
             <input type="color" class="form-control form-control-color" id="textColor" value="#ffffff" title="Choose text color" oninput="$('body').css('--textColor', this.value)">
           </div>
           <div class="mb-3">
-            <label for="fontSize" class="form-label">Text size<small>(px)</small></label>
+            <label for="fontSize" class="form-label">Text size<small>&nbsp(px)</small></label>
             <input type="range" value="16" min="10" max="50" step="1" class="form-range" id="fontSize" oninput="$('body').css('--fontSize', this.value+'px')">
           </div>
           
@@ -100,7 +100,7 @@
         </div>
         
 <!-- CONFIG -->
-        <div class="ranktable" id="likerank">
+        <div class="ranktable" id="likerank" data-event="like">
           <div class="mb-3 text-center fw-bolder">
             <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>
@@ -114,7 +114,7 @@
           <div class="rankitems"></div>
         </div>
         
-        <div class="ranktable" id="chatrank">
+        <div class="ranktable" id="chatrank" data-event="chat">
           <div class="mb-3 text-center fw-bolder">
             <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>
@@ -127,7 +127,7 @@
           <div class="rankitems"></div>
         </div>
         
-        <div class="ranktable" id="sharerank">
+        <div class="ranktable" id="sharerank" data-event="share">
           <div class="mb-3 text-center fw-bolder">
             <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>
@@ -140,7 +140,7 @@
           <div class="rankitems"></div>
         </div>
         
-        <div class="ranktable" id="giftrank">
+        <div class="ranktable" id="giftrank" data-event="gift">
           <div class="mb-3 text-center fw-bolder">
             <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>
@@ -154,6 +154,7 @@
         </div>
         
       </div>
+      
     </div>
     
 <!--     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
