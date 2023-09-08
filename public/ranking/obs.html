@@ -48,6 +48,8 @@
         
         window.settings.rankEvent && $('div.ranktable:not([data-event="'+window.settings.rankEvent+'"])').hide()
         
+        window.settings.rankTitle && $('.maintitle').text(window.settings.rankTitle)
+        
 //         let rankEvent = $('#rankEvent').val();
 //         let rankTitle = $('#rankTitle').val();
 //         let bgColor = $('#bgColor').val();
@@ -66,7 +68,7 @@
         
         <div class="ranktable" id="likerank" data-event="like">
           <div class="mb-3 text-center fw-bolder">
-            <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <span class="mb-0 fw-bolder d-block maintitle" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>
           </div>
           <div class="tableBg"></div>
@@ -80,7 +82,7 @@
         
         <div class="ranktable" id="chatrank" data-event="chat">
           <div class="mb-3 text-center fw-bolder">
-            <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <span class="mb-0 fw-bolder d-block maintitle" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>
           </div>
           <div class="rankcolumntitle">
@@ -93,7 +95,7 @@
         
         <div class="ranktable" id="sharerank" data-event="share">
           <div class="mb-3 text-center fw-bolder">
-            <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <span class="mb-0 fw-bolder d-block maintitle" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>
           </div>
           <div class="rankcolumntitle">
@@ -106,7 +108,7 @@
         
         <div class="ranktable" id="giftrank" data-event="gift">
           <div class="mb-3 text-center fw-bolder">
-            <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <span class="mb-0 fw-bolder d-block maintitle" style="font-size:1.3em;">Bảng xếp hạng</span>
             <small>Phiên live hiện tại</small>
           </div>
           <div class="rankcolumntitle">
