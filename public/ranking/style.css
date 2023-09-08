@@ -4,7 +4,7 @@ body {
 /*     min-width: 800px; */
 } 
 
-h1{
+h1, h3{
   font-weight: 800;
 }
 
@@ -32,10 +32,10 @@ body * {
 
   position: relative;
 }
-.containerheader{
+/* .containerheader{
   margin-bottom: 20px;
   font-size: 1.5em;
-}
+} */
 .ranktable .rankcolumntitle{
   display: flex;
   justify-content: space-between;

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok LIVE Viewer Ranking</title>
+    <title>TikTok LIVE Ranking</title>
     <meta name="description" content="A chat reader for TikTok LIVE utilizing TikTok-Live-Connector and Socket.IO to forward the data to the client. This demo project uses the unofficial TikTok API to retrieve chat comments, gifts and other events from TikTok LIVE.">
     <meta name="keywords" content="TikTok,Live,Livestream,Chat,Reader,Scraper,Tracker,tiktok.com,broadcast,api,library,node,node.js,javascript">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -31,7 +31,7 @@
   <body>
     <div class="container-fluid">
       <div class="head">
-        <h1>TikTok LIVE Viewer Ranking</h1>
+        <h1>TikTok LIVE Ranking</h1>
 <!--         <span class="subTitle">By: <a href="https://fb.com/trinhdacquang">trinhdacquang</a> with ❤️ </span> -->
 <!--         <div> A ranking board for <a href="https://www.tiktok.com/live">TikTok LIVE.</a></div> -->
         <figcaption class="blockquote-footer">
@@ -46,16 +46,14 @@
     <div class="container-fluid">
       <div class="inputFields" style="width:400px">
         <div class="mb-3"> 
-          <label class="form-label">Tiktok id</label>
-          <div class="input-group-sm">
+<!--           <label class="form-label">Tiktok id</label> -->
+          <div class="input-group">
             <input type="text" class="form-control" id="uniqueIdInput" placeholder="Nhập @username của kênh đang livestream">
             <button class="btn btn-primary" type="button" id="connectButton">kết nối</button>
           </div>
           <pre id="stateText">&nbsp</pre>
         </div>
-
-        <div>
-          
+        <div class="d-none">
           <div class="mb-3">
             <input class="form-control mb-2" type="number" id="maxItem" placeholder="10">
           </div>
@@ -67,44 +65,17 @@
               <option value="chat">Lượt comment</option>
               <option value="gift">Lượt tặng quà</option>
             </select>
-          </div>
-<!--           
-          <span>
-            <input type="radio" name="eventName" value="like" checked>
-            <label>xếp hạng like</label>
-          </span>
-          <span>
-            <input type="radio" name="eventName" value="share">
-            <label>xếp hạng share</label>
-          </span>
-          <span>
-            <input type="radio" name="eventName" value="chat">
-            <label>xếp hạng chat</label>
-          </span>
-          <span>
-            <input type="radio" name="eventName" value="gift">
-            <label>xếp hạng tặng quà</label>
-          </span> -->
+          </div> 
           <a href="javascript:void(0)" onclick="generateOverlay()">Generate Overlay URL</a>
         </div>
-      </div>
-      
+      </div>  
     </div>
-    <table class="splitstatetable">
-      <tr>
-        <td>
-<!--           <pre id="stateText"></pre> -->
-        </td>
-        <td>
-          <div id="roomStats"></div>
-        </td>
-      </tr>
-    </table>
     
-    <main>
+      
+    <div class="container-fluid">
       <div style="display: flex; gap: 25px">
         <div class="ranktable" id="likerank">
-          <h3 class="containerheader">Bảng xếp hạng like</h3>
+          <h3 class="mb-2 text-center">Bảng xếp hạng like</h3>
           <div class="rankcolumntitle">
             <span>Hạng</span>
             <span>
@@ -113,7 +84,7 @@
           <div class="rankitems"></div>
         </div>
         <div class="ranktable" id="chatrank">
-          <h3 class="containerheader">Bảng xếp hạng chat</h3>
+          <h3 class="mb-2 text-center">Bảng xếp hạng chat</h3>
           <div class="rankcolumntitle">
             <span>Hạng</span>
             <span>
@@ -122,7 +93,7 @@
           <div class="rankitems"></div>
         </div>
         <div class="ranktable" id="sharerank">
-          <h3 class="containerheader">Bảng xếp hạng share</h3>
+          <h3 class="mb-2 text-center">Bảng xếp hạng share</h3>
           <div class="rankcolumntitle">
             <span>Hạng</span>
             <span>
@@ -131,7 +102,7 @@
           <div class="rankitems"></div>
         </div>
         <div class="ranktable" id="giftrank">
-          <h3 class="containerheader">Bảng xếp hạng tặng quà</h3>
+          <h3 class="mb-2 text-center">Bảng xếp hạng tặng quà</h3>
           <div class="rankcolumntitle">
             <span>Hạng</span>
             <span>
@@ -140,7 +111,7 @@
           <div class="rankitems"></div>
         </div>
       </div>
-    </main>
+    </div>
     
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
