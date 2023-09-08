@@ -38,9 +38,9 @@ class TikTokIOConnection {
     });
   }
 
-  connect(uniqueId, options) {
+  connect(uniqueId, options = new Object()) {
     this.uniqueId = uniqueId;
-    this.options = options || {};
+    this.options = options;
 
     this.setUniqueId();
 
