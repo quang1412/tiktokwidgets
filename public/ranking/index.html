@@ -8,6 +8,8 @@
     <meta name="description" content="A chat reader for TikTok LIVE utilizing TikTok-Live-Connector and Socket.IO to forward the data to the client. This demo project uses the unofficial TikTok API to retrieve chat comments, gifts and other events from TikTok LIVE.">
     <meta name="keywords" content="TikTok,Live,Livestream,Chat,Reader,Scraper,Tracker,tiktok.com,broadcast,api,library,node,node.js,javascript">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -25,8 +27,9 @@
         }
       }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </head>
-  <body>
+  <body style="font-size:16px;">
     <div class="head">
       <h1>TikTok LIVE Viewer Ranking</h1>
       <span class="subTitle">By: <a href="https://fb.com/trinhdacquang">trinhdacquang</a> with ❤️ </span>
@@ -36,23 +39,41 @@
       <div style="margin-bottom:10px;">
         <p>Enter the <b>@username</b> of a user who is currently live: </p>
         <input type="text" id="uniqueIdInput" value="dodattt">
-        <input type="button" id="connectButton" value="connect">
+        <input type="button" class="btn btn-primary" id="connectButton" value="connect">
+        <span id="stateText"></span>
       </div>
       <div>
         <input type="number" id="maxItem" value="10">
+        <span>
+          <input type="radio" name="eventName" value="like" checked>
+          <label>xếp hạng like</label>
+        </span>
+        <span>
+          <input type="radio" name="eventName" value="share">
+          <label>xếp hạng share</label>
+        </span>
+        <span>
+          <input type="radio" name="eventName" value="chat">
+          <label>xếp hạng chat</label>
+        </span>
+        <span>
+          <input type="radio" name="eventName" value="gift">
+          <label>xếp hạng tặng quà</label>
+        </span>
         <a href="javascript:void(0)" onclick="generateOverlay()">Generate Overlay URL</a>
       </div>
     </div>
     <table class="splitstatetable">
       <tr>
         <td>
-          <pre id="stateText"></pre>
+<!--           <pre id="stateText"></pre> -->
         </td>
         <td>
           <div id="roomStats"></div>
         </td>
       </tr>
     </table>
+    
     <main>
       <div style="display: flex; gap: 25px">
         <div class="ranktable" id="likerank">
