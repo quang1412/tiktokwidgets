@@ -51,18 +51,13 @@
             <input type="text" class="form-control" id="uniqueIdInput" value="kbc_news" placeholder="Nhập @username của kênh đang livestream">
             <button class="btn btn-primary" type="button" id="connectButton">kết nối</button>
           </div>
-          <pre id="stateText">&nbsp</pre>
-        </div>
-        <div class="d-none">
-          <div class="mb-3">
-            <input class="form-control mb-2" type="number" id="maxItem" placeholder="10">
-          </div>  
+          <small><pre id="stateText">&nbsp</pre></small>
         </div>
       </div>  
     </div>
     
       
-    <div class="container-fluid">
+    <div class="container-fluid inputFields">
       <div style="display: flex; gap: 25px; overflow-y: scroll; height:98vh">
         
         <div class="p-3 bg-light border border-1 h-100 pt-4" style="width:400px; min-width:400px; border-radius:10px; ">
@@ -77,6 +72,17 @@
               <option value="gift">Lượt tặng quà</option>
             </select>
           </div> 
+          
+          <div class="mb-3">
+            <label class="form-label">Tiêu đề</label>
+            <input class="form-control mb-2" type="text" id="rankTitle" placeholder="Bảng xếp hạng">
+          </div>
+          
+          <div class="mb-3">
+            <label for="customRange1" class="form-label">Độ mờ: <small>50</small></label>
+            <input type="range" class="form-range" id="bgOpacity" oninput="this => {}">
+          </div>
+          
           <a href="javascript:void(0)" onclick="generateOverlay()">Generate Overlay URL</a>
         </div>
         
@@ -87,7 +93,7 @@
           <div class="rankcolumntitle">
             <span>Hạng</span>
             <span>
-              <i class="fa-solid fa-heart"></i> Like</span>
+              <i class="fa-solid fa-heart"></i> like</span>
           </div>
           <div class="rankitems"></div>
         </div>
@@ -96,7 +102,7 @@
           <div class="rankcolumntitle">
             <span>Hạng</span>
             <span>
-              <i class="fa-solid fa-heart"></i> Chat</span>
+              <i class="fa-solid fa-comment-dots"></i> chat</span>
           </div>
           <div class="rankitems"></div>
         </div>
@@ -105,7 +111,7 @@
           <div class="rankcolumntitle">
             <span>Hạng</span>
             <span>
-              <i class="fa-solid fa-heart"></i> Chat</span>
+              <i class="fa-solid fa-share"></i> share</span>
           </div>
           <div class="rankitems"></div>
         </div>
@@ -114,7 +120,7 @@
           <div class="rankcolumntitle">
             <span>Hạng</span>
             <span>
-              <i class="fa-solid fa-heart"></i> Gift</span>
+              <i class="fa-solid fa-gift"></i> quà tặng</span>
           </div>
           <div class="rankitems"></div>
         </div>
