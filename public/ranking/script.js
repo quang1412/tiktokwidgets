@@ -235,3 +235,30 @@ $(document).ready(function(){
   //   container.html(null)
   // }, 2*60*1000)
 })
+
+$(document).ready(function(){
+  if(window.settings.showShareRanking === '0') return
+  
+  let container = $('#giftrank .rankitems');
+  let rankItems = {} 
+   
+  
+  connection.on('gift', (msg) => {
+    const {userId} = msg
+
+    let user = rankItems[userId]
+    if(!user){
+      rankItems[userId] = new rankItem(msg)
+      user = rankItems[userId]
+      user.appendTo(container)
+    }  
+    
+    user.addScore(msg.diamondCount)
+    sortingRankItems(rankItems)
+  }) 
+
+  // setInterval(function(){
+  //   rankItems = {}
+  //   container.html(null)
+  // }, 2*60*1000)
+})
