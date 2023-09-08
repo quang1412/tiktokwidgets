@@ -80,7 +80,7 @@
           
           <div class="mb-3">
             <label for="customRange1" class="form-label">Độ mờ: <small>50</small></label>
-            <input type="range" class="form-range" id="bgOpacity" oninput="this => {}">
+            <input type="range" value="0.5" min="0" max="1" step="0.1" class="form-range" id="bgOpacity" oninput="$('.ranktable, .ranktable .rankitem.top').css('background-color', 'rgba(0, 0, 0, '+this.value+')')">
           </div>
           
           <a href="javascript:void(0)" onclick="generateOverlay()">Generate Overlay URL</a>
@@ -88,7 +88,10 @@
         
         
         <div class="ranktable" id="likerank">
-          <h3 class="mb-2 text-center">Bảng xếp hạng like</h3>
+          <h3 class="mb-2 text-center">
+            <p class="mb-0">Bảng xếp hạng like</p>
+            <small>sub title</small>
+          </h3>
           <div class="tableBg"></div>
           <div class="rankcolumntitle">
             <span>Hạng</span>
@@ -97,6 +100,7 @@
           </div>
           <div class="rankitems"></div>
         </div>
+        
         <div class="ranktable" id="chatrank">
           <h3 class="mb-2 text-center">Bảng xếp hạng chat</h3>
           <div class="rankcolumntitle">
@@ -106,6 +110,7 @@
           </div>
           <div class="rankitems"></div>
         </div>
+        
         <div class="ranktable" id="sharerank">
           <h3 class="mb-2 text-center">Bảng xếp hạng share</h3>
           <div class="rankcolumntitle">
@@ -115,6 +120,7 @@
           </div>
           <div class="rankitems"></div>
         </div>
+        
         <div class="ranktable" id="giftrank">
           <h3 class="mb-2 text-center">Bảng xếp hạng tặng quà</h3>
           <div class="rankcolumntitle">
@@ -124,6 +130,7 @@
           </div>
           <div class="rankitems"></div>
         </div>
+        
       </div>
     </div>
     
