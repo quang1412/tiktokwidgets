@@ -212,3 +212,37 @@ $(document).ready(function(){
     console.log('reset')
   }, 2*60*1000)
 })
+
+$(document).ready(function(){
+  if(window.settings.showChatRanking === '0') return
+  
+  let container = $('#sharerank .rankitems');
+  let rankItems = {} 
+   
+  connection.on('share', (msg) => {
+    const {userId} = msg
+
+    let user = rankItems[userId]
+    if(!user){
+      rankItems[userId] = new rankItem(msg)
+      user = rankItems[userId]
+      user.appendTo(container)
+    } 
+
+    if (typeof msg.comment === 'string') {
+      // likeCount = msg.comment;
+      // updateRoomStats();
+    } 
+    if (typeof msg.comment === 'string') { 
+      user.addScore(msg.comment.length)
+      
+      sortingRankItems(rankItems)
+    }
+  }) 
+
+  setInterval(function(){
+    rankItems = {}
+    container.html(null)
+    console.log('reset')
+  }, 2*60*1000)
+})
