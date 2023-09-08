@@ -79,7 +79,7 @@ class rankItem{
   constructor(userInfo = {}){
     this.info = userInfo;
     this.score = 0;
-    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:100vh;">`).html(`
+    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:100%;">`).html(`
     <div class="number">-</div>
     <img class="image" src="${this.info.profilePictureUrl}">
     <div class="name">${this.info.nickname}</div>
@@ -121,7 +121,7 @@ class rankItem{
 }
 
 function sortingRankItems(rankItems){
-  const maxRankItem = 6;
+  const maxItemsCount = 10;
   
   const list = []
   for (var userId in rankItems) {
@@ -133,7 +133,7 @@ function sortingRankItems(rankItems){
   })
  
   list.map((item, i) => { 
-    if(i < maxRankItem){
+    if(i < maxItemsCount){
       item.setOrder(i)
     } else {
       item.hidden()
