@@ -43,20 +43,26 @@
       
     </div>
     
-    <div class="inputFields">
-      <div style="margin-bottom:10px;">
-<!--         <p>Enter the <b>@username</b> of a user who is currently live: </p>
-        <input type="text" id="uniqueIdInput" value="dodattt">
-        <input type="button" class="btn btn-primary" id="connectButton" value="connect">
-        <span id="stateText"></span> -->
-        
-        <div class="input-group" style="width:400px">
-          <input type="text" class="form-control" id="uniqueIdInput">
-          <button class="btn btn-primary" type="button" id="connectButton">Kết nối</button>
+    <div class="container-fluid inputFields">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="input-group" style="width:400px">
+            <input type="text" class="form-control" id="uniqueIdInput" placeholder="Nhập @username của kênh đang livestream">
+            <button class="btn btn-primary" type="button" id="connectButton">kết nối</button>
+          </div>
+          <pre id="stateText">&nbsp</pre>
+        </div>
+        <div class="col-auto">
+          
         </div>
       </div>
+      <div class="mb-3"> 
+        
+      </div>
+      
       <div>
-        <input type="number" id="maxItem" value="10">
+<!--         <input type="number" id="maxItem" value="10"> -->
+        <input class="form-control" type="number" id="maxItem" placeholder="10" style="width:100px">
         <span>
           <input type="radio" name="eventName" value="like" checked>
           <label>xếp hạng like</label>
