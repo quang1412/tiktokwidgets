@@ -51,10 +51,10 @@
     </div>
     
     <div class="container-fluid">
-      <div class="inputFields" style="width:400px">
+      <div class="inputFields" style="max-width:400px">
         <div class="mb-3"> 
 <!--           <label class="form-label">Tiktok id</label> -->
-          <div class="input-group">
+          <div class="input-group mb-2">
             <input type="text" class="form-control" id="uniqueIdInput" value="kelvinoficial2023" placeholder="Nhập @username của kênh đang livestream">
             <button class="btn btn-primary" type="button" id="connectButton">kết nối</button>
           </div>
@@ -89,12 +89,16 @@
             <input type="range" value="0.2" min="0" max="1" step="0.1" class="form-range" id="bgColor" oninput="$('body').css('--bgColor', 'rgba(0, 0, 0, '+this.value+')')">
           </div>
           <div class="mb-3">
-            <label for="textColor" class="form-label">Text color</label>
+            <label for="textColor" class="form-label">Màu chữ</label>
             <input type="color" class="form-control form-control-color" id="textColor" value="#363636" title="Choose text color" oninput="$('body').css('--textColor', this.value)">
           </div>
           <div class="mb-3">
-            <label for="fontSize" class="form-label">Text size<small>&nbsp(px)</small></label>
-            <input type="range" value="18" min="10" max="50" step="1" class="form-range" id="fontSize" oninput="$('body').css('--fontSize', this.value+'px')">
+            <label for="fontSize" class="form-label">Cỡ chữ<small>&nbsp(px)</small></label>
+            <input type="range" value="18" min="10" max="36" step="1" class="form-range" id="fontSize" oninput="$('body').css('--fontSize', this.value+'px')">
+          </div>
+          <div class="mb-3">
+            <label for="resetTime" class="form-label">Thời gian reset<small>&nbsp(phút)</small></label>
+            <input type="range" value="0" min="0" max="30" step="1" class="form-range" id="resetTime" oninput="$('body').css('--fontSize', this.value+'px')">
           </div>
           
           <a href="javascript:void(0)" onclick="generateOverlay()">Generate Overlay URL</a>
