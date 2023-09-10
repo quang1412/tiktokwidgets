@@ -171,6 +171,6 @@ io.of('/app').on('connection', function(socket) {
   }) 
   socket.on("disconnect", (reason) => {
     // ...
-  });
+  }); 
 
 })
