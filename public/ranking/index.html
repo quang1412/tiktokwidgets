@@ -24,9 +24,10 @@
         let bgColor = 'rgba(0,0,0,'+$('#bgColor').val()+')';
         let textColor = $('#textColor').val();
         let fontSize = $('#fontSize').val()+'px';
+        let resetTime = $('#resetTime').val()
         // let bgColor = $('#bgColor').val();
         
-        let url = `obs.html?username=${username}&rankEvent=${rankEvent}&rankTitle=${rankTitle}&bgColor=${bgColor}&textColor=${encodeURIComponent(textColor)}&fontSize=${fontSize}`;
+        let url = `obs.html?username=${username}&rankEvent=${rankEvent}&rankTitle=${rankTitle}&bgColor=${bgColor}&textColor=${encodeURIComponent(textColor)}&resetTime=${resetTime}&fontSize=${fontSize}`;
         if (username) {
           window.open(url, '_blank');
         } else {
@@ -53,7 +54,7 @@
         <div > 
 <!--           <label class="form-label">Tiktok id</label> -->
           <div class="input-group mb-2">
-            <input type="text" class="form-control" id="uniqueIdInput" value="xiuxiu2802" placeholder="Nhập @username của kênh đang livestream">
+            <input type="text" class="form-control" id="uniqueIdInput" value="tonygilofficial" placeholder="Nhập @username của kênh đang livestream">
             <button class="btn btn-primary" type="button" id="connectButton">kết nối</button>
           </div>
           <small><pre id="stateText">&nbsp</pre></small>
@@ -94,7 +95,7 @@
             <label for="fontSize" class="form-label">Cỡ chữ<small>&nbsp(px)</small></label>
             <input type="range" value="18" min="10" max="36" step="1" class="form-range" id="fontSize" oninput="$('body').css('--fontSize', this.value+'px')">
           </div>
-          <div class="mb-3 d-none">
+          <div class="mb-3">
             <label for="resetTime" class="form-label">Thời gian reset<small>&nbsp(phút)</small></label>
             <input type="range" value="0" min="0" max="30" step="1" class="form-range" id="resetTime" oninput="">
           </div>
