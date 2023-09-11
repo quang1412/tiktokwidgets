@@ -3,8 +3,9 @@
  * With reconnect functionality.
  */
 class TikTokIOConnection {
-  constructor(backendUrl = '/app') {
-    this.socket = window.io(backendUrl);
+  constructor() {
+    this.socket = window.io("/app");
+    // this.socket = window.io("https://tiktok-chat-reader.zerody.one");
     this.uniqueId = null;
     this.options = null;
 
