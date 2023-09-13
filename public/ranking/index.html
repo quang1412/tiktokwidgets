@@ -68,7 +68,7 @@
         
 <!-- CONFIG -->
         <div class="inputFields p-3 bg-light border border-1 h-100 pt-4" style="width:350px; min-width:350px; border-radius:10px; ">
-          <h3 class="mb-2 fw-bolder text-center">Cài đặt</h3>
+          <h3 class="mb-2 fw-bolder text-center">Tạo link widget</h3>
           <div class="mb-3">
             <label class="form-label" for="rankEvent">Sự kiện xếp hạng</label>
             <select class="form-select" id="rankEvent">
@@ -96,11 +96,11 @@
             <input type="range" value="18" min="10" max="36" step="1" class="form-range" id="fontSize" oninput="$('body').css('--fontSize', this.value+'px')">
           </div>
           <div class="mb-3">
-            <label for="resetTime" class="form-label">Thời gian reset<small>&nbsp(phút)</small></label>
-            <input type="range" value="0" min="0" max="30" step="1" class="form-range" id="resetTime" oninput="">
+            <label for="resetTime" class="form-label">Thời gian reset<small>&nbsp(<span id="resetTimeLabel">0</span> phút)</small></label>
+            <input type="range" value="0" min="0" max="30" step="1" class="form-range" id="resetTime" oninput="$('#resetTimeLabel').text(this.value)">
           </div>
           
-          <a href="javascript:void(0)" onclick="generateOverlay()">Mở URL Widget</a>
+          <a href="javascript:void(0)" onclick="generateOverlay()">Mở link Widget</a>
         </div>
         
 <!-- CONFIG -->
