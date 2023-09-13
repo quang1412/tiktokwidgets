@@ -4,6 +4,7 @@ let backendUrl = location.protocol === 'file:' ? "https://tiktok-chat-reader.zer
 let connection = new TikTokIOConnection();
 // let connection = new TikTokIOConnection("https://tiktok-chat-reader.zerody.one/");
 
+let limitItemsCount = 10;
 
 // Counter
 let viewerCount = 0;
@@ -98,18 +99,19 @@ class rankItem{
     $(numberDiv).css('font-size', '2em')
     
     // setTimeout(() => $(numberDiv).text(this.score), 300)
-    let score   = this.score
+    let score = this.score
     const totalScore =  score + n
     this.score = totalScore
     
-    this.interval = setInterval(() => {
+    this.interval = setInterval(() => { 
+      score += 1
+      $(numberDiv).text(score)
+      
       if(score >= totalScore){
         clearInterval(this.interval)
         $(numberDiv).css('font-size', '1em')
       }
       
-      score += 1
-      $(numberDiv).text(score)
       
     }, 50)
     
@@ -137,8 +139,7 @@ class rankItem{
   }
 }
 
-function sortingRankItems(rankItems){
-  const maxItemsCount = 10;
+function sortingRankItems(rankItems){ 
   
   const list = []
   for (var userId in rankItems) {
@@ -150,11 +151,12 @@ function sortingRankItems(rankItems){
   })
  
   list.map((item, i) => { 
-    if(i < maxItemsCount){
+    if(i < limitItemsCount){
       item.show()
       item.setOrder(i)
     } else {
       item.hidden()
+      item.setOrder(10)
     }
   })
 }
