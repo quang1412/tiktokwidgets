@@ -83,7 +83,7 @@ class rankItem{
     <div class="number">-</div>
     <img class="image" src="${this.info.profilePictureUrl}">
     <div class="name">${this.info.nickname}</div>
-    <div class="score animate__animated" style="display:block">${this.score}</div>`)
+    <div class="score " style="display:block">${this.score}</div>`)
     
     // this.setOrder(10)
   }
@@ -95,9 +95,11 @@ class rankItem{
   addScore(n){
     const numberDiv = this.DOM.find('div.score')
     $(numberDiv).addClass("animate__heartBeat")
+    // $(numberDiv).css("font-size", "1.5em")
     this.score += n;
-
-    setTimeout(() => $(numberDiv).text(this.score), 300)
+    $(numberDiv).text(this.score)
+    // setTimeout(() => $(numberDiv).text(this.score), 250)
+    // setTimeout(() => $(numberDiv).css("font-size", "unset"), 500)
     $(numberDiv).one("webkitAnimationEnd animationend", (evt) => {
       $(numberDiv).removeClass("animate__heartBeat")
     });
