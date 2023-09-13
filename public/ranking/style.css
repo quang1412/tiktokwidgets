@@ -19,7 +19,7 @@ body{
   scrollbar-width: none;  /* Firefox */
 }
 body * {
-  transition: top 0.5s ease, font-size 0.5s ease;
+  transition: top 0.5s ease;
 }
 .ranktable{ 
   color: var(--textColor);
