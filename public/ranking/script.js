@@ -94,12 +94,20 @@ class rankItem{
 
   addScore(n){ 
     const numberDiv = this.DOM.find('div.score') 
-    $(numberDiv).css('font-size', '1.5em')
-    this.score += n; 
+    $(numberDiv).css('font-size', '2em')
+    // this.score += n
     
-    setTimeout(() => $(numberDiv).text(this.score), 300)
-    
-    const 
+    // setTimeout(() => $(numberDiv).text(this.score), 300)
+    const totalScore =  this.score + n
+    const interval = setInterval(() => {
+      if(this.score >= totalScore){
+        clearInterval(interval)
+      }
+      
+      this.score += 1
+      $(numberDiv).text(this.score)
+      
+    }, 50)
     
     setTimeout(() => $(numberDiv).css('font-size', '1em'), 500)
  
