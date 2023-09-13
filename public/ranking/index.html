@@ -96,6 +96,12 @@
             <input type="range" value="18" min="10" max="36" step="1" class="form-range" id="fontSize" oninput="$('body').css('--fontSize', this.value+'px')">
           </div>
           <div class="mb-3">
+            <label class="form-label" for="flexSwitchCheckChecked">Tự động reset?</label>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onchange="$('#resetTimeDiv').toggleClass('show')" checked role="button">
+            </div>
+          </div>
+          <div class="mb-3 fade show" id="resetTimeDiv">
             <label for="resetTime" class="form-label">Thời gian reset<small>&nbsp(<span id="resetTimeLabel">0</span> phút)</small></label>
             <input type="range" value="0" min="0" max="30" step="1" class="form-range" id="resetTime" oninput="($('#resetTimeLabel').text(this.value), console.log(this.value))">
           </div>
