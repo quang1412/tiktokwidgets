@@ -95,13 +95,15 @@ class rankItem{
   addScore(n){
     const animateName = "animate__heartBeat"
     const numberDiv = this.DOM.find('div.score')
-    $(numberDiv).addClass(animateName)
+    // $(numberDiv).addClass(animateName)
     this.score += n;
-
-    setTimeout(() => $(numberDiv).text(this.score), 300)
-    $(numberDiv).one("webkitAnimationEnd animationend", (evt) => {
-      $(numberDiv).removeClass(animateName)
-    });
+    
+    $(numberDiv).text(this.score)
+    
+    // setTimeout(() => $(numberDiv).text(this.score), 300)
+    // $(numberDiv).one("webkitAnimationEnd animationend", (evt) => {
+    //   $(numberDiv).removeClass(animateName)
+    // });
   }
 
   setOrder(n){
