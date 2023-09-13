@@ -86,7 +86,7 @@ class rankItem{
     <div class="name">${this.info.nickname}</div>
     <div class="score animate__animated" style="display:block">${this.score}</div>`)
     
-    this.interval = null
+    // this.interval = null
   }
 
   appendTo(parent){
@@ -94,28 +94,31 @@ class rankItem{
   }
 
   addScore(n){ 
-    clearInterval(this.interval)
+    // clearInterval(this.interval)
     const numberDiv = this.DOM.find('div.score') 
-    $(numberDiv).css('font-size', '2em')
+    $(numberDiv).css('font-size', '1.8em')
     
-    // setTimeout(() => $(numberDiv).text(this.score), 300)
-    let score = this.score
-    const totalScore =  score + n
-    this.score = totalScore
+    this.score += n
     
-    this.interval = setInterval(() => { 
-      score += 1
-      $(numberDiv).text(score)
-      
-      if(score >= totalScore){
-        clearInterval(this.interval)
-        $(numberDiv).css('font-size', '1em')
-      }
-      
-      
-    }, 50)
+    setTimeout(() => $(numberDiv).text(this.score), 300)
     
-    // setTimeout(() => $(numberDiv).css('font-size', '1em'), 500)
+    // let score = this.score
+    // const totalScore =  score + n
+    // this.score = totalScore
+    
+//     this.interval = setInterval(() => { 
+//       score += 1
+//       $(numberDiv).text(score)
+      
+//       if(score >= totalScore){
+//         clearInterval(this.interval)
+//         $(numberDiv).css('font-size', '1em')
+//       }
+      
+      
+//     }, 50)
+    
+    setTimeout(() => $(numberDiv).css('font-size', '1em'), 500)
  
   }
 

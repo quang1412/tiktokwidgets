@@ -92,8 +92,8 @@
             <input type="color" class="form-control form-control-color" id="textColor" value="#363636" title="Choose text color" oninput="$('body').css('--textColor', this.value)">
           </div>
           <div class="mb-3">
-            <label for="fontSize" class="form-label">Cỡ chữ<small>&nbsp(px)</small></label>
-            <input type="range" value="18" min="10" max="36" step="1" class="form-range" id="fontSize" oninput="$('body').css('--fontSize', this.value+'px')">
+            <label for="fontSize" class="form-label">Cỡ chữ<small>&nbsp(<span id="fontSizeLabel">18</span>px)</small></label>
+            <input type="range" value="18" min="10" max="36" step="1" class="form-range" id="fontSize" oninput="$('body').css('--fontSize', this.value+'px'), $('#fontSizeLabel').text(this.value)">
           </div>
           <div class="mb-3">
             <label class="form-label" for="flexSwitchCheckChecked">Tự động reset?</label>
