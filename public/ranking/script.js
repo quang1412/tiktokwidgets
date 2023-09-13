@@ -99,7 +99,8 @@ class rankItem{
     $(numberDiv).css('font-size', '1.5em')
     this.score += n;
     
-    $(numberDiv).text(this.score)
+    
+    setTimeout(() => $(numberDiv).text(this.score), 300)
     
     setTimeout(() => $(numberDiv).css('font-size', '1em'), 500)
     // setTimeout(() => $(numberDiv).text(this.score), 300)
