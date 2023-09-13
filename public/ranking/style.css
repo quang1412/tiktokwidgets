@@ -90,9 +90,9 @@ body * {
 
 }
 .ranktable .rankitem .score{
-/*         flex-grow:1;
-  text-align: right; */
-  margin-left: auto
+  line-height: 1;
+  margin-left: auto;
+  transition: font-size 0.5s ease;
 }
 
 /*       .ranktable .rankitem:nth-child(-n+3) */

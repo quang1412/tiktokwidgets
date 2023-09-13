@@ -96,10 +96,12 @@ class rankItem{
     const animateName = "animate__heartBeat"
     const numberDiv = this.DOM.find('div.score')
     // $(numberDiv).addClass(animateName)
+    $(numberDiv).css('font-size', '1.5em')
     this.score += n;
     
     $(numberDiv).text(this.score)
     
+    setTimeout(() => $(numberDiv).css('font-size', '1em'), 500)
     // setTimeout(() => $(numberDiv).text(this.score), 300)
     // $(numberDiv).one("webkitAnimationEnd animationend", (evt) => {
     //   $(numberDiv).removeClass(animateName)
