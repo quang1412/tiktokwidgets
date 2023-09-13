@@ -24,9 +24,8 @@ body * {
 .ranktable{ 
   color: var(--textColor);
   font-size: var(--fontSize);
-  width: 400px;
-/*   max-width: 600px; */
-  min-width: 400px;
+  width: 350px;
+  min-width: 350px;
   padding: 30px 15px 15px;
   
   background-color: var(--bgColor);
