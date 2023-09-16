@@ -120,11 +120,12 @@ $(document).ready(function() {
   
   const table = new window.DataTable('#comment_list', {
     // dom: '<B>lfrtip',
-    dom: 'Bfrt<"d-flex flex-column flex-md-row flex-wrap flex-md-nowrap justify-content-between align-items-end" <l> <i> <p> >',
+    dom: '<"d-flex justify-content-between" <B>f> rt <"d-flex flex-column flex-lg-row flex-wrap flex-lg-nowrap justify-content-between align-items-center align-items-lg-end" <l> <i> <p> >',
     buttons: [
         'print'
     ],
     order: [0, 'desc'],
+    fixedHeader: true,
     columns: [
       {
         title:'Time',
