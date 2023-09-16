@@ -96,13 +96,13 @@ connection.on('gift', (data) => {
 
 $(document).ready(function() {
   const viewersInfo = JSON.parse(window.localStorage.viewersInfo || '{}')
-  const commentsList = JSON.parse(window.localStorage.commentsList || '[]')
+  const liveComment = JSON.parse(window.localStorage.liveComment || '[]')
   
   function saveData(){
     try{      
       window.localStorage.setItem('viewersInfo', JSON.stringify(viewersInfo))
-      window.localStorage.setItem('commentsList', JSON.stringify(commentsList))
-      // window.localStorage.commentsList = JSON.stringify(commentsList)
+      window.localStorage.setItem('liveComment', JSON.stringify(liveComment))
+      // window.localStorage.liveComment = JSON.stringify(liveComment)
     }
     catch(e){
       console.log(e.message)
@@ -153,26 +153,34 @@ $(document).ready(function() {
         data: 'comment'
       }
     ],
-    data: commentsList,
+    data: liveComment,
     drawCallback: function( settings ) {
         $('#comment_list_loader').hide()
     }
   });
   
-  connection.on('chat', data => {
-    viewersInfo[data.userId] = data
+  connection.on('chat', d => {
     
-    const {uniqueId, comment, msgId, createTime, userId} = data
-    // console.log(`%c${uniqueId}`, 'color:red', comment)
-    // console.log(data)
+    const {uniqueId, comment, msgId, createTime, userId} = d 
+    
+    const viewerData = {
+      followInfo: d.followInfo,
+      followRole: d.followRole,
+      isModerator: d.isModerator,
+      isNewGifter
+    }
+    
+    viewersInfo[d.userId] = d
+    
+    
     const msgData = {
       msgId: msgId,
       userId: userId,
       comment: comment,
       createTime: createTime,
     }
-    livestream.push(msgData)
-    const node = table.rows.add([data]).draw();
+    liveComment.push(msgData)
+    const node = table.rows.add([d]).draw();
   })
 
   setInterval(saveData, 3000)
