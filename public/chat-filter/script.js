@@ -22,7 +22,7 @@ $(document).ready(() => {
 
 connection.on('streamEnd', () => {
   $('#stateText').text('Stream ended.');
-
+  
   // schedule next try if obs username set
   if (window.settings.username) {
     setTimeout(() => {
