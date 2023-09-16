@@ -176,7 +176,7 @@ $(document).ready(function() {
             return $(cell).text(null)
           }
         
-          $(cell).html( '<input class="form-control form-control-sm" type="text" placeholder="'+title+'" />' );
+          $(cell).html( '<input class="form-control" type="text" placeholder="'+title+'" />' );
           // On every keypress in this input
           $('input', $('.filters th').eq($(api.column(colIdx).header()).index()) )
               .off('keyup change')
@@ -193,7 +193,7 @@ $(document).ready(function() {
                       .draw();
                   $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
               })
-              .click(function(){return false;});
+              .click(function(e){return false;});
       });
     }
   });

@@ -1,3 +1,7 @@
 body{
   font-size: 18px;
 }
+
+.filters input{
+  max-width: 300px
+}
