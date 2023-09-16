@@ -99,8 +99,17 @@ $(document).ready(function() {
     ['Martena Mccray', 'Post-Sales support', 'Edinburgh', '8240', '2011/03/09', '$324,050'],
     ['Unity Butler', 'Marketing Designer', 'San Francisco', '5384', '2009/12/09', '$85,675'],
   ];
-
+  $.fn.dataTable.ext.buttons.reload = {
+      text: 'Reload',
+      action: function ( e, dt, node, config ) {
+          dt.ajax.reload();
+      }
+  };
   const table = new window.DataTable('#example', {
+    buttons: [
+        'reload'
+    ],
+    order: [0, 'desc'],
     columns: [
       {
         title:'Time',
