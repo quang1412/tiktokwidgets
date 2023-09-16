@@ -5,3 +5,7 @@ body{
 .filters input{
   max-width: 300px
 }
+
+table.dataTable.fixedHeader-floating {
+    margin-top: 0 !important;
+}
