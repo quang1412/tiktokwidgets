@@ -101,7 +101,25 @@ $(document).ready(function() {
   ];
 
   const table = new window.DataTable('#example', {
-    columns: [{
+    columns: [
+      {
+        title:'Time',
+        data: 'createTime',
+        render: function ( data, type, row ) {
+          return new Date().toLocaleString()
+          // return data
+        },
+      },
+      {
+        title: 'Avatar',
+        data:'profilePictureUrl',
+        render: function ( data, type, row ) {
+          return `<img src="${data}" width="32" height="32" class="rounded-circle">`
+          // return '$'+ data;
+        },
+        orderable: false
+      },
+      {
         title: 'Name',
         data: 'uniqueId'
       },
@@ -112,10 +130,6 @@ $(document).ready(function() {
       {
         title: 'Nickname',
         data: 'nickname'
-      },
-      {
-        title: 'Avatar',
-        data:'profilePictureUrl'
       }
     ],
     data: commentsList
@@ -123,7 +137,8 @@ $(document).ready(function() {
 
   connection.on('chat', data => {
     const {uniqueId,comment} = data
-    console.log(`%c${uniqueId}`, 'color:red', comment)
+    // console.log(`%c${uniqueId}`, 'color:red', comment)
+    console.log(data)
     commentsList.push(data)
     table.rows.add([data]).draw();
   })
