@@ -59,6 +59,7 @@ function connect() {
 ////////////////////////////////////////////////////////////
 
 $(document).ready(function() {
+  
   const commentsList = JSON.parse(window.localStorage.commentsList || '[]')
   
   const dataSet = [
@@ -149,7 +150,7 @@ $(document).ready(function() {
   connection.on('chat', data => {
     const {uniqueId,comment} = data
     // console.log(`%c${uniqueId}`, 'color:red', comment)
-    console.log(data)
+    // console.log(data)
     commentsList.push(data)
     const node = table.rows.add([data]).draw();
   })
