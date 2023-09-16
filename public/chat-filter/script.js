@@ -125,7 +125,7 @@ $(document).ready(function() {
     const {uniqueId,comment} = data
     console.log(`%c${uniqueId}`, 'color:red', comment)
     commentsList.push(data)
-    table.data = commentsList
+    table.rows.add([data]).draw();
   })
 
   setInterval(function() {
