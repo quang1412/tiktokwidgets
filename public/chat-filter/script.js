@@ -96,13 +96,13 @@ connection.on('gift', (data) => {
 
 $(document).ready(function() {
   const viewersInfo = JSON.parse(window.localStorage.viewersInfo || '{}')
-  const liveComment = JSON.parse(window.localStorage.liveComment || '[]')
+  const liveComments = JSON.parse(window.localStorage.liveComments || '[]')
   
   function saveData(){
     try{      
       window.localStorage.setItem('viewersInfo', JSON.stringify(viewersInfo))
-      window.localStorage.setItem('liveComment', JSON.stringify(liveComment))
-      // window.localStorage.liveComment = JSON.stringify(liveComment)
+      window.localStorage.setItem('liveComments', JSON.stringify(liveComments))
+      // window.localStorage.liveComments = JSON.stringify(liveComments)
     }
     catch(e){
       console.log(e.message)
@@ -133,54 +133,61 @@ $(document).ready(function() {
       },
       {
         title: 'Avatar',
-        data:'profilePictureUrl',
-        render: function ( data, type, row ) {
-          return `<img src="${data}" width="32" height="32" class="rounded-circle border border-3">`
-          // return '$'+ data;
+        data:'userId',
+        render: function ( id, type, row ) {
+          return `<img src="${viewersInfo[id].profilePictureUrl}" width="32" height="32" class="rounded-circle border border-3">`
         },
         orderable: false
       },
       {
         title: 'Username',
-        data: 'uniqueId'
+        data: 'userId',
+        render: function ( id, type, row ) {
+          return viewersInfo[id].uniqueId
+        }
       },
       {
         title: 'Nickname',
-        data: 'nickname'
+        data: 'userId',
+        render: function ( id, type, row ) {
+          return viewersInfo[id].nickname
+        }
       },
       {
         title: 'Comment',
         data: 'comment'
       }
     ],
-    data: liveComment,
+    data: liveComments,
     drawCallback: function( settings ) {
         $('#comment_list_loader').hide()
     }
   });
   
-  connection.on('chat', d => {
-    
-    const {uniqueId, comment, msgId, createTime, userId} = d 
-    
+  connection.on('chat', d => { 
     const viewerData = {
       followInfo: d.followInfo,
       followRole: d.followRole,
       isModerator: d.isModerator,
-      isNewGifter
+      isNewGifter: d.isNewGifter,
+      isSubscriber: d.isSubscriber,
+      nickname: d.nickname,
+      profilePictureUrl: d.profilePictureUrl, 
+      uniqueId: d.uniqueId,
+      userId: d.userId
     }
     
-    viewersInfo[d.userId] = d
+    viewersInfo[d.userId] = viewerData
     
     
     const msgData = {
-      msgId: msgId,
-      userId: userId,
-      comment: comment,
-      createTime: createTime,
+      msgId: d.msgId,
+      userId: d.userId,
+      comment: d.comment,
+      createTime: d.createTime,
     }
-    liveComment.push(msgData)
-    const node = table.rows.add([d]).draw();
+    liveComments.push(msgData)
+    const node = table.rows.add([msgData]).draw();
   })
 
   setInterval(saveData, 3000)
