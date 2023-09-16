@@ -1,6 +1,9 @@
 let connection = new window.TikTokIOConnection();
 
-let limitItemsCount = 10;
+// Counter
+let viewerCount = 0;
+let likeCount = 0;
+let diamondsCount = 0;
 
 // These settings are defined by obs.html
 if (!window.settings) window.settings = {};
@@ -62,8 +65,15 @@ $(document).ready(function() {
   const viewersInfo = JSON.parse(window.localStorage.viewersInfo || '{}')
   const commentsList = JSON.parse(window.localStorage.commentsList || '[]')
   
-  function saveViewsInfo(info){
-    viewersInfo[info.userId] = info
+  function saveData(){
+    try{      
+      window.localStorage.setItem('viewersInfo', JSON.stringify(viewersInfo))
+      window.localStorage.setItem('commentsList', JSON.stringify(commentsList))
+      // window.localStorage.commentsList = JSON.stringify(commentsList)
+    }
+    catch(e){
+      console.log(e.message)
+    }
   }
   
   // $.fn.dataTable.ext.buttons.phoneFilter = {
@@ -114,7 +124,7 @@ $(document).ready(function() {
   });
   
   connection.on('chat', data => {
-    saveViewsInfo(data)
+    viewersInfo[data.userId] = data
     
     const {uniqueId,comment} = data
     // console.log(`%c${uniqueId}`, 'color:red', comment)
@@ -123,20 +133,5 @@ $(document).ready(function() {
     const node = table.rows.add([data]).draw();
   })
 
-  setInterval(function() {
-    try{      
-      window.localStorage.setItem('commentsList', JSON.stringify(commentsList))
-      // window.localStorage.commentsList = JSON.stringify(commentsList)
-    }
-    catch(e){
-      console.log(e.message)
-      if(e.message.includes('exceeded the quota')){
-        let indexToRemove = 10;
-        let numberToRemove = commentsList.length;
-
-        commentsList.splice(indexToRemove, numberToRemove)
-        window.localStorage.setItem('commentsList', JSON.stringify(commentsList))
-      }
-    }
-  }, 3000)
+  setInterval(saveData, 3000)
 })
