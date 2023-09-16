@@ -169,9 +169,14 @@ $(document).ready(function() {
             // For each column
       api.columns().eq(0).each(function(colIdx) {
           // Set the header cell to contain the input element
-          var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+          var cell = $('.filters th').eq($(api.column(colIdx).header()).index()).removeClass('sorting sorting_desc sorting_disabled');
           var title = $(cell).text();
-          $(cell).html( '<input type="text" placeholder="'+title+'" />' );
+        
+          if(title == "Avatar") {
+            return $(cell).text(null)
+          }
+        
+          $(cell).html( '<input class="form-control form-control-sm" type="text" placeholder="'+title+'" />' );
           // On every keypress in this input
           $('input', $('.filters th').eq($(api.column(colIdx).header()).index()) )
               .off('keyup change')
@@ -188,7 +193,7 @@ $(document).ready(function() {
                       .draw();
                   $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
               })
-              .on('click', e => e.preventDefault());
+              .click(function(){return false;});
       });
     }
   });
