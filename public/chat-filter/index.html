@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok LIVE Ranking</title>
+    <meta name="description" content="A chat reader for TikTok LIVE utilizing TikTok-Live-Connector and Socket.IO to forward the data to the client. This demo project uses the unofficial TikTok API to retrieve chat comments, gifts and other events from TikTok LIVE.">
+    <meta name="keywords" content="TikTok,Live,Livestream,Chat,Reader,Scraper,Tracker,tiktok.com,broadcast,api,library,node,node.js,javascript">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://kit.fontawesome.com/d83ecd5594.js" crossorigin="anonymous"></script>
+    <script src="/connection.js"></script>
+    <script src="script.js"></script>
+    <script>
+      function generateOverlay() {
+        let username = $('#uniqueIdInput').val();
+        let rankEvent = $('#rankEvent').val();
+        let rankTitle = $('#rankTitle').val();
+        let bgColor = 'rgba(0,0,0,'+$('#bgColor').val()+')';
+        let textColor = $('#textColor').val();
+        let fontSize = $('#fontSize').val()+'px';
+        let resetTime = $('#resetTime').val()
+        // let bgColor = $('#bgColor').val();
+        
+        let url = `obs.html?username=${username}&rankEvent=${rankEvent}&rankTitle=${rankTitle}&bgColor=${bgColor}&textColor=${encodeURIComponent(textColor)}&resetTime=${resetTime}&fontSize=${fontSize}`;
+        if (username) {
+          window.open(url, '_blank');
+        } else {
+          alert("Enter username");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="head">
+        <h1>TikTok LIVE Ranking</h1>
+        <figcaption class="blockquote-footer">By <cite title="Source Title">Trịnh Đắc Quang</cite></figcaption>
+      </div>
+    </div>
+    <div class="container-fluid">
+      
+    </div>
+    
+    <div class="container-fluid mb-3">
+      <div class="inputFields" style="max-width:350px">
+        <div > 
+<!--           <label class="form-label">Tiktok id</label> -->
+          <div class="input-group mb-2">
+            <input type="text" class="form-control" id="uniqueIdInput" value="" placeholder="Nhập @username của kênh đang livestream">
+            <button class="btn btn-primary" type="button" id="connectButton">kết nối</button>
+          </div>
+          <small><pre id="stateText">&nbsp</pre></small>
+        </div>
+      </div>  
+    </div>
+    
+      
+    <div class="container-fluid ">
+      <div style="display: flex; gap: 25px; overflow-y: scroll; height:98vh">
+        
+<!-- CONFIG -->
+        <div class="inputFields p-3 bg-light border border-1 h-100 pt-4" style="width:350px; min-width:350px; border-radius:10px; ">
+          <h3 class="mb-2 fw-bolder text-center">Tạo link widget</h3>
+          <div class="mb-3">
+            <label class="form-label" for="rankEvent">Sự kiện xếp hạng</label>
+            <select class="form-select" id="rankEvent">
+              <option value="like" selected>Lượt thả tim</option>
+              <option value="share">Lượt share</option>
+              <option value="chat">Lượt comment</option>
+              <option value="gift">Lượt tặng quà</option>
+              <option value="">Tất cả</option>
+            </select>
+          </div> 
+          <div class="mb-3">
+            <label class="form-label" for="rankTitle">Tiêu đề</label>
+            <input class="form-control mb-2" type="text" id="rankTitle" placeholder="Bảng xếp hạng">
+          </div>
+          <div class="mb-3">
+            <label for="bgColor" class="form-label">Độ mờ</label>
+            <input type="range" value="0.2" min="0" max="1" step="0.1" class="form-range" id="bgColor" oninput="$('body').css('--bgColor', 'rgba(0, 0, 0, '+this.value+')')">
+          </div>
+          <div class="mb-3">
+            <label for="textColor" class="form-label">Màu chữ</label>
+            <input type="color" class="form-control form-control-color" id="textColor" value="#363636" title="Choose text color" oninput="$('body').css('--textColor', this.value)">
+          </div>
+          <div class="mb-3">
+            <label for="fontSize" class="form-label">Cỡ chữ<small>&nbsp(<span id="fontSizeLabel">18</span>px)</small></label>
+            <input type="range" value="18" min="10" max="36" step="1" class="form-range" id="fontSize" oninput="$('body').css('--fontSize', this.value+'px'), $('#fontSizeLabel').text(this.value)">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="flexSwitchCheckChecked">Tự động reset?</label>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onchange="$('#resetTimeDiv').toggleClass('show')" checked role="button">
+            </div>
+          </div>
+          <div class="mb-3 fade show" id="resetTimeDiv">
+            <label for="resetTime" class="form-label">Thời gian reset<small>&nbsp(<span id="resetTimeLabel">0</span> phút)</small></label>
+            <input type="range" value="0" min="0" max="30" step="1" class="form-range" id="resetTime" oninput="($('#resetTimeLabel').text(this.value), console.log(this.value))">
+          </div>
+          
+          <a href="javascript:void(0)" onclick="generateOverlay()">Mở link Widget</a>
+        </div>
+        
+<!-- CONFIG -->
+        <div class="ranktable" id="likerank" data-event="like">
+          <div class="mb-3 text-center fw-bolder">
+            <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <small>Phiên live hiện tại</small>
+          </div>
+          <div class="tableBg"></div>
+          <div class="rankcolumntitle">
+            <span>Hạng</span>
+            <span>
+              <i class="fa-solid fa-heart"></i> like</span>
+          </div>
+          <div class="rankitems"></div>
+        </div>
+        
+        <div class="ranktable" id="chatrank" data-event="chat">
+          <div class="mb-3 text-center fw-bolder">
+            <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <small>Phiên live hiện tại</small>
+          </div>
+          <div class="rankcolumntitle">
+            <span>Hạng</span>
+            <span>
+              <i class="fa-solid fa-comment-dots"></i> chat</span>
+          </div>
+          <div class="rankitems"></div>
+        </div>
+        
+        <div class="ranktable" id="sharerank" data-event="share">
+          <div class="mb-3 text-center fw-bolder">
+            <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <small>Phiên live hiện tại</small>
+          </div>
+          <div class="rankcolumntitle">
+            <span>Hạng</span>
+            <span>
+              <i class="fa-solid fa-share"></i> share</span>
+          </div>
+          <div class="rankitems"></div>
+        </div>
+        
+        <div class="ranktable" id="giftrank" data-event="gift">
+          <div class="mb-3 text-center fw-bolder">
+            <span class="mb-0 fw-bolder d-block" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <small>Phiên live hiện tại</small>
+          </div>
+          <div class="rankcolumntitle">
+            <span>Hạng</span>
+            <span>
+              <i class="fa-solid fa-gift"></i> quà tặng</span>
+          </div>
+          <div class="rankitems"></div>
+        </div>
+        
+      </div>
+      
+    </div>
+    
+<!--     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
+</html>
