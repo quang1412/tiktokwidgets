@@ -153,16 +153,25 @@ $(document).ready(function() {
         data: 'comment'
       }
     ],
-    data: commentsList
+    data: commentsList,
+    drawCallback: function( settings ) {
+        $('#comment_list_loader').hide()
+    }
   });
   
   connection.on('chat', data => {
     viewersInfo[data.userId] = data
     
-    const {uniqueId,comment} = data
+    const {uniqueId, comment, msgId, createTime, userId} = data
     // console.log(`%c${uniqueId}`, 'color:red', comment)
     // console.log(data)
-    commentsList.push(data)
+    const msgData = {
+      msgId: msgId,
+      userId: userId,
+      comment: comment,
+      createTime: createTime,
+    }
+    livestream.push(msgData)
     const node = table.rows.add([data]).draw();
   })
 
