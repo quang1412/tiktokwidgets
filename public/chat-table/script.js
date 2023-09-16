@@ -164,7 +164,10 @@ $(document).ready(function() {
       },
       {
         title: 'Comment',
-        data: 'comment'
+        data: 'comment',
+        render: function ( text, type, row ) {
+          return text || ''
+        }
       }
     ],
     data: liveComments,
