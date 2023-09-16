@@ -42,6 +42,11 @@ function connect() {
       enableExtendedGiftInfo: true
     }).then(state => {
       $('#stateText').text(`Connected to roomId ${state.roomId}`);
+      // reset stats
+      viewerCount = 0;
+      likeCount = 0;
+      diamondsCount = 0;
+      updateRoomStats();
 
     }).catch(errorMessage => {
       $('#stateText').text(errorMessage);
@@ -57,6 +62,34 @@ function connect() {
     alert('no username entered');
   }
 }
+
+function updateRoomStats() {
+    $('#roomStats').html(`Viewers: <b>${viewerCount.toLocaleString()}</b> Likes: <b>${likeCount.toLocaleString()}</b> Earned Diamonds: <b>${diamondsCount.toLocaleString()}</b>`)
+}
+function isPendingStreak(data) {
+    return data.giftType === 1 && !data.repeatEnd;
+}
+
+connection.on('roomUser', (msg) => {
+    if (typeof msg.viewerCount === 'number') {
+        viewerCount = msg.viewerCount;
+        updateRoomStats();
+    }
+})
+
+connection.on('like', (msg) => {
+    if (typeof msg.totalLikeCount === 'number') {
+        likeCount = msg.totalLikeCount;
+        updateRoomStats();
+    }
+})
+connection.on('gift', (data) => {
+    if (!isPendingStreak(data) && data.diamondCount > 0) {
+        diamondsCount += (data.diamondCount * data.repeatCount);
+        updateRoomStats();
+    } 
+})
+
 ////////////////////////////////////////////////////////////
 // END BASIC ///////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
@@ -82,7 +115,7 @@ $(document).ready(function() {
   //         dt.ajax.reload();
   //     }
   // };
-  const table = new window.DataTable('#example', {
+  const table = new window.DataTable('#comment_list', {
     // dom: 'Bfrtip',
     // buttons: [
         // 'phoneFilter'
