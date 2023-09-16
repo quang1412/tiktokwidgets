@@ -106,10 +106,10 @@ $(document).ready(function() {
       }
   };
   const table = new window.DataTable('#example', {
-    dom: 'Bfrtip',
-    buttons: [
-        'phoneFilter'
-    ],
+    // dom: 'Bfrtip',
+    // buttons: [
+        // 'phoneFilter'
+    // ],
     order: [0, 'desc'],
     columns: [
       {
@@ -131,16 +131,16 @@ $(document).ready(function() {
         orderable: false
       },
       {
-        title: 'Name',
+        title: 'Username',
         data: 'uniqueId'
-      },
-      {
-        title: 'Comment',
-        data: 'comment'
       },
       {
         title: 'Nickname',
         data: 'nickname'
+      },
+      {
+        title: 'Comment',
+        data: 'comment'
       }
     ],
     data: commentsList
@@ -151,7 +151,7 @@ $(document).ready(function() {
     // console.log(`%c${uniqueId}`, 'color:red', comment)
     console.log(data)
     commentsList.push(data)
-    table.rows.add([data]).draw();
+    const node = table.rows.add([data]).draw();
   })
 
   setInterval(function() {
