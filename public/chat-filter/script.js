@@ -6,66 +6,61 @@ let limitItemsCount = 10;
 if (!window.settings) window.settings = {};
 
 $(document).ready(() => {
-    $('#connectButton').click(connect);
-    $('#uniqueIdInput').on('keyup', function (e) {
-        if (e.key === 'Enter') {
-            connect();
-        }
-    });
+  $('#connectButton').click(connect);
+  $('#uniqueIdInput').on('keyup', function(e) {
+    if (e.key === 'Enter') {
+      connect();
+    }
+  });
 
-    if (window.settings.username) connect();
+  if (window.settings.username) connect();
 })
 
 
 connection.on('streamEnd', () => {
-    $('#stateText').text('Stream ended.');
+  $('#stateText').text('Stream ended.');
 
-    // schedule next try if obs username set
-    if (window.settings.username) {
-        setTimeout(() => {
-            connect(window.settings.username);
-        }, 30000);
-    }
-}) 
-////////////////////////
-// END BASIC ///////////
-////////////////////////
-
-const commentsList = JSON.parse(window.localStorage.commentsList || '[]')
-
-connection.on('chat', data => {
-  const {uniqueId, comment} = data
-  console.log(`%c${uniqueId}`, 'color:red', comment)
-  commentsList.push(data)
+  // schedule next try if obs username set
+  if (window.settings.username) {
+    setTimeout(() => {
+      connect(window.settings.username);
+    }, 30000);
+  }
 })
 
+
 function connect() {
-    let uniqueId = window.settings.username || $('#uniqueIdInput').val();
-    if (uniqueId !== '') {
+  let uniqueId = window.settings.username || $('#uniqueIdInput').val();
+  if (uniqueId !== '') {
 
-        $('#stateText').text('Connecting...');
+    $('#stateText').text('Connecting...');
 
-        connection.connect(uniqueId, {
-            enableExtendedGiftInfo: true
-        }).then(state => {
-            $('#stateText').text(`Connected to roomId ${state.roomId}`);
- 
-        }).catch(errorMessage => {
-            $('#stateText').text(errorMessage);
+    connection.connect(uniqueId, {
+      enableExtendedGiftInfo: true
+    }).then(state => {
+      $('#stateText').text(`Connected to roomId ${state.roomId}`);
 
-            if (window.settings.username) {
-                setTimeout(() => {
-                    connect(window.settings.username);
-                }, 30000);
-            }
-        })
+    }).catch(errorMessage => {
+      $('#stateText').text(errorMessage);
 
-    } else {
-        alert('no username entered');
-    }
+      if (window.settings.username) {
+        setTimeout(() => {
+          connect(window.settings.username);
+        }, 30000);
+      }
+    })
+
+  } else {
+    alert('no username entered');
+  }
 }
+////////////////////////////////////////////////////////////
+// END BASIC ///////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 
-$(document).ready(function(){
+$(document).ready(function() {
+  const commentsList = JSON.parse(window.localStorage.commentsList || '[]')
+  
   const dataSet = [
     ['Tiger Nixon', 'System Architect', 'Edinburgh', '5421', '2011/04/25', '$320,800'],
     ['Garrett Winters', 'Accountant', 'Tokyo', '8422', '2011/07/25', '$170,750'],
@@ -103,17 +98,37 @@ $(document).ready(function(){
     ['Gavin Cortez', 'Team Leader', 'San Francisco', '2860', '2008/10/26', '$235,500'],
     ['Martena Mccray', 'Post-Sales support', 'Edinburgh', '8240', '2011/03/09', '$324,050'],
     ['Unity Butler', 'Marketing Designer', 'San Francisco', '5384', '2009/12/09', '$85,675'],
-];
- 
-new window.DataTable('#example', {
-    columns: [
-        { title: 'Name' },
-        { title: 'Position' },
-        { title: 'Office' },
-        { title: 'Extn.' },
-        { title: 'Start date' },
-        { title: 'Salary' }
+  ];
+
+  const table = new window.DataTable('#example', {
+    columns: [{
+        title: 'Name',
+        data: 'uniqueId'
+      },
+      {
+        title: 'Comment',
+        data: 'comment'
+      },
+      {
+        title: 'Nickname',
+        data: 'nickname'
+      },
+      {
+        title: 'Avatar',
+        data:'profilePictureUrl'
+      }
     ],
-    data: dataSet
-});
+    data: commentsList
+  });
+
+  connection.on('chat', data => {
+    const {uniqueId,comment} = data
+    console.log(`%c${uniqueId}`, 'color:red', comment)
+    commentsList.push(data)
+    table.data = commentsList
+  })
+
+  setInterval(function() {
+    window.localStorage.commentsList = JSON.stringify(commentsList)
+  }, 3000)
 })
