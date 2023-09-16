@@ -117,13 +117,13 @@ $(document).ready(function() {
   //         dt.ajax.reload();
   //     }
   // };
-  $('#comment_list thead tr').clone(true).addClass('filters').appendTo( '#comment_list thead' );
   
   const table = new window.DataTable('#comment_list', {
-    dom: 'Bfrtip',
-        buttons: [
-            'print'
-        ],
+    // dom: '<B>lfrtip',
+    dom: 'Bfrt<"d-flex justify-content-between" lip>',
+    buttons: [
+        'print'
+    ],
     order: [0, 'desc'],
     columns: [
       {
