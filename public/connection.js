@@ -2,7 +2,7 @@
  * Wrapper for client-side TikTok connection over Socket.IO
  * With reconnect functionality.
  */
-class TikTokIOConnection {
+const TikTokIOConnection = class {
   constructor() {
     // this.socket = window.io("/app");
     this.socket = window.io("https://tiktok-chat-reader.zerody.one");

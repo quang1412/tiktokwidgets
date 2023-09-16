@@ -1,15 +1,6 @@
-// This will use the demo backend if you open index.html locally via file://, otherwise your server will be used
-// let backendUrl = "https://tiktok-chat-reader.zerody.one";
-let backendUrl = location.protocol === 'file:' ? "https://tiktok-chat-reader.zerody.one/" : undefined;
 let connection = new TikTokIOConnection();
-// let connection = new TikTokIOConnection("https://tiktok-chat-reader.zerody.one/");
 
 let limitItemsCount = 10;
-
-// Counter
-let viewerCount = 0;
-let likeCount = 0;
-let diamondsCount = 0;
 
 // These settings are defined by obs.html
 if (!window.settings) window.settings = {};
@@ -37,6 +28,13 @@ connection.on('streamEnd', () => {
     }
 }) 
 
+// END BASIC
+
+
+connection.on('chat', () => {
+    
+}) 
+
 function connect() {
     let uniqueId = window.settings.username || $('#uniqueIdInput').val();
     if (uniqueId !== '') {
@@ -48,7 +46,6 @@ function connect() {
         }).then(state => {
             $('#stateText').text(`Connected to roomId ${state.roomId}`);
  
-
         }).catch(errorMessage => {
             $('#stateText').text(errorMessage);
 
@@ -62,203 +59,57 @@ function connect() {
     } else {
         alert('no username entered');
     }
-} 
-
-
-connection.on('streamEnd', () => {
-    $('#stateText').text('Stream ended.');
-
-    // schedule next try if obs username set
-    if (window.settings.username) {
-        setTimeout(() => {
-            connect(window.settings.username);
-        }, 30000);
-    }
-}) 
-
-class rankItem{
-  constructor(userInfo = {}){
-    this.info = userInfo;
-    this.score = 0;
-    this.DOM = $(`<div class="rankitem" data-userId="${this.info.userId}" style="display:none; top:100vh;">`).html(`
-    <div class="number">-</div>
-    <img class="image" src="${this.info.profilePictureUrl}">
-    <div class="name">${this.info.nickname}</div>
-    <div class="score animate__animated" style="display:block">${this.score}</div>`) 
-  }
-
-  appendTo(parent){
-    this.DOM.appendTo(parent);
-  }
-
-  addScore(n){  
-    const numberDiv = this.DOM.find('div.score') 
-    $(numberDiv).css('font-size', '1.8em')
-    
-    this.score += n
-    
-    setTimeout(() => $(numberDiv).text(this.score), 300) 
-    
-    setTimeout(() => $(numberDiv).css('font-size', '1em'), 500)
- 
-  }
-
-  setOrder(n){
-    if(typeof n != 'number') return
-    const order = n+1
-    this.DOM.removeClass('top')
-    if(order <= 3) {
-      this.DOM.addClass('top')
-    }
-
-    const topPx = (n * this.DOM.outerHeight()) + (n * 10) + 'px';
-    this.DOM.css('top', topPx);
-    this.DOM.find('.number').text(order)
-  }
-  show(){
-    this.DOM.show()
-  }
-  hidden(){
-    this.DOM.hide()
-  }
-}
-
-function sortingRankItems(rankItems){ 
-  
-  const list = []
-  for (var userId in rankItems) {
-    list.push(rankItems[userId]);
-  } 
-
-  list.sort(function(item_a, item_b) { 
-    return item_b.score - item_a.score;
-  })
- 
-  list.map((item, i) => { 
-    if(i < limitItemsCount){
-      item.show()
-      item.setOrder(i)
-    } else {
-      item.hidden()
-      item.setOrder(10)
-    }
-  })
 }
 
 $(document).ready(function(){
-  if(window.settings.rankEvent && window.settings.rankEvent !== 'like') return
-  
-  let container = $('#likerank .rankitems');
-  let rankItems = {} 
-   
-  connection.on('like', (msg) => {
-    const {userId} = msg
-
-    let user = rankItems[userId]
-    if(!user){
-      rankItems[userId] = new rankItem(msg)
-      user = rankItems[userId]
-      user.appendTo(container)
-    } 
-
-    if (typeof msg.totalLikeCount === 'number') {
-      likeCount = msg.totalLikeCount;
-      // updateRoomStats();
-    } 
-    if (typeof msg.likeCount === 'number') { 
-      user.addScore(msg.likeCount)
-      
-      sortingRankItems(rankItems)
-    }
-  }) 
-
-  // setInterval(function(){
-  //   rankItems = {}
-  //   container.html(null)
-  // }, 2*60*1000)
-})
-
-$(document).ready(function(){
-  if(window.settings.rankEvent && window.settings.rankEvent !== 'chat') return
-  
-  let container = $('#chatrank .rankitems');
-  let rankItems = {} 
-   
-  connection.on('chat', (msg) => {
-    const {userId} = msg
-
-    let user = rankItems[userId]
-    if(!user){
-      rankItems[userId] = new rankItem(msg)
-      user = rankItems[userId]
-      user.appendTo(container)
-    } 
+  const dataSet = [
+    ['Tiger Nixon', 'System Architect', 'Edinburgh', '5421', '2011/04/25', '$320,800'],
+    ['Garrett Winters', 'Accountant', 'Tokyo', '8422', '2011/07/25', '$170,750'],
+    ['Ashton Cox', 'Junior Technical Author', 'San Francisco', '1562', '2009/01/12', '$86,000'],
+    ['Cedric Kelly', 'Senior Javascript Developer', 'Edinburgh', '6224', '2012/03/29', '$433,060'],
+    ['Airi Satou', 'Accountant', 'Tokyo', '5407', '2008/11/28', '$162,700'],
+    ['Brielle Williamson', 'Integration Specialist', 'New York', '4804', '2012/12/02', '$372,000'],
+    ['Herrod Chandler', 'Sales Assistant', 'San Francisco', '9608', '2012/08/06', '$137,500'],
+    ['Rhona Davidson', 'Integration Specialist', 'Tokyo', '6200', '2010/10/14', '$327,900'],
+    ['Colleen Hurst', 'Javascript Developer', 'San Francisco', '2360', '2009/09/15', '$205,500'],
+    ['Sonya Frost', 'Software Engineer', 'Edinburgh', '1667', '2008/12/13', '$103,600'],
+    ['Jena Gaines', 'Office Manager', 'London', '3814', '2008/12/19', '$90,560'],
+    ['Quinn Flynn', 'Support Lead', 'Edinburgh', '9497', '2013/03/03', '$342,000'],
+    ['Charde Marshall', 'Regional Director', 'San Francisco', '6741', '2008/10/16', '$470,600'],
+    ['Haley Kennedy', 'Senior Marketing Designer', 'London', '3597', '2012/12/18', '$313,500'],
+    ['Tatyana Fitzpatrick', 'Regional Director', 'London', '1965', '2010/03/17', '$385,750'],
+    ['Michael Silva', 'Marketing Designer', 'London', '1581', '2012/11/27', '$198,500'],
+    ['Paul Byrd', 'Chief Financial Officer (CFO)', 'New York', '3059', '2010/06/09', '$725,000'],
+    ['Gloria Little', 'Systems Administrator', 'New York', '1721', '2009/04/10', '$237,500'],
+    ['Bradley Greer', 'Software Engineer', 'London', '2558', '2012/10/13', '$132,000'],
+    ['Dai Rios', 'Personnel Lead', 'Edinburgh', '2290', '2012/09/26', '$217,500'],
+    ['Jenette Caldwell', 'Development Lead', 'New York', '1937', '2011/09/03', '$345,000'],
+    ['Yuri Berry', 'Chief Marketing Officer (CMO)', 'New York', '6154', '2009/06/25', '$675,000'],
+    ['Caesar Vance', 'Pre-Sales Support', 'New York', '8330', '2011/12/12', '$106,450'],
+    ['Doris Wilder', 'Sales Assistant', 'Sydney', '3023', '2010/09/20', '$85,600'],
+    ['Angelica Ramos', 'Chief Executive Officer (CEO)', 'London', '5797', '2009/10/09', '$1,200,000'],
+    ['Gavin Joyce', 'Developer', 'Edinburgh', '8822', '2010/12/22', '$92,575'],
+    ['Jennifer Chang', 'Regional Director', 'Singapore', '9239', '2010/11/14', '$357,650'],
+    ['Brenden Wagner', 'Software Engineer', 'San Francisco', '1314', '2011/06/07', '$206,850'],
+    ['Fiona Green', 'Chief Operating Officer (COO)', 'San Francisco', '2947', '2010/03/11', '$850,000'],
+    ['Shou Itou', 'Regional Marketing', 'Tokyo', '8899', '2011/08/14', '$163,000'],
+    ['Michelle House', 'Integration Specialist', 'Sydney', '2769', '2011/06/02', '$95,400'],
+    ['Suki Burks', 'Developer', 'London', '6832', '2009/10/22', '$114,500'],
+    ['Prescott Bartlett', 'Technical Author', 'London', '3606', '2011/05/07', '$145,000'],
+    ['Gavin Cortez', 'Team Leader', 'San Francisco', '2860', '2008/10/26', '$235,500'],
+    ['Martena Mccray', 'Post-Sales support', 'Edinburgh', '8240', '2011/03/09', '$324,050'],
+    ['Unity Butler', 'Marketing Designer', 'San Francisco', '5384', '2009/12/09', '$85,675'],
+];
  
-    if (typeof msg.comment === 'string') { 
-      user.addScore(msg.comment.length)
-      
-      sortingRankItems(rankItems)
-    }
-  }) 
-
-  // setInterval(function(){
-  //   rankItems = {}
-  //   container.html(null)
-  // }, 2*60*1000)
-})
-
-$(document).ready(function(){
-  if(window.settings.rankEvent && window.settings.rankEvent !== 'share') return
-  
-  let container = $('#sharerank .rankitems');
-  let rankItems = {} 
-   
-  
-  connection.on('social', (msg) => {
-    if(!msg.displayType.includes('share')) return
-    
-    const {userId} = msg
-
-    let user = rankItems[userId]
-    if(!user){
-      rankItems[userId] = new rankItem(msg)
-      user = rankItems[userId]
-      user.appendTo(container)
-    }  
-    
-    user.addScore(1)
-    sortingRankItems(rankItems)
-  }) 
-
-  // setInterval(function(){
-  //   rankItems = {}
-  //   container.html(null)
-  // }, 2*60*1000)
-})
-
-$(document).ready(function(){
-  if(window.settings.rankEvent && window.settings.rankEvent !== 'gift') return
-  
-  let container = $('#giftrank .rankitems');
-  let rankItems = {} 
-   
-  
-  connection.on('gift', (msg) => {
-    const {userId} = msg
-
-    let user = rankItems[userId]
-    if(!user){
-      rankItems[userId] = new rankItem(msg)
-      user = rankItems[userId]
-      user.appendTo(container)
-    }  
-    
-    user.addScore(msg.diamondCount)
-    sortingRankItems(rankItems)
-  }) 
-
-  // setInterval(function(){
-  //   rankItems = {}
-  //   container.html(null)
-  // }, 2*60*1000)
+new window.DataTable('#example', {
+    columns: [
+        { title: 'Name' },
+        { title: 'Position' },
+        { title: 'Office' },
+        { title: 'Extn.' },
+        { title: 'Start date' },
+        { title: 'Salary' }
+    ],
+    data: dataSet
+});
 })
