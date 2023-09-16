@@ -17,7 +17,7 @@ window.TikTokIOConnection = class {
         this.setUniqueId();
       }
     })
-
+    
     this.socket.on('greeting-from-server', (mess) => {
       console.log(mess);
     })
@@ -57,9 +57,11 @@ window.TikTokIOConnection = class {
 
   setUniqueId() {
     this.socket.emit('setUniqueId', this.uniqueId, this.options);
+    window.localStorage.setItem('uniqueId', this.uniqueId)
   }
 
   on(eventName, eventHandler) {
     this.socket.on(eventName, eventHandler);
   }
 }
+
