@@ -122,7 +122,7 @@ $(document).ready(function() {
     // dom: '<B>lfrtip',
     dom: '<"d-flex justify-content-between" <B>f> rt <"d-flex flex-column flex-lg-row flex-wrap flex-lg-nowrap justify-content-between align-items-center align-items-lg-end" <l> <i> <p> >',
     buttons: [
-        // 'print'
+        'print'
     ],
     order: [0, 'desc'],
     fixedHeader: true,
@@ -137,30 +137,31 @@ $(document).ready(function() {
         },
       },
       {
-        title: 'Viewer',
+        title: 'Avatar',
         data:'userId',
         render: function ( id, type, row ) {
           const avt = `<img src="${viewersInfo[id].profilePictureUrl}" width="40" height="40" class="rounded-circle border border-3">`
           const userName = viewersInfo[id].uniqueId
           const nickName = viewersInfo[id].nickname
-          return `<div class="d-flex gap-2">${avt}<div class="lh-1"><p class="mb-0"><b>${nickName}</b></p><small>${userName}</small></div></div>`
+          return avt
+          // return `<div class="d-flex gap-2">${avt}<div class="lh-1"><p class="mb-0"><b>${nickName}</b></p><small>${userName}</small></div></div>`
         },
-        // orderable: false
+        orderable: false
       },
-      // {
-      //   title: 'Username',
-      //   data: 'userId',
-      //   render: function ( id, type, row ) {
-      //     return viewersInfo[id].uniqueId
-      //   }
-      // },
-      // {
-      //   title: 'Nickname',
-      //   data: 'userId',
-      //   render: function ( id, type, row ) {
-      //     return viewersInfo[id].nickname
-      //   }
-      // },
+      {
+        title: 'Username',
+        data: 'userId',
+        render: function ( id, type, row ) {
+          return viewersInfo[id].uniqueId
+        }
+      },
+      {
+        title: 'Nickname',
+        data: 'userId',
+        render: function ( id, type, row ) {
+          return viewersInfo[id].nickname
+        }
+      },
       {
         title: 'Comment',
         data: 'comment'
@@ -168,8 +169,8 @@ $(document).ready(function() {
     ],
     data: liveComments,
     initComplete: function( settings ) {
-        $('#comment_list_loader').hide()
-        $('#comment_list thead tr').clone(true).addClass('filters').appendTo( '#comment_list thead' );
+      $('#comment_list_loader').hide()
+      $('#comment_list thead tr').clone(true).addClass('filters').appendTo( '#comment_list thead' );
       
       var api = this.api();
             // For each column
