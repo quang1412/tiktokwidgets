@@ -120,7 +120,7 @@ $(document).ready(function() {
   
   const table = new window.DataTable('#comment_list', {
     // dom: '<B>lfrtip',
-    dom: 'Bfrt<"d-flex justify-content-between" lip>',
+    dom: 'Bfrt<"d-flex flex-column flex-md-row flex-wrap flex-md-nowrap justify-content-between align-items-end" <l> <i> <p> >',
     buttons: [
         'print'
     ],
