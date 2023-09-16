@@ -1,4 +1,4 @@
-let connection = new TikTokIOConnection();
+let connection = new window.TikTokIOConnection();
 
 let limitItemsCount = 10;
 
@@ -27,13 +27,17 @@ connection.on('streamEnd', () => {
         }, 30000);
     }
 }) 
+////////////////////////
+// END BASIC ///////////
+////////////////////////
 
-// END BASIC
+const commentsList = JSON.parse(window.localStorage.commentsList || '[]')
 
-
-connection.on('chat', () => {
-    
-}) 
+connection.on('chat', data => {
+  const {uniqueId, comment} = data
+  console.log(`%c${uniqueId}`, 'color:red', comment)
+  commentsList.push(data)
+})
 
 function connect() {
     let uniqueId = window.settings.username || $('#uniqueIdInput').val();
