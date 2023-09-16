@@ -122,6 +122,12 @@ $(document).ready(function() {
   })
 
   setInterval(function() {
-    window.localStorage.commentsList = JSON.stringify(commentsList)
+    try{      
+      window.localStorage.setItem('commentsList', JSON.stringify(commentsList))
+      // window.localStorage.commentsList = JSON.stringify(commentsList)
+    }
+    catch(e){
+      console.log(e)
+    }
   }, 3000)
 })
