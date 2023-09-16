@@ -66,12 +66,12 @@ $(document).ready(function() {
     viewersInfo[info.userId] = info
   }
   
-  $.fn.dataTable.ext.buttons.phoneFilter = {
-      text: 'Cmt có sđt',
-      action: function ( e, dt, node, config ) {
-          dt.ajax.reload();
-      }
-  };
+  // $.fn.dataTable.ext.buttons.phoneFilter = {
+  //     text: 'Cmt có sđt',
+  //     action: function ( e, dt, node, config ) {
+  //         dt.ajax.reload();
+  //     }
+  // };
   const table = new window.DataTable('#example', {
     // dom: 'Bfrtip',
     // buttons: [
@@ -112,8 +112,10 @@ $(document).ready(function() {
     ],
     data: commentsList
   });
-
+  
   connection.on('chat', data => {
+    saveViewsInfo(data)
+    
     const {uniqueId,comment} = data
     // console.log(`%c${uniqueId}`, 'color:red', comment)
     // console.log(data)
@@ -127,7 +129,14 @@ $(document).ready(function() {
       // window.localStorage.commentsList = JSON.stringify(commentsList)
     }
     catch(e){
-      console.log(e)
+      console.log(e.message)
+      if(e.message.includes('exceeded the quota')){
+        let indexToRemove = 10;
+        let numberToRemove = commentsList.length;
+
+        commentsList.splice(indexToRemove, numberToRemove)
+        window.localStorage.setItem('commentsList', JSON.stringify(commentsList))
+      }
     }
   }, 3000)
 })
