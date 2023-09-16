@@ -106,15 +106,16 @@ $(document).ready(function() {
         title:'Time',
         data: 'createTime',
         render: function ( data, type, row ) {
-          return new Date().toLocaleString()
-          // return data
+          const date = new Date(parseInt(data)).toLocaleDateString()
+          const time = new Date(parseInt(data)).toLocaleTimeString()
+          return `<p class="mb-0">${date} - ${time}</p>`
         },
       },
       {
         title: 'Avatar',
         data:'profilePictureUrl',
         render: function ( data, type, row ) {
-          return `<img src="${data}" width="32" height="32" class="rounded-circle">`
+          return `<img src="${data}" width="32" height="32" class="rounded-circle border border-3">`
           // return '$'+ data;
         },
         orderable: false
