@@ -121,11 +121,14 @@ $(document).ready(function() {
   
   const table = new window.DataTable('#comment_list', {
     // dom: '<B>lfrtip',
-    dom: '<"d-flex justify-content-between" <B>f> rt <"d-flex flex-column flex-lg-row flex-wrap flex-lg-nowrap justify-content-between align-items-center align-items-lg-end" <l> <i> <p> >',
+    dom: '<"d-flex justify-content-between" <B><f>> rt <"d-flex flex-column flex-lg-row flex-wrap flex-lg-nowrap justify-content-between align-items-center align-items-lg-end" <l> <i> <p> >',
     buttons: [
-        'copy', 'excel', 'pdf', 'print'
+      // 'copy', 
+      'excel', 
+      'pdf', 
+      'print'
     ],
-    order: [0, 'desc'],
+    order: [2, 'desc'],
     fixedHeader: true,
     columns: [
       {
@@ -160,7 +163,8 @@ $(document).ready(function() {
         data: 'comment',
         render: function ( text, type, row ) {
           return text || ''
-        }
+        },
+        orderable: false
       },
       {
         title:'Time',
@@ -169,7 +173,7 @@ $(document).ready(function() {
           const date = new Date(parseInt(data)).toLocaleDateString()
           const time = new Date(parseInt(data)).toLocaleTimeString()
           // return `<span class="d-none">${data}</span>`
-          return `<div class="d-none">${data}</div><p class="mb-0">${date} - ${time}</p>`
+          return `<p class="mb-0">${date} - ${time}</p>`
         },
       },
     ],
