@@ -126,17 +126,17 @@ $(document).ready(function() {
       // 'copy', 
       {
           extend: 'excel',
-          text: 'Xuất ra excel', 
+          text: 'Xuất excel', 
       },
       {
           extend: 'pdf',
-          text: 'Xuất ra pdf', 
+          text: 'Xuất pdf', 
       },
       {
           extend: 'print',
           text: 'In',
           exportOptions: {
-              // columns: [ 1, 2 ]
+              columns: [ 3]
           }
       },
       {
@@ -190,6 +190,16 @@ $(document).ready(function() {
         data: 'comment',
         render: function ( text, type, row ) {
           return text || ''
+        },
+        orderable: false
+      },
+      {
+        title: 'Print',
+        data: 'userId',
+        render: function ( userId, type, row ) {
+          const userName = viewersInfo[userId].uniqueId
+          const nickName = viewersInfo[userId].nickname
+          return `${userId}<i class="new_line"></i> ${userName} ${nickName}`
         },
         orderable: false
       },

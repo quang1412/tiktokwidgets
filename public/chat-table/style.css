@@ -11,3 +11,7 @@ table td{
 table.dataTable.fixedHeader-floating {
     margin-top: 0 !important;
 }
+
+@media print {
+  i.new_line {page-break-after: always;display: block; page-break-before: always;}
+}
