@@ -138,20 +138,18 @@ $(document).ready(function() {
           exportOptions: {
               columns: [ -1]
           },
-          autoPrint: false,
+          autoPrint: true,
           customize: function ( win ) {  
             $.each($(win.document.body).find( 'td' ), (i, e) => {
                 e.innerHTML = e.innerText.replaceAll('\\n','<br class="d-none d-print-block">')
             });
           }
       },
-      // {
-      //     extend: 'colvis',
-      //     text: 'Hiển thị'
-      // },
     ],
     columnDefs: [
-    { "visible": false, "targets": -1 }
+    { "visible": false, "targets": -1 },
+    { "visible": false, "targets": -2 },
+    { "visible": false, "targets": -3 },
   ],
     order: [0, 'desc'],
     fixedHeader: true,
@@ -180,6 +178,14 @@ $(document).ready(function() {
         orderable: false
       },
       {
+        title: 'Comment',
+        data: 'comment',
+        render: function ( text, type, row ) {
+          return text || ''
+        },
+        orderable: false
+      },
+      {
         title: 'Username',
         data: 'userId',
         render: function ( id, type, row ) {
@@ -193,14 +199,6 @@ $(document).ready(function() {
         render: function ( id, type, row ) {
           return viewersInfo[id].nickname
         }
-      },
-      {
-        title: 'Comment',
-        data: 'comment',
-        render: function ( text, type, row ) {
-          return text || ''
-        },
-        orderable: false
       },
       {
         title: 'Nhãn in',
