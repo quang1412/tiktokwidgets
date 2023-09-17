@@ -101,6 +101,9 @@ $(document).ready(function() {
   const viewersInfo = JSON.parse(window.localStorage.viewersInfo || '{}')
   const liveComments = JSON.parse(window.localStorage.liveComments || '[]')
   
+  const minEl = document.querySelector('#fromDate');
+  const maxEl = document.querySelector('#toDate');
+  
   function saveData(){
     try{      
       window.localStorage.setItem('viewersInfo', JSON.stringify(viewersInfo))
@@ -118,6 +121,27 @@ $(document).ready(function() {
   //         dt.ajax.reload();
   //     }
   // };
+  window.DataTable.ext.search.push(function (settings, data, dataIndex) {
+    
+      let min = parseInt((new Date(minEl.value).getTime()), 10)
+
+      let max = parseInt((new Date(maxEl.value).getTime()), 10)
+
+      let age = parseFloat(data[3]) || 0; // use data for the age column
+
+      console.log(min, max, age)
+
+      if (
+          (isNaN(min) && isNaN(max)) ||
+          (isNaN(min) && age <= max) ||
+          (min <= age && isNaN(max)) ||
+          (min <= age && age <= max)
+      ) {
+          return true;
+      }
+
+      return false;
+  });
   
   const table = new window.DataTable('#comment_list', {
     // dom: '<B>lfrtip',
@@ -263,6 +287,14 @@ $(document).ready(function() {
               .click(function(e){return false;});
       });
     }
+  });
+  
+  
+  minEl.addEventListener('change', function () {
+    table.draw();
+  });
+  maxEl.addEventListener('change', function () {
+    table.draw();
   });
   
   connection.on('chat', d => { 
