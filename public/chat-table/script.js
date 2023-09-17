@@ -155,7 +155,7 @@ $(document).ready(function() {
           const date = new Date(parseInt(data)).toLocaleDateString()
           const time = new Date(parseInt(data)).toLocaleTimeString()
           // return `<span class="d-none">${data}</span>`
-          return `<p class="mb-0">${date} ${time}</p>`
+          return `<p class="mb-0">${date}&nbsp</p><p class="mb-0">${time}</p>`
         },
       },
       {
@@ -166,7 +166,7 @@ $(document).ready(function() {
           const userName = viewersInfo[id].uniqueId
           const nickName = viewersInfo[id].nickname
           // return avt
-          return `<div class="d-flex gap-1">${avt}<div class="lh-1 d-flex flex-column"><pre class="order-2 text-muted mb-0 mt-1"><small>@${userName}&nbsp</small></pre><a class="fw-bold text-decoration-none text-nowrap text-dark" href="https://tiktok.com/@${userName}" target="_blank">${nickName}&nbsp</a></div></div>`
+          return `<div class="d-flex gap-1">${avt}<div class="lh-1 d-flex flex-column"><pre class="order-2 text-muted mb-0 mt-1">@${userName}&nbsp</pre><a class="fw-bold text-decoration-none text-nowrap text-dark" href="https://tiktok.com/@${userName}" target="_blank">${nickName}&nbsp</a></div></div>`
         },
         orderable: false
       },
@@ -197,6 +197,7 @@ $(document).ready(function() {
     data: liveComments,
     initComplete: function( settings ) {
       $('#comment_list_loader').hide()
+      return
       $('#comment_list thead tr').clone(true).addClass('filters').appendTo( '#comment_list thead' );
       
       var api = this.api();
