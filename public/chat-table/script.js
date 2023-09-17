@@ -143,8 +143,8 @@ $(document).ready(function() {
           const avt = `<img src="${viewersInfo[id].profilePictureUrl}" width="40" height="40" class="rounded-circle border border-3">`
           const userName = viewersInfo[id].uniqueId
           const nickName = viewersInfo[id].nickname
-          return avt
-          // return `<div class="d-flex gap-2">${avt}<div class="lh-1"><p class="mb-0"><b>${nickName}</b></p><small>${userName}</small></div></div>`
+          // return avt
+          return `<div class="d-flex gap-2">${avt}<div class="lh-1"><p class="mb-0"><b>${nickName}</b></p><small>${userName}</small></div></div>`
         },
         orderable: false
       },
@@ -152,7 +152,8 @@ $(document).ready(function() {
         title: 'Username',
         data: 'userId',
         render: function ( id, type, row ) {
-          return viewersInfo[id].uniqueId
+          const uniqueId = viewersInfo[id].uniqueId;
+          return `<a href="http://tiktok.com/@${uniqueId}" target="_blank">${uniqueId}</a>`
         }
       },
       {
