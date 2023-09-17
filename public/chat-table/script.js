@@ -128,9 +128,20 @@ $(document).ready(function() {
       'pdf', 
       'print'
     ],
-    order: [2, 'desc'],
+    order: [0, 'desc'],
     fixedHeader: true,
     columns: [
+      
+      {
+        title:'Time',
+        data: 'createTime',
+        render: function ( data, type, row ) {
+          const date = new Date(parseInt(data)).toLocaleDateString()
+          const time = new Date(parseInt(data)).toLocaleTimeString()
+          // return `<span class="d-none">${data}</span>`
+          return `<p class="mb-0">${date} ${time}</p>`
+        },
+      },
       {
         title: 'User',
         data:'userId',
@@ -139,7 +150,7 @@ $(document).ready(function() {
           const userName = viewersInfo[id].uniqueId
           const nickName = viewersInfo[id].nickname
           // return avt
-          return `<div class="d-flex gap-1">${avt}<div class="lh-1"><a class="fw-bold text-decoration-none text--dark" href="https://tiktok.com/@${userName}" target="_blank">${nickName}&nbsp</a><pre class="text-muted mb-0 mt-1"><small>@${userName}</small></pre></div></div>`
+          return `<div class="d-flex gap-1">${avt}<div class="lh-1 d-flex flex-column"><pre class="order-2 text-muted mb-0 mt-1"><small>@${userName}&nbsp</small></pre><a class="fw-bold text-decoration-none text-nowrap text-dark" href="https://tiktok.com/@${userName}" target="_blank">${nickName}&nbsp</a></div></div>`
         },
         orderable: false
       },
@@ -165,16 +176,6 @@ $(document).ready(function() {
           return text || ''
         },
         orderable: false
-      },
-      {
-        title:'Time',
-        data: 'createTime',
-        render: function ( data, type, row ) {
-          const date = new Date(parseInt(data)).toLocaleDateString()
-          const time = new Date(parseInt(data)).toLocaleTimeString()
-          // return `<span class="d-none">${data}</span>`
-          return `<p class="mb-0">${date} - ${time}</p>`
-        },
       },
     ],
     data: liveComments,
