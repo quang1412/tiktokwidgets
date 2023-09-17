@@ -136,19 +136,19 @@ $(document).ready(function() {
           extend: 'print',
           text: 'In',
           exportOptions: {
-              columns: [ 3]
+              columns: [ -1]
           },
           autoPrint: false,
           customize: function ( win ) {  
             $.each($(win.document.body).find( 'td' ), (i, e) => {
-                e.innerHTML = e.innerText.replaceAll('\\n','<br>')
+                e.innerHTML = e.innerText.replaceAll('\\n','<br class="d-none d-print-block">')
             });
           }
       },
-      {
-          extend: 'colvis',
-          text: 'Hiển thị'
-      },
+      // {
+      //     extend: 'colvis',
+      //     text: 'Hiển thị'
+      // },
     ],
     columnDefs: [
     { "visible": false, "targets": -1 }
@@ -168,32 +168,32 @@ $(document).ready(function() {
         },
       },
       {
-        title: 'User',
+        title: 'Người xem',
         data:'userId',
         render: function ( id, type, row ) {
           const avt = `<img src="${viewersInfo[id].profilePictureUrl}" width="40" height="40" class="rounded-circle border border-3">`
           const userName = viewersInfo[id].uniqueId
           const nickName = viewersInfo[id].nickname
           // return avt
-          return `<div class="d-flex gap-1">${avt}<div class="lh-1 d-flex flex-column"><pre class="order-2 text-muted mb-0 mt-1">@${userName}&nbsp</pre><a class="fw-bold text-decoration-none text-nowrap text-dark" href="https://tiktok.com/@${userName}" target="_blank">${nickName}&nbsp</a></div></div>`
+          return `<a class="d-flex gap-1 text-decoration-none" href="https://tiktok.com/@${userName}" target="_blank">${avt}<div class="lh-1 d-flex flex-column"><pre class="order-2 text-muted mb-0 mt-1">@${userName}&nbsp</pre><span class="fw-bold">${nickName}&nbsp</span></div></a>`
         },
         orderable: false
       },
-      // {
-      //   title: 'Username',
-      //   data: 'userId',
-      //   render: function ( id, type, row ) {
-      //     const uniqueId = viewersInfo[id].uniqueId;
-      //     return `<a href="http://tiktok.com/@${uniqueId}" target="_blank">${uniqueId}</a>`
-      //   }
-      // },
-      // {
-      //   title: 'Nickname',
-      //   data: 'userId',
-      //   render: function ( id, type, row ) {
-      //     return viewersInfo[id].nickname
-      //   }
-      // },
+      {
+        title: 'Username',
+        data: 'userId',
+        render: function ( id, type, row ) {
+          const uniqueId = viewersInfo[id].uniqueId;
+          return '@'+uniqueId
+        }
+      },
+      {
+        title: 'Nickname',
+        data: 'userId',
+        render: function ( id, type, row ) {
+          return viewersInfo[id].nickname
+        }
+      },
       {
         title: 'Comment',
         data: 'comment',
@@ -203,7 +203,7 @@ $(document).ready(function() {
         orderable: false
       },
       {
-        title: 'Label',
+        title: 'Nhãn in',
         data: 'userId',
         render: function ( userId, type, row ) {
           const createTime = row.createTime
