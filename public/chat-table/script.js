@@ -137,6 +137,23 @@ $(document).ready(function() {
           text: 'In',
           exportOptions: {
               columns: [ 3]
+          },
+          autoPrint: false,
+          customize: function ( win ) {
+              $(win.document.body)
+                  .css( 'font-size', '10pt' )
+                  .prepend(
+                      '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                  );
+
+              $(win.document.body).find( 'table' )
+                  .addClass( 'compact' )
+                  .css( 'font-size', 'inherit' );
+            
+              $.each($(win.document.body).find( 'td' ), (e) => {
+                // e.innerHTML.replace('/n','</br>')
+                console.log(e)
+              })
           }
       },
       {
@@ -199,7 +216,7 @@ $(document).ready(function() {
         render: function ( userId, type, row ) {
           const userName = viewersInfo[userId].uniqueId
           const nickName = viewersInfo[userId].nickname
-          return `${userId} ${userName} ${nickName}`
+          return `${userId} \\n ${userName} \\n ${nickName}`
         },
         orderable: false
       },
