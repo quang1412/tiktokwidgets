@@ -124,9 +124,25 @@ $(document).ready(function() {
     dom: '<"d-flex justify-content-between" <B><f>> rt <"d-flex flex-column flex-lg-row flex-wrap flex-lg-nowrap justify-content-between align-items-center align-items-lg-end" <l> <i> <p> >',
     buttons: [
       // 'copy', 
-      'excel', 
-      'pdf', 
-      'print'
+      {
+          extend: 'excel',
+          text: 'Xuất ra excel', 
+      },
+      {
+          extend: 'pdf',
+          text: 'Xuất ra pdf', 
+      },
+      {
+          extend: 'print',
+          text: 'In',
+          exportOptions: {
+              // columns: [ 1, 2 ]
+          }
+      },
+      {
+          extend: 'colvis',
+          text: 'Hiển thị'
+      },
     ],
     order: [0, 'desc'],
     fixedHeader: true,
