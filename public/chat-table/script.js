@@ -143,7 +143,7 @@ $(document).ready(function() {
   
   const table = new window.DataTable('#comment_list', {
     // dom: '<B>lfrtip',
-    dom: '<"d-flex flex-column flex-lg-row justify-content-between" <B><f>> rt <"d-flex flex-column flex-lg-row flex-wrap flex-lg-nowrap justify-content-between align-items-center align-items-lg-end" <l> <i> <p> >',
+    dom: '<"d-flex flex-column flex-md-row justify-content-between" <B><f>> rt <"d-flex flex-column flex-xl-row flex-wrap flex-xl-nowrap justify-content-between align-items-center align-items-xl-end" <l> <i> <p> >',
     buttons: [
       {
           extend: 'excel',
