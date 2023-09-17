@@ -11,6 +11,12 @@ table td{
 table.dataTable.fixedHeader-floating {
     margin-top: 0 !important;
 }
+tbody td:last-child{
+  width:100%;
+}
+table.dataTable thead th{
+  white-space: nowrap;
+}
 
 @media print {
   i.line-break{
@@ -19,6 +25,7 @@ table.dataTable.fixedHeader-floating {
   table.dataTable thead, body > h1{
     display:none;
   }
+  
   table.dataTable tbody tr{
     clear: both;
     break-after: page;
