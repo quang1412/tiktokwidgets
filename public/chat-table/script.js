@@ -161,7 +161,7 @@ $(document).ready(function() {
       },
       {
           extend: 'print',
-          text: '<i class="fa-solid fa-print me-1"></i> in',
+          text: '<i class="fa-solid fa-print me-1"></i> in nhãn dán',
           exportOptions: {
               columns: [ -1]
           },
@@ -173,7 +173,7 @@ $(document).ready(function() {
           }
       },
       {
-          text: '<i class="fa-solid fa-trash"></i> Reset dữ liệu',
+          text: '<i class="fa-solid fa-trash"></i> xoá dữ liệu',
           action: function ( e, dt, node, config ) {
             if (confirm("Bạn có chắc chắn muốn xoá sạch dữ liệu?")){
               window.localStorage.clear();
@@ -214,7 +214,7 @@ $(document).ready(function() {
           const userName = viewersInfo[id].uniqueId
           const nickName = viewersInfo[id].nickname
           // return avt
-          return `<a class="d-flex gap-1 text-decoration-none" href="https://tiktok.com/@${userName}" target="_blank">${avt}<div class="lh-1 d-flex flex-column"><pre class="order-2 text-muted mb-0 mt-1">@${userName}&nbsp</pre><span class="fw-bold">${nickName}&nbsp</span></div></a>`
+          return `<a class="d-flex gap-1 text-decoration-none text-nowrap" href="https://tiktok.com/@${userName}" target="_blank">${avt}<div class="lh-1 d-flex flex-column"><pre class="order-2 text-muted mb-0 mt-1">@${userName}&nbsp</pre><span class="fw-bold">${nickName}&nbsp</span></div></a>`
         },
         orderable: false
       },

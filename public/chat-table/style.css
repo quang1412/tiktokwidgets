@@ -16,7 +16,7 @@ tbody td:last-child{
 }
 table.dataTable thead th{
   white-space: nowrap;
-}
+} 
 
 @media print {
   i.line-break{
