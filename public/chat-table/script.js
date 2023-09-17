@@ -123,18 +123,20 @@ $(document).ready(function() {
     // dom: '<B>lfrtip',
     dom: '<"d-flex justify-content-between" <B><f>> rt <"d-flex flex-column flex-lg-row flex-wrap flex-lg-nowrap justify-content-between align-items-center align-items-lg-end" <l> <i> <p> >',
     buttons: [
-      // 'copy', 
       {
           extend: 'excel',
-          text: 'Xuất excel', 
+          text: '<i class="fa-solid fa-file-excel me-1"></i> xuất excel', 
       },
       {
           extend: 'pdf',
-          text: 'Xuất pdf', 
+          text: '<i class="fa-solid fa-file-pdf me-1"></i> xuất pdf', 
+          exportOptions: {
+              columns: [0, 4, 5, 2]
+          },
       },
       {
           extend: 'print',
-          text: 'In',
+          text: '<i class="fa-solid fa-print me-1"></i> in',
           exportOptions: {
               columns: [ -1]
           },
@@ -150,6 +152,7 @@ $(document).ready(function() {
     { "visible": false, "targets": -1 },
     { "visible": false, "targets": -2 },
     { "visible": false, "targets": -3 },
+    { "visible": false, "targets": -4 },
   ],
     order: [0, 'desc'],
     fixedHeader: true,
@@ -164,6 +167,7 @@ $(document).ready(function() {
           // return `<span class="d-none">${data}</span>`
           return `<p class="mb-0">${date}&nbsp</p><p class="mb-0">${time}</p>`
         },
+        orderable: false
       },
       {
         title: 'Người xem',
@@ -184,6 +188,10 @@ $(document).ready(function() {
           return text || ''
         },
         orderable: false
+      },
+      {
+        title: 'Timestamp',
+        data: 'createTime',
       },
       {
         title: 'Username',
