@@ -139,7 +139,7 @@ $(document).ready(function() {
           const userName = viewersInfo[id].uniqueId
           const nickName = viewersInfo[id].nickname
           // return avt
-          return `<div class="d-flex gap-1">${avt}<div class="lh-1"><p class="mb-0"><a class="fw-bold text-decoration-none text-dark" href="https://tiktok.com/@${userName}" target="_blank">${nickName}&nbsp</a></p><small class="text-muted mt-auto">@${userName}</small></div></div>`
+          return `<div class="d-flex gap-1">${avt}<div class="lh-1"><a class="fw-bold text-decoration-none text--dark" href="https://tiktok.com/@${userName}" target="_blank">${nickName}&nbsp</a><pre class="text-muted mb-0 mt-1"><small>@${userName}</small></pre></div></div>`
         },
         orderable: false
       },
