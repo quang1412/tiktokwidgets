@@ -128,15 +128,6 @@ $(document).ready(function() {
     fixedHeader: true,
     columns: [
       {
-        title:'Time',
-        data: 'createTime',
-        render: function ( data, type, row ) {
-          const date = new Date(parseInt(data)).toLocaleDateString()
-          const time = new Date(parseInt(data)).toLocaleTimeString()
-          return `<p class="mb-0">${date} - ${time}</p>`
-        },
-      },
-      {
         title: 'User',
         data:'userId',
         render: function ( id, type, row ) {
@@ -169,7 +160,16 @@ $(document).ready(function() {
         render: function ( text, type, row ) {
           return text || ''
         }
-      }
+      },
+      {
+        title:'Time',
+        data: 'createTime',
+        render: function ( data, type, row ) {
+          const date = new Date(parseInt(data)).toLocaleDateString()
+          const time = new Date(parseInt(data)).toLocaleTimeString()
+          return `<p class="mb-0">${date} - ${time}</p>`
+        },
+      },
     ],
     data: liveComments,
     initComplete: function( settings ) {
