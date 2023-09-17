@@ -167,7 +167,8 @@ $(document).ready(function() {
         render: function ( data, type, row ) {
           const date = new Date(parseInt(data)).toLocaleDateString()
           const time = new Date(parseInt(data)).toLocaleTimeString()
-          return `<p class="mb-0">${date} - ${time}</p>`
+          // return `<span class="d-none">${data}</span>`
+          return `<div class="d-none">${data}</div><p class="mb-0">${time} - ${date}</p>`
         },
       },
     ],
@@ -210,6 +211,9 @@ $(document).ready(function() {
   });
   
   connection.on('chat', d => { 
+    const {comment} = d
+    if(!comment.trim()) return
+    
     const viewerData = {
       followInfo: d.followInfo,
       followRole: d.followRole,
