@@ -122,15 +122,9 @@ $(document).ready(function() {
   const table = new window.DataTable('#comment_list', {
     // dom: '<B>lfrtip',
     dom: '<"d-flex justify-content-between" <B>f> rt <"d-flex flex-column flex-lg-row flex-wrap flex-lg-nowrap justify-content-between align-items-center align-items-lg-end" <l> <i> <p> >',
-    // buttons: [
-    //     'print'
-    // ],
     buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5'
-        ],
+        'copy', 'excel', 'pdf', 'print'
+    ],
     order: [0, 'desc'],
     fixedHeader: true,
     columns: [
@@ -142,7 +136,7 @@ $(document).ready(function() {
           const userName = viewersInfo[id].uniqueId
           const nickName = viewersInfo[id].nickname
           // return avt
-          return `<div class="d-flex gap-1">${avt}<div class="lh-1"><p class="mb-0"><a class="fw-bold text-decoration-none text-dark" href="https://tiktok.com/@${userName}" target="_blank">${nickName}</a></p><small class="text-muted mt-auto">${userName}</small></div></div>`
+          return `<div class="d-flex gap-1">${avt}<div class="lh-1"><p class="mb-0"><a class="fw-bold text-decoration-none text-dark" href="https://tiktok.com/@${userName}" target="_blank">${nickName}&nbsp</a></p><small class="text-muted mt-auto">@${userName}</small></div></div>`
         },
         orderable: false
       },
@@ -175,7 +169,7 @@ $(document).ready(function() {
           const date = new Date(parseInt(data)).toLocaleDateString()
           const time = new Date(parseInt(data)).toLocaleTimeString()
           // return `<span class="d-none">${data}</span>`
-          return `<div class="d-none">${data}</div><p class="mb-0">${time} - ${date}</p>`
+          return `<div class="d-none">${data}</div><p class="mb-0">${date} - ${time}</p>`
         },
       },
     ],
