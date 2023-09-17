@@ -129,8 +129,6 @@ $(document).ready(function() {
 
       let age = parseFloat(data[3]) || 0; // use data for the age column
 
-      console.log(min, max, age)
-
       if (
           (isNaN(min) && isNaN(max)) ||
           (isNaN(min) && age <= max) ||

@@ -89,9 +89,33 @@
             <label class="form-label">Thời gian</label>
             <div class="input-group mb-3">
               <span class="input-group-text">Từ ngày</span>
-              <input type="date" class="form-control" onchange="console.log((new Date(this.value)).getTime())">
-              <span class="input-group-text">Đến ngày</span>
-              <input type="date" class="form-control" onchange="console.log((new Date(this.value)).getTime())">
+              <input type="date" class="form-control" id="fromDate" >
+              <span class="input-group-text">đến ngày</span>
+              <input type="date" class="form-control" id="toDate" >
+            </div>
+            
+            <label class="form-label">Người xem</label>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" id="filterUsername" placeholder="Username">
+            </div>
+            
+            <div>
+              <label class="form-label">Comment</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="filterComment" id="inlineRadio1" value="option1">
+              <label class="form-check-label" for="inlineRadio1">bao gồm</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="filterComment" id="inlineRadio2" value="option2">
+              <label class="form-check-label" for="inlineRadio2">chính xác</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="filterComment" id="inlineRadio3" value="option3">
+              <label class="form-check-label" for="inlineRadio3">regex</label>
+            </div>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" id="filterComment" placeholder="Nội dung commnent">
             </div>
           </div>
         </div>
