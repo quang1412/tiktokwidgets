@@ -199,7 +199,7 @@ $(document).ready(function() {
         render: function ( userId, type, row ) {
           const userName = viewersInfo[userId].uniqueId
           const nickName = viewersInfo[userId].nickname
-          return `${userId}<i class="new_line"></i> ${userName} ${nickName}`
+          return `${userId} ${userName} ${nickName}`
         },
         orderable: false
       },

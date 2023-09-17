@@ -13,5 +13,5 @@ table.dataTable.fixedHeader-floating {
 }
 
 @media print {
-  i.new_line {page-break-after: always;display: block; page-break-before: always;}
+  div.new_line {page-break-after: always;display: block; page-break-before: always;}
 }
