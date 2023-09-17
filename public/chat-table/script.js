@@ -98,8 +98,8 @@ $(document).ready(() => $("input#uniqueIdInput").val(window.localStorage.uniqueI
 ////////////////////////////////////////////////////////////
 
 $(document).ready(function() {
-  const viewersInfo = JSON.parse(window.localStorage.viewersInfo || '{}')
-  const liveComments = JSON.parse(window.localStorage.liveComments || '[]')
+  var viewersInfo = JSON.parse(window.localStorage.viewersInfo || '{}')
+  var liveComments = JSON.parse(window.localStorage.liveComments || '[]')
   
   const minEl = document.querySelector('#fromDate');
   const maxEl = document.querySelector('#toDate');
@@ -172,6 +172,18 @@ $(document).ready(function() {
             });
           }
       },
+      {
+          text: '<i class="fa-solid fa-trash"></i> Reset dữ liệu',
+          action: function ( e, dt, node, config ) {
+            if (confirm("Bạn có chắc chắn muốn xoá sạch dữ liệu?")){
+              window.localStorage.clear();
+              viewersInfo = JSON.parse(window.localStorage.viewersInfo || '{}')
+              liveComments = JSON.parse(window.localStorage.liveComments || '[]')
+              window.location.reload()
+            }
+          },
+          className:'bg-danger border-danger'
+      }
     ],
     columnDefs: [
     { "visible": false, "targets": -1 },
