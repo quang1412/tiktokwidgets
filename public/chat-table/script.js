@@ -90,10 +90,6 @@ connection.on('gift', (data) => {
     } 
 })
 
-connection.on('rawData', (messageTypeName, binary) => {
-    console.log(messageTypeName, binary);
-})
-
 
 $(document).ready(() => $("input#uniqueIdInput").val(window.localStorage.uniqueId))
 
