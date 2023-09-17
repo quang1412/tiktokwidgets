@@ -200,12 +200,16 @@ $(document).ready(function() {
         orderable: false
       },
       {
-        title: 'Print',
+        title: 'Label',
         data: 'userId',
         render: function ( userId, type, row ) {
+          const createTime = row.createTime
+          const date = new Date(parseInt(createTime)).toLocaleDateString()
+          const time = new Date(parseInt(createTime)).toLocaleTimeString()
+          
           const userName = viewersInfo[userId].uniqueId
           const nickName = viewersInfo[userId].nickname
-          return `${userId} \\n ${userName} \\n ${nickName}`
+          return `${date} ${time} \\n ${nickName} \\n @${userName} \\n\\n `
         },
         orderable: false
       },
