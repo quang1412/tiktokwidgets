@@ -21,7 +21,7 @@ $(document).ready(() => {
 
 
 connection.on('streamEnd', () => {
-  $('#stateText').text('Stream ended.');
+  $('#stateText').text('Livestream đã kết thúc.');
   
   // schedule next try if obs username set
   if (window.settings.username) {
@@ -36,12 +36,12 @@ function connect() {
   let uniqueId = window.settings.username || $('#uniqueIdInput').val();
   if (uniqueId !== '') {
 
-    $('#stateText').text('Connecting...');
+    $('#stateText').text('Đang kết nối...');
 
     connection.connect(uniqueId, {
       enableExtendedGiftInfo: true
     }).then(state => {
-      $('#stateText').text(`Connected to roomId ${state.roomId}`);
+      $('#stateText').text(`Đã kết nối tới livestream id ${state.roomId}`);
       // reset stats
       viewerCount = 0;
       likeCount = 0;
@@ -64,7 +64,7 @@ function connect() {
 }
 
 function updateRoomStats() {
-    $('#roomStats').html(`Viewers: <b>${viewerCount.toLocaleString()}</b> Likes: <b>${likeCount.toLocaleString()}</b> Earned Diamonds: <b>${diamondsCount.toLocaleString()}</b>`)
+    $('#roomStats').html(`Mắt xem: <b>${viewerCount.toLocaleString()}</b> Thả tim: <b>${likeCount.toLocaleString()}</b> Kim cương: <b>${diamondsCount.toLocaleString()}</b>`)
 }
 function isPendingStreak(data) {
     return data.giftType === 1 && !data.repeatEnd;
@@ -141,7 +141,7 @@ $(document).ready(function() {
           autoPrint: false,
           customize: function ( win ) {  
             $.each($(win.document.body).find( 'td' ), (i, e) => {
-                e.innerHTML = e.innerText.replaceAll('\\n','<i class="line-break"></i>')
+                e.innerHTML = e.innerText.replaceAll('\\n','<br>')
             });
           }
       },
@@ -150,12 +150,15 @@ $(document).ready(function() {
           text: 'Hiển thị'
       },
     ],
+    columnDefs: [
+    { "visible": false, "targets": -1 }
+  ],
     order: [0, 'desc'],
     fixedHeader: true,
     columns: [
       
       {
-        title:'Time',
+        title:'Thời gian',
         data: 'createTime',
         render: function ( data, type, row ) {
           const date = new Date(parseInt(data)).toLocaleDateString()
@@ -209,7 +212,7 @@ $(document).ready(function() {
           
           const userName = viewersInfo[userId].uniqueId
           const nickName = viewersInfo[userId].nickname
-          return `${date} ${time} \\n ${nickName} \\n @${userName} \\n\\n `
+          return `${date} ${time} \\n ${nickName} \\n @${userName} \\n\\n ${row.comment}`
         },
         orderable: false
       },
@@ -255,7 +258,7 @@ $(document).ready(function() {
   
   connection.on('chat', d => { 
     const {comment} = d
-    if(!comment.trim()) return
+    if(!comment || !comment.trim()) return
     
     const viewerData = {
       followInfo: d.followInfo,
