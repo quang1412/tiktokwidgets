@@ -139,22 +139,9 @@ $(document).ready(function() {
               columns: [ 3]
           },
           autoPrint: false,
-          customize: function ( win ) {
-            $(win.document.body)
-                .css( 'font-size', '10pt' )
-                .prepend(
-                    '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
-                );
-
-            $(win.document.body).find( 'table' )
-                .addClass( 'compact' )
-                .css( 'font-size', 'inherit' );
-
-            $.each($(win.document.body).find( 'tr' ), (i, e) => {
-
-            });
+          customize: function ( win ) {  
             $.each($(win.document.body).find( 'td' ), (i, e) => {
-                e.innerHTML = e.innerText.replaceAll('\\n','<br>')
+                e.innerHTML = e.innerText.replaceAll('\\n','<div class="line-break"></div>')
             });
           }
       },
