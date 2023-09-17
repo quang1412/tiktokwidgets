@@ -126,6 +126,9 @@ $(document).ready(function() {
       {
           extend: 'excel',
           text: '<i class="fa-solid fa-file-excel me-1"></i> xuất excel', 
+          exportOptions: {
+              columns: [0, 4, 5, 2]
+          },
       },
       {
           extend: 'pdf',
