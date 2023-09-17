@@ -13,9 +13,18 @@ table.dataTable.fixedHeader-floating {
 }
 
 @media print {
+  .line-break{
+    display: block;
+  }
+  table.dataTable thead, body > h1{
+    display:none;
+  }
   table.dataTable tbody tr{
     clear: both;
     break-after: page;
     text-align: center;
+  }
+  table *{
+    border: none;
   }
 }

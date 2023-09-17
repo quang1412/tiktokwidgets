@@ -141,7 +141,7 @@ $(document).ready(function() {
           autoPrint: false,
           customize: function ( win ) {  
             $.each($(win.document.body).find( 'td' ), (i, e) => {
-                e.innerHTML = e.innerText.replaceAll('\\n','<div class="line-break"></div>')
+                e.innerHTML = e.innerText.replaceAll('\\n','<i class="line-break"></i>')
             });
           }
       },
