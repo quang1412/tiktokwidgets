@@ -103,7 +103,7 @@
           </div>
           <div class="mb-3 fade show" id="resetTimeDiv">
             <label for="resetTime" class="form-label">Thời gian reset<small>&nbsp(<span id="resetTimeLabel">0</span> phút)</small></label>
-            <input type="range" value="0" min="0" max="30" step="1" class="form-range" id="resetTime" oninput="($('#resetTimeLabel').text(this.value), console.log(this.value))">
+            <input type="range" value="0" min="0" max="30" step="1" class="form-range" id="resetTime" oninput="($('#resetTimeLabel').text(this.value), window.resetTime = parseFloat(this.value),  console.log(this.value))">
           </div>
           
           <a href="javascript:void(0)" onclick="generateOverlay()">Mở link Widget</a>
