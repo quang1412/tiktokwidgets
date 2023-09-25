@@ -183,14 +183,14 @@ io.of('/app').on('connection', function(socket) {
 io.on('connection', function(socket) {
   console.log('new socket client');
   let widgetId
-  let widgetConfig
+  let widgetSetting
   socket.on('setWidgetId', id => {
     widgetId = id;
     socket.join(id);
   })
   
-  socket.on('setConfig', data => {
-    widgetConfig = data
-    io.to()
+  socket.on('updateSetting', data => {
+    widgetSetting = data
+    io.to(widgetId).emit('updateSetting', data);
   })
 })
