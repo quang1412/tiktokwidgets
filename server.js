@@ -16,7 +16,12 @@ app.get('/', function(req, res) {
 server = http.Server(app);
 server.listen(5000);
 
-io = socketIO(server);
+io = socketIO(server, {
+  cors: {
+    origin: "https://quang.codocla.vn",
+    methods: ["GET", "POST"]
+  }
+});
 
 console.log('server is running')
 
@@ -177,5 +182,15 @@ io.of('/app').on('connection', function(socket) {
 
 io.on('connection', function(socket) {
   console.log('new socket client');
+  let widgetId
+  let widgetConfig
+  socket.on('setWidgetId', id => {
+    widgetId = id;
+    socket.join(id);
+  })
   
+  socket.on('setConfig', data => {
+    widgetConfig = data
+    io.to()
+  })
 })
