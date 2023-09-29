@@ -182,12 +182,13 @@ io.of('/app').on('connection', function(socket) {
 
 io.on('connection', function(socket) {
   console.log('new socket client');
-  let widgetId
+  let widgetId = socket.handshake.query.widgetid;
+  socket.join(widgetId)
   let widgetSetting
-  socket.on('setWidgetId', id => {
-    widgetId = id;
-    socket.join(id);
-  })
+  // socket.on('setWidgetId', id => {
+  //   widgetId = id;
+  //   socket.join(id);
+  // })
   
   socket.on('updateSetting', data => {
     widgetSetting = data
