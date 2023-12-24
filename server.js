@@ -174,6 +174,7 @@ io.of('/app').on('connection', function(socket) {
       } 
     } 
   }) 
+  
   socket.on("disconnect", (reason) => {
     // ...
   }); 
@@ -195,4 +196,8 @@ io.of('/widget').on('connection', function(socket){
   console.log('new widget socket client');
   let widgetId = socket.handshake.query.widgetid;
   socket.join(widgetId)
+  
+  socket.on('/chat', data => {
+    
+  })
 })
