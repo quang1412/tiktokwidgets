@@ -197,7 +197,8 @@ io.of('/widget').on('connection', function(socket){
   let widgetId = socket.handshake.query.widgetid;
   socket.join(widgetId)
   
-  socket.on('chat', data => {
-    io.to(widgetId).emit('chat', data);
+  socket.on('pass2control', ([e, data]) => {
+ 
+    io.to(widgetId).emit(e, data);
   })
 })
