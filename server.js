@@ -181,7 +181,7 @@ io.of('/app').on('connection', function(socket) {
 })
 
 io.on('connection', function(socket) {
-  console.log('new socket client');
+  console.log('new socket client config');
   let widgetId = socket.handshake.query.widgetid;
   socket.join(widgetId)
   let widgetSetting
