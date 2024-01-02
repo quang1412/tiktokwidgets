@@ -6,12 +6,14 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   cookieParser = require("cookie-parser"),
   engine = require('express-handlebars').engine,
+  fs = require('fs'),
   ProxyAgent = require('proxy-agent').ProxyAgent;
 
 const { WebcastPushConnection } = require('tiktok-live-connector');
 
 app.use(express.static("public"));
 app.use(cookieParser());
+app.use(express.json())
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
@@ -64,7 +66,10 @@ app.get('/widgetSetting',function(req, res){
 })
 app.post('/widgetSetting', function(req, res){
   let widgetid = req.cookies.widgetid;
-  
+  let json = JSON.stringify(req.body.data)
+  fs.writeFile(__dirname + '/server/widgetSetting/' + widgetid + '.json', json, 'utf8', function(){
+    res.json({requestBody: json, widgetid: widgetid})
+  });
 })
 
 const roomList = {};
