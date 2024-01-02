@@ -3,7 +3,6 @@ const express = require('express'),
   http = require('http'),
   client = require("socket.io-client"),
   socketIO = require('socket.io'),
-
   ProxyAgent = require('proxy-agent').ProxyAgent;
 
 
@@ -25,15 +24,7 @@ const io = socketIO(server, {
 
 console.log('server is running')
 
-const proxies = [
-  "https://nviyzwin:04p3u2363za4@198.46.241.113:6648",
-  "https://nviyzwin:04p3u2363za4@45.86.62.192:6121",
-  "https://nviyzwin:04p3u2363za4@38.154.233.137:5547",
-  "https://nviyzwin:04p3u2363za4@104.223.227.159:6682",
-  "https://nviyzwin:04p3u2363za4@140.99.47.96:8087",
-  "https://nviyzwin:04p3u2363za4@45.61.127.73:6012",
-  "https://nviyzwin:04p3u2363za4@198.46.246.108:6732"
-]
+
 
 const roomList = {};
 
@@ -48,7 +39,8 @@ io.on('connection', function(socket) {
   })
 })
 
-io.of('/widget').on('connection', function(socket){
+let io_widget = io.of('/widget');
+io_widget.on('connection', function(socket){
   console.log('new widget socket client');
   let widgetId = socket.handshake.query.widgetid;
   socket.join(widgetId)
@@ -59,4 +51,11 @@ io.of('/widget').on('connection', function(socket){
   })
 })
 
-io.of('/control')
+let io_web = io.of('/web');
+io_web.on('connection', function(socket){
+  console.log('new webpage sonnected')
+  let widgetId = socket.handshake.query.widgetid;
+  
+  socket.on('updateSetting', data => { io_widget.to(widgetId).emit('updateSetting', data) })
+  
+})
