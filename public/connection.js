@@ -5,7 +5,7 @@
 window.TikTokIOConnection = class {
   constructor() {
     // this.socket = window.io("/app");
-    this.socket = window.io("https://tiktok-chat-reader.zerody.one");
+    this.socket = window.io("/widget");
     this.uniqueId = null;
     this.options = null;
 
@@ -62,6 +62,28 @@ window.TikTokIOConnection = class {
 
   on(eventName, eventHandler) {
     this.socket.on(eventName, eventHandler);
-  }
+  } 
 }
 
+window.likeEventDelay = {
+  duration: 15000,
+  users: {},
+  main: function(data){
+    const {uniqueId, likeCount} = data
+    return new Promise((resolve, reject) => {  
+      if(!likeCount){
+        return reject()
+      }  
+      this.users[uniqueId] = (this.users[uniqueId] || 0) + likeCount 
+      const total = this.users[uniqueId]
+      setTimeout(() => { 
+        if(total == this.users[uniqueId]){
+          resolve(total)
+          delete this.users[uniqueId]
+        } else {
+          reject()
+        }
+      }, this.duration)
+    }) 
+  }
+}

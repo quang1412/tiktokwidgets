@@ -9,9 +9,6 @@ const { WebcastPushConnection } = require('tiktok-live-connector');
 
 app.use(express.static("public"));
 
-app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/views/index.html');
-});
 
 const server = http.Server(app);
 server.listen(5000);
@@ -26,6 +23,15 @@ const io = socketIO(server, {
 console.log('server is running')
 
 
+app.get('/*', function(req, res) {
+  res.sendFile(__dirname + '/views/index.html');
+});
+
+
+app.get('/chatbox/obs', function(req, res) {
+  res.send('id: ' + req.query.widgetid);
+  
+});
 
 const roomList = {};
 
@@ -49,31 +55,51 @@ class tiktokLiveRoom{
       console.log(`${data.uniqueId} (userId:${data.userId}) sends ${data.giftId}`);
     })
     
-    // tiktokLiveConnection.on('member', data => {
-    //   console.log(`${data.uniqueId} joins the stream!`);
-    // })
-    
-    // tiktokLiveConnection.on('gift', data => {
-    // if (data.giftType === 1 && !data.repeatEnd) {
-    // // Streak in progress => show only temporary
-    // console.log(`${data.uniqueId} is sending gift ${data.giftName} x${data.repeatCount}`);
-    // } else {
-    // // Streak ended or non-streakable gift => process the gift with final repeat_count
-    // console.log(`${data.uniqueId} has sent gift ${data.giftName} x${data.repeatCount}`);
-    // }
-    // })
-    
-//     tiktokLiveConnection.on('roomUser', data => {
-//     console.log(`Viewer Count: ${data.viewerCount}`);
-// })
-    
-//     tiktokLiveConnection.on('like', data => {
-//     console.log(`${data.uniqueId} sent ${data.likeCount} likes, total likes: ${data.totalLikeCount}`);
-// })
-  
-//     tiktokLiveConnection.on('social', data => {
-//     console.log('social event data:', data);
-// })
+    this.connect.on('member', data => {
+      console.log(`${data.uniqueId} joins the stream!`);
+    })
+
+    this.connect.on('gift', data => {
+    if (data.giftType === 1 && !data.repeatEnd) {
+      // Streak in progress => show only temporary
+      console.log(`${data.uniqueId} is sending gift ${data.giftName} x${data.repeatCount}`);
+    } else {
+      // Streak ended or non-streakable gift => process the gift with final repeat_count
+      console.log(`${data.uniqueId} has sent gift ${data.giftName} x${data.repeatCount}`);
+    }
+    })
+
+    this.connect.on('roomUser', data => {
+      console.log(`Viewer Count: ${data.viewerCount}`);
+    })
+
+    this.connect.on('like', data => {
+      console.log(`${data.uniqueId} sent ${data.likeCount} likes, total likes: ${data.totalLikeCount}`);
+    })
+
+    this.connect.on('social', data => {
+      console.log('social event data:', data);
+    })
+
+    this.connect.on('emote', data => {
+      console.log('emote received', data);
+    })
+
+    this.connect.on('envelope', data => {
+      console.log('envelope received', data);
+    })
+
+    this.connect.on('questionNew', data => {
+      console.log(`${data.uniqueId} asks ${data.questionText}`);
+    })
+
+    this.connect.on('follow', (data) => {
+      console.log(data.uniqueId, "followed!");
+    })
+
+    this.connect.on('share', (data) => {
+      console.log(data.uniqueId, "shared the stream!");
+    })
 
   }
 }
