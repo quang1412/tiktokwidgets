@@ -7,9 +7,8 @@ const express = require('express'),
   cookieParser = require("cookie-parser"),
   engine = require('express-handlebars').engine,
   fs = require('fs'),
-  ProxyAgent = require('proxy-agent').ProxyAgent;
-
-const { WebcastPushConnection } = require('tiktok-live-connector');
+  ProxyAgent = require('proxy-agent').ProxyAgent,
+  { WebcastPushConnection } = require('tiktok-live-connector');
 
 app.use(express.static("public"));
 app.use(cookieParser());
@@ -61,8 +60,22 @@ app.get('/chatbox/obs', function(req, res) {
 });
 
 app.get('/widgetSetting',function(req, res){
-  let widgetid = req.query.widgetid;
+  let widgetid = req.query.widgetid || 'undefined';
+  let filePath = __dirname + '/server/widgetSetting/' + widgetid + '.json';
   
+  fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
+      // let setting = 
+      if (!err) {
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.write(data);
+        res.end();
+      } else {
+        res.writeHead(404, {'Content-Type': 'application/json'});
+        res.write('');
+        res.end();
+      }
+  });
+
 })
 app.post('/widgetSetting', function(req, res){
   let widgetid = req.cookies.widgetid;
