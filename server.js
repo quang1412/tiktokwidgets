@@ -31,13 +31,50 @@ const roomList = {};
 
 class tiktokLiveRoom{
   constructor(id){
-    let tiktokLiveConnection = new WebcastPushConnection(id)
+    this.connect = new WebcastPushConnection(id)
     
-    tiktokLiveConnection.connect().then(state => {
+    this.connect.connect().then(state => {
       console.info(`Connected to roomId ${state.roomId}`);
     }).catch(err => {
       console.error('Failed to connect', err);
     })
+    this.doListen()
+  }
+  
+  doListen(){
+    this.connect.on('chat', data => {
+      console.log(`${data.uniqueId} (userId:${data.userId}) writes: ${data.comment}`);
+    })
+    this.connect.on('gift', data => {
+      console.log(`${data.uniqueId} (userId:${data.userId}) sends ${data.giftId}`);
+    })
+    
+    // tiktokLiveConnection.on('member', data => {
+    //   console.log(`${data.uniqueId} joins the stream!`);
+    // })
+    
+    // tiktokLiveConnection.on('gift', data => {
+    // if (data.giftType === 1 && !data.repeatEnd) {
+    // // Streak in progress => show only temporary
+    // console.log(`${data.uniqueId} is sending gift ${data.giftName} x${data.repeatCount}`);
+    // } else {
+    // // Streak ended or non-streakable gift => process the gift with final repeat_count
+    // console.log(`${data.uniqueId} has sent gift ${data.giftName} x${data.repeatCount}`);
+    // }
+    // })
+    
+//     tiktokLiveConnection.on('roomUser', data => {
+//     console.log(`Viewer Count: ${data.viewerCount}`);
+// })
+    
+//     tiktokLiveConnection.on('like', data => {
+//     console.log(`${data.uniqueId} sent ${data.likeCount} likes, total likes: ${data.totalLikeCount}`);
+// })
+  
+//     tiktokLiveConnection.on('social', data => {
+//     console.log('social event data:', data);
+// })
+
   }
 }
 
@@ -60,8 +97,12 @@ io_widget.on('connection', function(socket){
   let widgetId = socket.handshake.query.widgetid;
   socket.join(widgetId)
   
-  
-  socket.on('setUniqueId', id => {
+  let tiktokId = ''
+  socket.on('setUniqueId', function(id){
+    if(id == tiktokId) return
+    
+    tiktokId = id
+    
     
   })
   // socket.on('pass2control', ([e, data]) => {
