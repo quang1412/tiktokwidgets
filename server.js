@@ -5,6 +5,7 @@ const express = require('express'),
   socketIO = require('socket.io'),
   bodyParser = require('body-parser'),
   cookieParser = require("cookie-parser"),
+  engine = require('express-handlebars').engine,
   ProxyAgent = require('proxy-agent').ProxyAgent;
 
 const { WebcastPushConnection } = require('tiktok-live-connector');
@@ -12,17 +13,14 @@ const { WebcastPushConnection } = require('tiktok-live-connector');
 app.use(express.static("public"));
 app.use(cookieParser());
 
-// app.use(express.cookieParser());
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', './views');
 
 const server = http.Server(app);
 server.listen(5000);
 
-const io = socketIO(server, {
-  cors: {
-    origin: "https://quang.codocla.vn",
-    methods: ["GET", "POST"]
-  }
-});
+const io = socketIO(server, { cors: { origin: "https://quang.codocla.vn", methods: ["GET", "POST"] }});
 
 console.log('server is running')
 
@@ -39,33 +37,35 @@ function makeid(length = 10) {
 }
 
 app.use(function (req, res, next) {
-  // check if client sent cookie
-  var cookie = req.cookies.widgetid;
+  let cookie = req.cookies.widgetid;
   if (cookie === undefined) {
-    // no: set a new cookie
-    var randomNumber= makeid(20);
+    let randomNumber= makeid(20);
     randomNumber=randomNumber.substring(2,randomNumber.length);
     res.cookie('widgetid',randomNumber, { maxAge: 900000, httpOnly: true });
     console.log('cookie created successfully');
   } else {
-    // yes, cookie was already present 
     console.log('cookie exists', cookie);
   } 
-  next(); // <-- important!
+  next();
 });
-
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-
 app.get('/chatbox/obs', function(req, res) {
   let widgetid = req.query.widgetid
   if(!widgetid){ res.send('widgetid: ' + widgetid) }
-  
-  
 });
+
+app.get('/widgetSetting',function(req, res){
+  let widgetid = req.query.widgetid;
+  
+})
+app.post('/widgetSetting', function(req, res){
+  let widgetid = req.cookies.widgetid;
+  
+})
 
 const roomList = {};
 
