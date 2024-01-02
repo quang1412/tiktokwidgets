@@ -3,12 +3,16 @@ const express = require('express'),
   http = require('http'),
   client = require("socket.io-client"),
   socketIO = require('socket.io'),
+  bodyParser = require('body-parser'),
+  cookieParser = require("cookie-parser"),
   ProxyAgent = require('proxy-agent').ProxyAgent;
 
 const { WebcastPushConnection } = require('tiktok-live-connector');
 
 app.use(express.static("public"));
+app.use(cookieParser());
 
+// app.use(express.cookieParser());
 
 const server = http.Server(app);
 server.listen(5000);
@@ -21,6 +25,34 @@ const io = socketIO(server, {
 });
 
 console.log('server is running')
+
+function makeid(length = 10) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+}
+
+// app.use(function (req, res, next) {
+//   // check if client sent cookie
+//   var cookie = req.cookies.widgetid;
+//   if (cookie === undefined) {
+//     // no: set a new cookie
+//     var randomNumber= makeid(20);
+//     randomNumber=randomNumber.substring(2,randomNumber.length);
+//     res.cookie('widgetid',randomNumber, { maxAge: 900000, httpOnly: true });
+//     console.log('cookie created successfully');
+//   } else {
+//     // yes, cookie was already present 
+//     console.log('cookie exists', cookie);
+//   } 
+//   next(); // <-- important!
+// });
 
 
 app.get('/*', function(req, res) {
