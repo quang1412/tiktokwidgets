@@ -5,6 +5,7 @@ const express = require('express'),
   socketIO = require('socket.io'),
   ProxyAgent = require('proxy-agent').ProxyAgent;
 
+const { WebcastPushConnection } = require('tiktok-live-connector');
 
 app.use(express.static("public"));
 
@@ -28,6 +29,18 @@ console.log('server is running')
 
 const roomList = {};
 
+class tiktokLiveRoom{
+  constructor(id){
+    let tiktokLiveConnection = new WebcastPushConnection(id)
+    
+    tiktokLiveConnection.connect().then(state => {
+      console.info(`Connected to roomId ${state.roomId}`);
+    }).catch(err => {
+      console.error('Failed to connect', err);
+    })
+  }
+}
+
 io.on('connection', function(socket) {
   console.log('new socket client config');
   let widgetId = socket.handshake.query.widgetid;
@@ -40,17 +53,27 @@ io.on('connection', function(socket) {
 })
 
 let io_widget = io.of('/widget');
+let io_web = io.of('/web');
+
 io_widget.on('connection', function(socket){
   console.log('new widget socket client');
   let widgetId = socket.handshake.query.widgetid;
   socket.join(widgetId)
   
+  
+  socket.on('setUniqueId', id => {
+    
+  })
   // socket.on('pass2control', ([e, data]) => {
   //   io.to(widgetId).emit(e, data);
   // })
+  
+  // socket.emit('tiktokDisconnected')
+  // socket.emit('tiktokConnected')
+  // socket.emit('tiktokDisconnected')
+  // socket.emit('streamEnd')
 })
 
-let io_web = io.of('/web');
 io_web.on('connection', function(socket){
   console.log('new webpage sonnected')
   let widgetId = socket.handshake.query.widgetid;
