@@ -38,30 +38,32 @@ function makeid(length = 10) {
     return result;
 }
 
-// app.use(function (req, res, next) {
-//   // check if client sent cookie
-//   var cookie = req.cookies.widgetid;
-//   if (cookie === undefined) {
-//     // no: set a new cookie
-//     var randomNumber= makeid(20);
-//     randomNumber=randomNumber.substring(2,randomNumber.length);
-//     res.cookie('widgetid',randomNumber, { maxAge: 900000, httpOnly: true });
-//     console.log('cookie created successfully');
-//   } else {
-//     // yes, cookie was already present 
-//     console.log('cookie exists', cookie);
-//   } 
-//   next(); // <-- important!
-// });
+app.use(function (req, res, next) {
+  // check if client sent cookie
+  var cookie = req.cookies.widgetid;
+  if (cookie === undefined) {
+    // no: set a new cookie
+    var randomNumber= makeid(20);
+    randomNumber=randomNumber.substring(2,randomNumber.length);
+    res.cookie('widgetid',randomNumber, { maxAge: 900000, httpOnly: true });
+    console.log('cookie created successfully');
+  } else {
+    // yes, cookie was already present 
+    console.log('cookie exists', cookie);
+  } 
+  next(); // <-- important!
+});
 
 
-app.get('/*', function(req, res) {
+app.get('/', function(req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
 
 app.get('/chatbox/obs', function(req, res) {
-  res.send('id: ' + req.query.widgetid);
+  let widgetid = req.query.widgetid
+  if(!widgetid){ res.send('widgetid: ' + widgetid) }
+  
   
 });
 
