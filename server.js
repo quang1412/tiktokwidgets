@@ -76,41 +76,38 @@ app.get('/chatbox/obs', function(req, res) {
 app.get('/chatbox/', function(req, res) {
   let widgetid = req.cookies.widgetid;
   if(!widgetid){ res.send('widgetid: ' + widgetid) }
+  let setting = ''
   
+  getWidgetConfig(widgetid)
+  .then(data => {
+    
+  })
+  .catch(_ => {
+    
+  })
+  .then(_ => {
+    
+  })
 });
 
 
 app.get('/widgetSetting',function(req, res){
   let widgetid = req.query.widgetid;
   let status = 404
-  let setting = null
+  let setting = 'not found!'
   getWidgetConfig(widgetid)
   .then(data => {
-    setting = data
+    setting = JSON.stringif(data)
     status = 200
   })
   .catch(_ => {
+
   })
-  .f(_ => {
+  .then(_ => {
     res.writeHead(status, {'Content-Type': 'application/json'});
     res.write(setting);
     res.end();
   })
-//   let filePath = __dirname + '/server/widgetSetting/' + widgetid + '.json';
-  
-//   fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
-//       // let setting = 
-//       if (!err) {
-//         res.writeHead(200, {'Content-Type': 'application/json'});
-//         res.write(data);
-//         res.end();
-//       } else {
-//         res.writeHead(404, {'Content-Type': 'application/json'});
-//         res.write('not found!');
-//         res.end();
-//       }
-//   });
-
 })
 app.post('/widgetSetting', function(req, res){
   let widgetid = req.cookies.widgetid;
