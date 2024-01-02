@@ -37,6 +37,20 @@ function makeid(length = 10) {
     return result;
 }
 
+function getWidgetConfig(widgetid){
+  return new Promise(function(resolve, reject){
+    let filePath = __dirname + '/server/widgetSetting/' + widgetid + '.json';
+  
+    fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
+      if (!err) {
+        return resolve(data)
+      } else {
+        return reject(false)
+      }
+    });
+  })
+}
+
 app.use(function (req, res, next) {
   let cookie = req.cookies.widgetid;
   if (cookie === undefined) {
@@ -54,27 +68,48 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+
 app.get('/chatbox/obs', function(req, res) {
   let widgetid = req.query.widgetid
   if(!widgetid){ res.send('widgetid: ' + widgetid) }
 });
+app.get('/chatbox/', function(req, res) {
+  let widgetid = req.cookies.widgetid;
+  if(!widgetid){ res.send('widgetid: ' + widgetid) }
+  
+});
+
 
 app.get('/widgetSetting',function(req, res){
-  let widgetid = req.query.widgetid || 'undefined';
-  let filePath = __dirname + '/server/widgetSetting/' + widgetid + '.json';
+  let widgetid = req.query.widgetid;
+  let status = 404
+  let setting = null
+  getWidgetConfig(widgetid)
+  .then(data => {
+    setting = data
+    status = 200
+  })
+  .catch(_ => {
+  })
+  .f(_ => {
+    res.writeHead(status, {'Content-Type': 'application/json'});
+    res.write(setting);
+    res.end();
+  })
+//   let filePath = __dirname + '/server/widgetSetting/' + widgetid + '.json';
   
-  fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
-      // let setting = 
-      if (!err) {
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.write(data);
-        res.end();
-      } else {
-        res.writeHead(404, {'Content-Type': 'application/json'});
-        res.write('');
-        res.end();
-      }
-  });
+//   fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
+//       // let setting = 
+//       if (!err) {
+//         res.writeHead(200, {'Content-Type': 'application/json'});
+//         res.write(data);
+//         res.end();
+//       } else {
+//         res.writeHead(404, {'Content-Type': 'application/json'});
+//         res.write('not found!');
+//         res.end();
+//       }
+//   });
 
 })
 app.post('/widgetSetting', function(req, res){
@@ -84,6 +119,11 @@ app.post('/widgetSetting', function(req, res){
     res.json({requestBody: json, widgetid: widgetid})
   });
 })
+
+
+app.get('/*', function(req, res) {
+  res.sendFile(__dirname + '/views/index.html');
+});
 
 const roomList = {};
 
