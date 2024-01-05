@@ -66,9 +66,11 @@ function getWidgetConfig(widgetid, widgetName) {
   })
 }
 
-app.use(function (req, res, next) {  
-  if(req.path == '/chatbox'){  
-    let widgetid = req.cookies.widgetid || makeid(20)  
+app.use(function (req, res, next) {
+  let path = req.path.replaceAll('/','') 
+  let pathList = ['chatbox', 'alertbox']
+  if(req.method == 'GET' && !!~pathList.indexOf(path)){  
+    let widgetid = req.cookies.widgetid || makeid(20) 
     res.cookie("widgetid", widgetid, { path: req.path,  maxAge: 365 * 24 * 3600000, httpOnly: true })
   } else { }
   next()
@@ -159,7 +161,7 @@ const webcasts = {
 }
 
 class tiktokLiveRoom {
-  constructor(username) {
+  constructor(username ) {
     this.connect = new WebcastPushConnection(username);
     this.state = {}
     this.username = username
@@ -261,19 +263,19 @@ class tiktokLiveRoom {
   }
 
   emit(eventName, data){
-    io_widget.to(this.username).emit(eventName, data)
-    io_web.to(this.username).emit(eventName, data)
+    io.to(this.username).emit(eventName, data)
+    // io_widget.to(this.username).emit(eventName, data)
+    // io_web.to(this.username).emit(eventName, data)
   }
 }
- 
 
 io_widget.on("connection", function (socket) {
   let widgetId = socket.handshake.query.widgetid
-  console.log("new widget socket client",  widgetId)
   socket.join(widgetId)
-
-  let tiktokid = ""
-  // let tiktokRoom
+  let tiktokid = socket.handshake.query.tiktokid
+  //let tiktokid = socket.handshake.query.tiktokid
+  //socket.join(tiktokid)
+  
   socket.on("setUniqueId", function (newtiktokId, options) {
     console.log(newtiktokId, options)
       
@@ -284,9 +286,7 @@ io_widget.on("connection", function (socket) {
       let webcast = webcasts.get(newtiktokId);
       
       if(webcast){
-        webcast.emit('tiktokConnected', webcast.state)
-        console.log('EXISTED', newtiktokId)
-        console.log(webcast.state)
+        webcast.emit('tiktokConnected', webcast.state) 
       } else {
         webcast = new tiktokLiveRoom(newtiktokId)
         webcasts.add(newtiktokId, webcast)
@@ -294,23 +294,64 @@ io_widget.on("connection", function (socket) {
     }
 
     tiktokid = newtiktokId
-  })
-  // socket.on('pass2control', ([e, data]) => {
-  //   io.to(widgetId).emit(e, data);
-  // })
+  }) 
 
-  // socket.emit('tiktokDisconnected')
-  // socket.emit('tiktokConnected')
-  // socket.emit('tiktokDisconnected')
-  // socket.emit('streamEnd')
+  console.log("new widget socket client",  widgetId)
 })
 
 io_web.on("connection", function (socket) {
   let widgetId = socket.handshake.query.widgetid
+  socket.join(widgetId) 
+  let tiktokid = socket.handshake.query.tiktokid
+  socket.join(tiktokid) 
+
+  // socket.on("setUniqueId", function (id, options) {
+  //   changeTiktokId(id)
+  // })
 
   socket.on("updateSetting", (data) => {
-    io_widget.to(widgetId).emit("updateSetting", data)
+    io_widget.to(widgetId).emit("updateSetting", data) 
+    
+    let i = data.username
+    socket.leave(tiktokid)
+    socket.join(i)
+    tiktokid = i
   })
 
-  console.log("new webpage sonnected", widgetId)
+  console.log("new webpage connected", widgetId)
+})
+
+
+io.on("connection", function (socket) {
+  let widgetId = socket.handshake.query.widgetid
+  socket.join(widgetId)
+  let tiktokid = socket.handshake.query.tiktokid
+  socket.join(tiktokid)
+
+  socket.on("setUniqueId", function (id, options) {
+    socket.leave(tiktokid)
+    socket.join(id)
+    
+    if(id !== tiktokid){
+      let webcast = webcasts.get(id);
+      
+      if(webcast){
+        socket.emit('tiktokConnected', webcast.state)
+      } else {
+        webcast = new tiktokLiveRoom(id, options)
+        webcasts.add(id, webcast)
+      }
+    }
+
+    tiktokid = id
+  }) 
+
+  socket.on("updateSetting", (data) => {
+    io.to(widgetId).emit("updateSetting", data)
+    
+    let i = data.username
+    socket.leave(tiktokid)
+    socket.join(i)
+    tiktokid = i
+  })
 })

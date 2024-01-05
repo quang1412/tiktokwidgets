@@ -3,9 +3,9 @@
  * With reconnect functionality.
  */
 window.TikTokIOConnection = class {
-  constructor(widgetid = '') {
+  constructor(widgetid = '', tiktokid = '') {
     // this.socket = window.io("/app");
-    this.socket = window.io("/widget" ,{ query: 'widgetid=' + widgetid});
+    this.socket = window.io("/" ,{ query: 'widgetid=' + widgetid + '&tiktokid=' + tiktokid});
     this.uniqueId = null;
     this.options = null;
 
@@ -62,7 +62,11 @@ window.TikTokIOConnection = class {
 
   on(eventName, eventHandler) {
     this.socket.on(eventName, eventHandler);
-  } 
+  }
+
+  emit(eventName, ...args) {
+    this.socket.emit(eventName, ...args);
+  }
 }
 
 window.likeThrottler = {

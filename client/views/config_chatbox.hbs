@@ -122,7 +122,7 @@
                               <input
                                 class="form-check-input"
                                 type="checkbox"
-                                value="true"
+                                value="active"
                                 name="followRole_2"
                                 id="followRole_2"
                                 {{#if followRole_2}} checked {{/if}}
@@ -138,7 +138,7 @@
                               <input
                                 class="form-check-input"
                                 type="checkbox"
-                                value="true"
+                                value="active"
                                 name="followRole_1"
                                 id="followRole_1"
                                 {{#if followRole_1}} checked {{/if}}
@@ -154,7 +154,7 @@
                               <input
                                 class="form-check-input"
                                 type="checkbox"
-                                value="true"
+                                value="active"
                                 name="followRole_0"
                                 id="followRole_0"
                                 {{#if followRole_0}} checked {{/if}}
@@ -170,7 +170,7 @@
                               <input
                                 class="form-check-input"
                                 type="checkbox"
-                                value="true"
+                                value="active"
                                 name="topGifterRank"
                                 id="topGifterRank"
                                 {{#if topGifterRank}} checked {{/if}}
@@ -276,17 +276,14 @@
 
       let url = $(this).attr( "action");
       let formData = $(this).serializeArray();
-      let settings = {};
-      formData.map(({name, value}) => {settings[name] = value }) ;
+      let setting = {};
+      formData.map(({name, value}) => {setting[name] = value }) ;
 
-      if(!settings.username){
+      if(!setting.username){
         return alert('vui lòng nhập ID Tiktok!');
       }
 
-      let postData = {
-        'setting': settings,
-        'widgetid': _widgetId
-      }
+      let postData = { 'setting': setting, 'widgetid': window.widgetid }
 
       $.ajax({
         url: url,
@@ -294,14 +291,14 @@
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(postData),
         success: function(r){
-          window.ioServer && window.ioServer.emit('updateSetting', settings);
+          window.connection && (window.connection.emit('updateSetting', setting))
+          window.setting = setting
           saveBtn.html('Đã lưu');
-          console.log('Config saved');
-          console.log(postData);
-          console.log(_widgetId);
+          console.log('setting:', setting);
         },
         error: function(e){
           alert('Lỗi: ' + e.message)
+          saveBtn.html('Lưu lại').removeClass('disabled')
         },
         complete: function(){
 
@@ -311,9 +308,9 @@
     $(document).on("input", "input[type='range']", function(e){
       $(this).attr('value', this.value);
     })
-    $(document).on("change", "input[type='checkbox']", function(e){
-      const s = e.target;
-      const i = s.getAttribute('data-switch-for');
+    $(document).on("change", "input[type='checkbox']", function(e){ 
+      $(`label[for="${this.id}"]`).css('opacity', this.checked ? 1 : 0.5)
+      const i = this.getAttribute('data-switch-for');
       const t = $(`#${i}`);
       t.toggleClass('show');
     });

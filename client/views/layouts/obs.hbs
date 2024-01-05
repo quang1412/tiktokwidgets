@@ -21,17 +21,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://kit.fontawesome.com/d83ecd5594.js" crossorigin="anonymous"></script> 
     <script src="/connection.js?t=12312312"></script>
+    
+    <!-- <script type="text/javascript">
+    </script> -->
+
     <script type="text/javascript">
     (async function(){
-      window.widgetId = `{{widgetid}}`;
+      window.widgetid = '{{widgetid}}';
+      window.setting = {
+        {{#each setting}}
+        "{{@key}}": "{{this}}",
+        {{/each}} 
+      } 
 
-      let a = await fetch('/setting?widgetid={{widgetid}}')
-      let b = await a.json();
-      window.setting = b.data || {}
-
+      console.log('widgetid:', window.widgetid)
       console.log('setting:', window.setting)
-      
-      let connection = new window.TikTokIOConnection(window.widgetId);
+
+      let connection = new window.TikTokIOConnection(window.widgetid);
+
+      connection.on('updateSetting', data => {
+        window.setting = data
+        
+        console.log('setting:', window.setting)
+      })
 
       $(document).ready(() => {
           $('#connectButton').click(connect);
@@ -89,23 +101,7 @@
       })
 
     })()
-    </script>
-    <script> 
-//let backendUrl = location.protocol === 'file:' ? "https://tiktok-chat-reader.zerody.one/" : undefined;
-//let connection = new window.TikTokIOConnection();
-
-//let limitItemsCount = 10;
-
-// Counter
-//let viewerCount = 0;
-//let likeCount = 0;
-//let diamondsCount = 0;
-
-// These settings are defined by obs.html
-//if (!window.setting) window.setting = {};
-
- 
-    </script>
+    </script> 
   </head>
   <body>
     <div style="">
