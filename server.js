@@ -1,239 +1,316 @@
-const express = require('express'),
+const express = require("express"),
   app = express(),
-  http = require('http'),
-  client = require("socket.io-client"),
-  socketIO = require('socket.io'),
-  bodyParser = require('body-parser'),
+  http = require("http"),
+  // client = require("socket.io-client"),
+  socketIO = require("socket.io"),
+  bodyParser = require("body-parser"),
   cookieParser = require("cookie-parser"),
-  engine = require('express-handlebars').engine,
-  fs = require('fs'),
-  ProxyAgent = require('proxy-agent').ProxyAgent,
-  { WebcastPushConnection } = require('tiktok-live-connector');
+  engine = require("express-handlebars").engine,
+  fs = require("fs"),
+  // ProxyAgent = require("proxy-agent").ProxyAgent,
+  { WebcastPushConnection } = require("tiktok-live-connector")
 
-app.use(express.static("public"));
-app.use(cookieParser());
-app.use(express.json())
+app.use(express.static("client/public"))
+app.use(cookieParser())
+app.use(bodyParser.json())
 
-app.engine('handlebars', engine());
-app.set('view engine', 'handlebars');
-app.set('views', './views');
+app.engine(".hbs", engine({ extname: ".hbs" }))
+app.set("view engine", ".hbs")
+app.set("views", "./client/views")
 
-const server = http.Server(app);
-server.listen(5000);
+const server = http.Server(app)
+server.listen(5000)
 
-const io = socketIO(server, { cors: { origin: "https://quang.codocla.vn", methods: ["GET", "POST"] }});
+const io = socketIO(server, {
+  // cors: { origin: "https://quang.codocla.vn", methods: ["GET", "POST"] },
+})
+const io_widget = io.of("/widget")
+const io_web = io.of("/web")
 
-console.log('server is running')
+console.log("server is running")
 
 function makeid(length = 10) {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
-    }
-    return result;
+  let result = ""
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+  const charactersLength = characters.length
+  let counter = 0
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
+    counter += 1
+  }
+  return result
 }
+ 
 
-function getWidgetConfig(widgetid){
-  return new Promise(function(resolve, reject){
-    let filePath = __dirname + '/server/widgetSetting/' + widgetid + '.json';
-  
-    fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
-      if (!err) {
-        return resolve(data)
+function getWidgetConfig(widgetid, widgetName) {
+  return new Promise(function (resolve, reject) {
+    let filePath = __dirname + "/server/widget_setting/" + widgetid + ".json" 
+    fs.readFile(filePath, { encoding: "utf-8" }, function (err, data) { 
+      if(!err){
+        return resolve(JSON.parse(data))
+      } else if(widgetName) {
+        // GET DEFAULT
+        let defaultPath = __dirname + "/server/widget_setting/default/" + widgetName + ".json" 
+        fs.readFile(defaultPath, { encoding: "utf-8" }, function (err1, data1) {
+          if(!err1){
+            return resolve(JSON.parse(data1))
+          } else {
+            return reject(false)
+          }
+        })
       } else {
         return reject(false)
       }
-    });
+    })
   })
 }
 
-app.use(function (req, res, next) {
-  let cookie = req.cookies.widgetid;
-  if (cookie === undefined) {
-    let randomNumber= makeid(20);
-    randomNumber=randomNumber.substring(2,randomNumber.length);
-    res.cookie('widgetid',randomNumber, { maxAge: 900000, httpOnly: true });
-    console.log('cookie created successfully');
-  } else {
-    console.log('cookie exists', cookie);
-  } 
-  next();
-});
-
-app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/views/index.html');
-});
-
-
-app.get('/chatbox/obs', function(req, res) {
-  let widgetid = req.query.widgetid
-  if(!widgetid){ res.send('widgetid: ' + widgetid) }
-});
-app.get('/chatbox/', function(req, res) {
-  let widgetid = req.cookies.widgetid;
-  if(!widgetid){ res.send('widgetid: ' + widgetid) }
-  let setting = ''
-  
-  getWidgetConfig(widgetid)
-  .then(data => {
-    
-  })
-  .catch(_ => {
-    
-  })
-  .then(_ => {
-    
-  })
-});
-
-
-app.get('/widgetSetting',function(req, res){
-  let widgetid = req.query.widgetid;
-  let status = 404
-  let setting = 'not found!'
-  getWidgetConfig(widgetid)
-  .then(data => {
-    setting = JSON.stringif(data)
-    status = 200
-  })
-  .catch(_ => {
-
-  })
-  .then(_ => {
-    res.writeHead(status, {'Content-Type': 'application/json'});
-    res.write(setting);
-    res.end();
-  })
-})
-app.post('/widgetSetting', function(req, res){
-  let widgetid = req.cookies.widgetid;
-  let json = JSON.stringify(req.body.data)
-  fs.writeFile(__dirname + '/server/widgetSetting/' + widgetid + '.json', json, 'utf8', function(){
-    res.json({requestBody: json, widgetid: widgetid})
-  });
+app.use(function (req, res, next) {  
+  if(req.path == '/chatbox'){  
+    let widgetid = req.cookies.widgetid || makeid(20)  
+    res.cookie("widgetid", widgetid, { path: req.path,  maxAge: 365 * 24 * 3600000, httpOnly: true })
+  } else { }
+  next()
 })
 
+// app.get("/", function (req, res) {
+//  res.sendFile(__dirname + "/views/index.html")
+ 
+// })
 
-app.get('/*', function(req, res) {
-  res.sendFile(__dirname + '/views/index.html');
-});
-
-const roomList = {};
-
-class tiktokLiveRoom{
-  constructor(id){
-    this.connect = new WebcastPushConnection(id)
-    
-    this.connect.connect().then(state => {
-      console.info(`Connected to roomId ${state.roomId}`);
-    }).catch(err => {
-      console.error('Failed to connect', err);
+app.get("/chatbox", function (req, res) {
+  let widgetid = req.cookies.widgetid
+  getWidgetConfig(widgetid, 'chatbox').then((setting) => {  
+    res.render("config_chatbox", {
+      layout: "main",
+      title: "Chatbox",
+      widgetid: widgetid,
+      setting: setting,
     })
+  }).catch(e => {
+    res.redirect('/error?m=error text')
+  })
+})
+app.get("/chatbox/obs", function (req, res) {
+  let widgetid = req.query.widgetid
+  if (!widgetid) { return res.redirect('/error?m=widget id not found!') }
+ 
+  getWidgetConfig(widgetid).then((setting) => {  
+    res.render("obs_chatbox", {
+      layout: "obs",
+      title: "Chatbox",
+      widgetid: widgetid,
+      setting: setting,
+    })
+  }).catch(e => {
+    res.redirect('/error?m=widget setting not exist!')
+  })
+})
+
+
+app.get("/setting", function (req, res) {
+  let response = {success: true, data: '', message: ''}
+  let widgetid = req.query.widgetid
+  getWidgetConfig(widgetid).then((data) => {
+    return res.status(200).json({ ...response, data: data, message: 'ok'})
+  }).catch((e) => {
+    return res.status(500).json({ ...response, success: false})
+  })
+})
+
+app.post("/setting", function (req, res) {
+  let response = {success: true, data: '', message: ''}
+  try{
+    let widgetid = req.body.widgetid
+    let setting = req.body.setting
+    fs.writeFile( __dirname + "/server/widget_setting/" + widgetid + ".json", JSON.stringify(setting), "utf8", function () {
+      res.status(200).json({ ...response, message: 'setting saved', data: setting})
+    })
+  } catch(e){
+    res.status(400).json({ ...response, success: false })
+  }
+})
+
+app.get("/", function (req, res) { 
+  res.send('<p><a href="/chatbox">chatbox</a></p>')
+})
+
+app.get('/*', function(req, res){
+  let m = req.query.m
+  res.render("error", {
+    layout: false,
+    message: m
+  })
+})
+
+const webcasts = {
+  list:{},
+  add: function(id, webcast){
+    if(!id || !webcast || this.list[id]) return;
+    this.list[id] = webcast
+  },
+  get: function(id){
+    return this.list[id];
+  },
+  delete: function(id){
+    delete this.list[id]
+  }
+}
+
+class tiktokLiveRoom {
+  constructor(username) {
+    this.connect = new WebcastPushConnection(username);
+    this.state = {}
+    this.username = username
+
+    this.connect.connect().then((state) => {
+      this.emit('tiktokConnected', state)
+      this.state = state
+      console.log(`Connected to roomId ${state.roomId}`)
+    }).catch((err) => {
+      console.error("Failed to connect", err)
+      webcasts.delete(this.username)
+    })
+    
     this.doListen()
   }
-  
-  doListen(){
-    this.connect.on('chat', data => {
-      console.log(`${data.uniqueId} (userId:${data.userId}) writes: ${data.comment}`);
-    })
-    this.connect.on('gift', data => {
-      console.log(`${data.uniqueId} (userId:${data.userId}) sends ${data.giftId}`);
-    })
-    
-    this.connect.on('member', data => {
-      console.log(`${data.uniqueId} joins the stream!`);
+
+  doListen() {
+    this.connect.on("chat", (data) => {
+      this.emit('chat', data)
+      // console.log(`${data.uniqueId} (userId:${data.userId}) writes: ${data.comment}`)
     })
 
-    this.connect.on('gift', data => {
-    if (data.giftType === 1 && !data.repeatEnd) {
-      // Streak in progress => show only temporary
-      console.log(`${data.uniqueId} is sending gift ${data.giftName} x${data.repeatCount}`);
-    } else {
-      // Streak ended or non-streakable gift => process the gift with final repeat_count
-      console.log(`${data.uniqueId} has sent gift ${data.giftName} x${data.repeatCount}`);
-    }
+    this.connect.on("gift", (data) => {
+      this.emit('gift', data)
+      // console.log(`${data.uniqueId} (userId:${data.userId}) sends ${data.giftId}`)
     })
 
-    this.connect.on('roomUser', data => {
-      console.log(`Viewer Count: ${data.viewerCount}`);
+    this.connect.on("member", (data) => {
+      this.emit('member', data)
+      // console.log(`${data.uniqueId} joins the stream!`)
     })
 
-    this.connect.on('like', data => {
-      console.log(`${data.uniqueId} sent ${data.likeCount} likes, total likes: ${data.totalLikeCount}`);
+    this.connect.on("gift", (data) => {
+      if (data.giftType === 1 && !data.repeatEnd) {
+        // Streak in progress => show only temporary
+      this.emit('gift', data)
+      // console.log(`${data.uniqueId} is sending gift ${data.giftName} x${data.repeatCount}`)
+      } else {
+        // Streak ended or non-streakable gift => process the gift with final repeat_count
+      this.emit('gift', data)
+      // console.log(`${data.uniqueId} has sent gift ${data.giftName} x${data.repeatCount}`)
+      }
     })
 
-    this.connect.on('social', data => {
-      console.log('social event data:', data);
+    this.connect.on("roomUser", (data) => {
+      this.emit('roomUser', data)
+      // console.log(`Viewer Count: ${data.viewerCount}`)
     })
 
-    this.connect.on('emote', data => {
-      console.log('emote received', data);
+    this.connect.on("like", (data) => {
+      this.emit('like', data)
+      // console.log(`${data.uniqueId} sent ${data.likeCount} likes, total likes: ${data.totalLikeCount}`)
     })
 
-    this.connect.on('envelope', data => {
-      console.log('envelope received', data);
+    this.connect.on("social", (data) => {
+      this.emit('social', data)
+      // console.log("social event data:", data)
     })
 
-    this.connect.on('questionNew', data => {
-      console.log(`${data.uniqueId} asks ${data.questionText}`);
+    this.connect.on("emote", (data) => {
+      this.emit('emote', data)
+      // console.log("emote received", data)
     })
 
-    this.connect.on('follow', (data) => {
-      console.log(data.uniqueId, "followed!");
+    this.connect.on("envelope", (data) => {
+      this.emit('envelope', data)
+      // console.log("envelope received", data)
     })
 
-    this.connect.on('share', (data) => {
-      console.log(data.uniqueId, "shared the stream!");
+    this.connect.on("questionNew", (data) => {
+      this.emit('questionNew', data)
+      // console.log(`${data.uniqueId} asks ${data.questionText}`)
     })
 
+    this.connect.on("follow", (data) => {
+      this.emit('follow', data)
+      // console.log(data.uniqueId, "followed!")
+    })
+
+    this.connect.on("share", (data) => {
+      this.emit('share', data)
+      // console.log(data.uniqueId, "shared the stream!")
+    })
+
+    this.connect.on('streamEnd', (actionId) => {
+      this.emit('streamEnd', actionId)
+      webcasts.delete(this.id)
+      if (actionId === 3) {
+          // console.log('Stream ended by user');
+      }
+      if (actionId === 4) {
+          // console.log('Stream ended by platform moderator (ban)');
+      }
+    })
+
+    this.connect.on('disconnected', () => {
+      // console.log('Disconnected :(');
+    })
+  }
+
+  emit(eventName, data){
+    io_widget.to(this.username).emit(eventName, data)
+    io_web.to(this.username).emit(eventName, data)
   }
 }
+ 
 
-io.on('connection', function(socket) {
-  console.log('new socket client config');
-  let widgetId = socket.handshake.query.widgetid;
+io_widget.on("connection", function (socket) {
+  let widgetId = socket.handshake.query.widgetid
+  console.log("new widget socket client",  widgetId)
   socket.join(widgetId)
-  let widgetSetting
-  socket.on('updateSetting', data => {
-    widgetSetting = data
-    io.of('/widget').to(widgetId).emit('updateSetting', data);
-  })
-})
 
-let io_widget = io.of('/widget');
-let io_web = io.of('/web');
+  let tiktokid = ""
+  // let tiktokRoom
+  socket.on("setUniqueId", function (newtiktokId, options) {
+    console.log(newtiktokId, options)
+      
+    socket.leave(tiktokid)
+    socket.join(newtiktokId)
+    
+    if(newtiktokId !== tiktokid){
+      let webcast = webcasts.get(newtiktokId);
+      
+      if(webcast){
+        webcast.emit('tiktokConnected', webcast.state)
+        console.log('EXISTED', newtiktokId)
+        console.log(webcast.state)
+      } else {
+        webcast = new tiktokLiveRoom(newtiktokId)
+        webcasts.add(newtiktokId, webcast)
+      }
+    }
 
-io_widget.on('connection', function(socket){
-  console.log('new widget socket client');
-  let widgetId = socket.handshake.query.widgetid;
-  socket.join(widgetId)
-  
-  let tiktokId = ''
-  socket.on('setUniqueId', function(id){
-    if(id == tiktokId) return
-    
-    tiktokId = id
-    
-    
+    tiktokid = newtiktokId
   })
   // socket.on('pass2control', ([e, data]) => {
   //   io.to(widgetId).emit(e, data);
   // })
-  
+
   // socket.emit('tiktokDisconnected')
   // socket.emit('tiktokConnected')
   // socket.emit('tiktokDisconnected')
   // socket.emit('streamEnd')
 })
 
-io_web.on('connection', function(socket){
-  console.log('new webpage sonnected')
-  let widgetId = socket.handshake.query.widgetid;
-  
-  socket.on('updateSetting', data => { io_widget.to(widgetId).emit('updateSetting', data) })
-  
+io_web.on("connection", function (socket) {
+  let widgetId = socket.handshake.query.widgetid
+
+  socket.on("updateSetting", (data) => {
+    io_widget.to(widgetId).emit("updateSetting", data)
+  })
+
+  console.log("new webpage sonnected", widgetId)
 })
