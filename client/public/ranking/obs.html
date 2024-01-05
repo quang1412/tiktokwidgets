@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBS Overlay</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <style>
+      body {
+        min-width: 200px !important;
+        background-image: unset;
+        background-color: transparent !important;
+      }
+
+      .usernamelink {
+        color: rgb(102, 143, 217) !important;
+      }
+
+      ::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+      }
+
+      .eventcontainer>div {
+        margin-top: 5px;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://kit.fontawesome.com/d83ecd5594.js" crossorigin="anonymous"></script>
+    <script>
+      window.settings = Object.fromEntries(new URLSearchParams(location.search));
+      window.addEventListener('load', () => {
+        // if () {  
+        // }
+        // if (window.settings.bgColor) {
+        // }
+        // if (window.settings.fontSize) {
+        // }
+        window.settings.fontColor && $('body').css('color', window.settings.fontColor);
+        
+        window.settings.bgColor && $('body').css('--bgColor', window.settings.bgColor);
+        
+        window.settings.fontSize && $('body').css('--fontSize', window.settings.fontSize);
+
+        window.settings.textColor && $('body').css('--textColor', window.settings.textColor);
+        
+        window.settings.rankEvent && $('div.ranktable:not([data-event="'+window.settings.rankEvent+'"])').hide()
+        
+        window.settings.rankTitle && $('.maintitle').text(window.settings.rankTitle)
+        
+        window.settings.resetTime && window.settings.resetTime != '0'
+        
+//         let rankEvent = $('#rankEvent').val();
+//         let rankTitle = $('#rankTitle').val();
+//         let bgColor = $('#bgColor').val();
+//         let textColor = $('#textColor').val();
+//         let fontSize = $('#fontSize').val()+'px';
+      })
+    </script>
+    <script src="/connection.js"></script>
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid ">
+<!--       <small><pre id="stateText">&nbsp</pre></small> -->
+      
+      <div style="display: flex; gap: 25px; overflow-y: scroll; height:100vh">
+         
+        <div class="ranktable" id="likerank" data-event="like">
+          <div class="mb-3 text-center fw-bolder">
+            <span class="mb-0 fw-bolder d-block maintitle" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <small>Phiên live hiện tại</small>
+          </div>
+          <div class="tableBg"></div>
+          <div class="rankcolumntitle">
+            <span>Hạng</span>
+            <span>
+              <i class="fa-solid fa-heart"></i> like</span>
+          </div>
+          <div class="rankitems"></div>
+        </div>
+        
+        <div class="ranktable" id="chatrank" data-event="chat">
+          <div class="mb-3 text-center fw-bolder">
+            <span class="mb-0 fw-bolder d-block maintitle" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <small>Phiên live hiện tại</small>
+          </div>
+          <div class="rankcolumntitle">
+            <span>Hạng</span>
+            <span>
+              <i class="fa-solid fa-comment-dots"></i> chat</span>
+          </div>
+          <div class="rankitems"></div>
+        </div>
+        
+        <div class="ranktable" id="sharerank" data-event="share">
+          <div class="mb-3 text-center fw-bolder">
+            <span class="mb-0 fw-bolder d-block maintitle" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <small>Phiên live hiện tại</small>
+          </div>
+          <div class="rankcolumntitle">
+            <span>Hạng</span>
+            <span>
+              <i class="fa-solid fa-share"></i> share</span>
+          </div>
+          <div class="rankitems"></div>
+        </div>
+        
+        <div class="ranktable" id="giftrank" data-event="gift">
+          <div class="mb-3 text-center fw-bolder">
+            <span class="mb-0 fw-bolder d-block maintitle" style="font-size:1.3em;">Bảng xếp hạng</span>
+            <small>Phiên live hiện tại</small>
+          </div>
+          <div class="rankcolumntitle">
+            <span>Hạng</span>
+            <span>
+              <i class="fa-solid fa-gift"></i> quà tặng</span>
+          </div>
+          <div class="rankitems"></div>
+        </div>
+        
+      </div>
+    </div>
+<!--     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script> -->
+<!--     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
+</html>

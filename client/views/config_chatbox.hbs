@@ -1,0 +1,327 @@
+<div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-lg-8 mx-auto">
+        <form action="/setting" id="setConfig" class="mb-2">
+          <div class="mb-2">
+            <ul
+              class="nav nav-pills nav-fill rounded rounded-5"
+              id="pills-tab"
+              role="tablist"
+              style="background-color: rgb(246 246 246);"
+            >
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="tabs-general-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#tabs-general"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                >
+                  <i class="fas fa-globe-americas"></i>
+                  <span class="d-none d-md-inline-block">Chung</span>
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="tabs-likes-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#tabs-likes"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                >
+                  <i class="fas fa-heart"></i>
+                  <span class="d-none d-md-inline-block">Comment</span>
+                </button>
+              </li>
+              <li class="nav-item d-none" role="presentation">
+                <button
+                  class="nav-link"
+                  id="tabs-share-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#tabs-share"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                >
+                  <i class="fas fa-share"></i>
+                  <span class="d-none d-md-inline-block">Chia sẻ</span>
+                </button>
+              </li>
+              <li class="nav-item d-none" role="presentation">
+                <button
+                  class="nav-link"
+                  id="tabs-follow-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#tabs-follow"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                >
+                  <i class="fas fa-star"></i>
+                  <span class="d-none d-md-inline-block">Theo dõi</span>
+                </button>
+              </li>
+              <li class="nav-item d-none" role="presentation">
+                <button
+                  class="nav-link"
+                  id="tabs-gift-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#tabs-gift"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                >
+                  <i class="fas fa-gift"></i>
+                  <span class="d-none d-md-inline-block">Tặng quà</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- </div> -->
+
+          <!-- <div class="card-body" style="height: 500px; overflow: auto;"> -->
+          <div class="mb-2 py-2" style="">
+            <div class="tab-content" id="pills-tabContent">
+              <div
+                class="tab-pane fade show active"
+                id="tabs-general"
+                role="tabpanel"
+              >
+                <h5>Cài đặt chung</h5>
+                 
+                <table class="wp-block-table is-style-stripes">
+                  {{#with setting}}
+                    <tbody>
+                      <tr>
+                        <td>ID Tiktok</td>
+                        <td colspan="2">
+                          <div class="input-group mb-2">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="username"
+                              id="uniqueIdInput"
+                              value="{{ username }}"
+                              required
+                              placeholder="Nhập @username của kênh đang livestream"
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Kiểu thành viên</td>
+                        <td>
+                          <div class="">
+                            <div class="form-check">
+
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="true"
+                                name="followRole_2"
+                                id="followRole_2"
+                                {{#if followRole_2}} checked {{/if}}
+                              />
+                              <label
+                                class="form-check-label"
+                                for="followRole_2"
+                              >
+                                Bạn bè
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="true"
+                                name="followRole_1"
+                                id="followRole_1"
+                                {{#if followRole_1}} checked {{/if}}
+                              />
+                              <label
+                                class="form-check-label"
+                                for="followRole_1"
+                              >
+                                Người theo dõi
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="true"
+                                name="followRole_0"
+                                id="followRole_0"
+                                {{#if followRole_0}} checked {{/if}}
+                              />
+                              <label
+                                class="form-check-label"
+                                for="followRole_0"
+                              >
+                                Không theo dõi
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="true"
+                                name="topGifterRank"
+                                id="topGifterRank"
+                                {{#if topGifterRank}} checked {{/if}}
+                              />
+                              <label
+                                class="form-check-label"
+                                for="topGifterRank"
+                              >
+                                Top tặng quà
+                              </label>
+                            </div>
+                            <!--   <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="xxxxxx">
+                            <label class="form-check-label" for="xxxxxx">
+                              xxxxxx
+                            </label>
+                          </div> -->
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Từ bị cấm</td>
+                        <td>
+                          <div class="form-group">
+                            <input
+                              class="form-control"
+                              placeholder=""
+                              id="spamKeyWord"
+                              name="spamKeyWord"
+                              value='{{{spamKeyWord}}}'
+                            />
+                          </div>
+                          <small>cách nhau bởi dấu phẩy.</small>
+                        </td>
+                      </tr>
+                    </tbody>
+                  {{/with}}
+                </table>
+              </div>
+              <div class="tab-pane fade" id="tabs-likes" role="tabpanel">
+                <h5>Cài đặt sự kiện thả tim</h5>
+                <table class="wp-block-table is-style-stripes">
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+              <div class="tab-pane fade" id="tabs-share" role="tabpanel">
+                <h5>Cài đặt sự kiện chia sẻ</h5>
+                <table class="wp-block-table is-style-stripes">
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+              <div class="tab-pane fade" id="tabs-follow" role="tabpanel">
+                <h5>Cài đặt sự kiện theo dõi</h5>
+                <table class="wp-block-table is-style-stripes">
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+              <div class="tab-pane fade" id="tabs-gift" role="tabpanel">
+                <h5>Cài đặt sự kiện tặng quà</h5>
+                <table class="wp-block-table is-style-stripes">
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="text-end">
+            <a
+              class="btn btn-sm btn-outline-primary"
+              onclick="generateOverlay()"
+            >Xem trước</a>
+            <button class="btn btn-sm btn-primary disabled" type="submit">Lưu
+              lại</button>
+          </div>
+        </form>
+        <pre class="mb-0">widget id: {{widgetid}}</pre>
+        <pre id="stateText"></pre>
+      </div>
+    </div>
+  </div>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+  ></script>
+  <script type="text/javascript">
+    $(document).on("input", "form#setConfig", function(event){
+      const saveBtn = $(this).find('button[type="submit"]');
+      saveBtn.html('Lưu lại').removeClass('disabled')
+    });
+    $(document).on("submit", "form#setConfig", function(event){
+      event.preventDefault();
+      let saveBtn = $(this).find('button[type="submit"]');
+
+      saveBtn.html('Đang lưu...').addClass('disabled');
+
+      let url = $(this).attr( "action");
+      let formData = $(this).serializeArray();
+      let settings = {};
+      formData.map(({name, value}) => {settings[name] = value }) ;
+
+      if(!settings.username){
+        return alert('vui lòng nhập ID Tiktok!');
+      }
+
+      let postData = {
+        'setting': settings,
+        'widgetid': _widgetId
+      }
+
+      $.ajax({
+        url: url,
+        type: 'post',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(postData),
+        success: function(r){
+          window.ioServer && window.ioServer.emit('updateSetting', settings);
+          saveBtn.html('Đã lưu');
+          console.log('Config saved');
+          console.log(postData);
+          console.log(_widgetId);
+        },
+        error: function(e){
+          alert('Lỗi: ' + e.message)
+        },
+        complete: function(){
+
+        }
+      }) 
+    });
+    $(document).on("input", "input[type='range']", function(e){
+      $(this).attr('value', this.value);
+    })
+    $(document).on("change", "input[type='checkbox']", function(e){
+      const s = e.target;
+      const i = s.getAttribute('data-switch-for');
+      const t = $(`#${i}`);
+      t.toggleClass('show');
+    });
+    $(document).ready(function(){
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      })
+    });
+  </script>
+</div>
