@@ -181,84 +181,84 @@ class tiktokLiveRoom {
   doListen() {
     this.connect.on("chat", (data) => {
       this.emit('chat', data)
-      // console.log(`${data.uniqueId} (userId:${data.userId}) writes: ${data.comment}`)
+      console.log(`${data.uniqueId} (userId:${data.userId}) writes: ${data.comment}`)
     })
 
     this.connect.on("gift", (data) => {
       this.emit('gift', data)
-      // console.log(`${data.uniqueId} (userId:${data.userId}) sends ${data.giftId}`)
+      console.log(`${data.uniqueId} (userId:${data.userId}) sends ${data.giftId}`)
     })
 
     this.connect.on("member", (data) => {
       this.emit('member', data)
-      // console.log(`${data.uniqueId} joins the stream!`)
+      console.log(`${data.uniqueId} joins the stream!`)
     })
 
     this.connect.on("gift", (data) => {
       if (data.giftType === 1 && !data.repeatEnd) {
         // Streak in progress => show only temporary
       this.emit('gift', data)
-      // console.log(`${data.uniqueId} is sending gift ${data.giftName} x${data.repeatCount}`)
+      console.log(`${data.uniqueId} is sending gift ${data.giftName} x${data.repeatCount}`)
       } else {
         // Streak ended or non-streakable gift => process the gift with final repeat_count
       this.emit('gift', data)
-      // console.log(`${data.uniqueId} has sent gift ${data.giftName} x${data.repeatCount}`)
+      console.log(`${data.uniqueId} has sent gift ${data.giftName} x${data.repeatCount}`)
       }
     })
 
     this.connect.on("roomUser", (data) => {
       this.emit('roomUser', data)
-      // console.log(`Viewer Count: ${data.viewerCount}`)
+      console.log(`Viewer Count: ${data.viewerCount}`)
     })
 
     this.connect.on("like", (data) => {
       this.emit('like', data)
-      // console.log(`${data.uniqueId} sent ${data.likeCount} likes, total likes: ${data.totalLikeCount}`)
+      console.log(`${data.uniqueId} sent ${data.likeCount} likes, total likes: ${data.totalLikeCount}`)
     })
 
-    this.connect.on("social", (data) => {
-      this.emit('social', data)
-      // console.log("social event data:", data)
-    })
+    //this.connect.on("social", (data) => {
+      //this.emit('social', data)
+      //console.log("social event data:", data)
+    //})
 
     this.connect.on("emote", (data) => {
       this.emit('emote', data)
-      // console.log("emote received", data)
+      console.log("emote received", data)
     })
 
     this.connect.on("envelope", (data) => {
       this.emit('envelope', data)
-      // console.log("envelope received", data)
+      console.log("envelope received", data)
     })
 
     this.connect.on("questionNew", (data) => {
       this.emit('questionNew', data)
-      // console.log(`${data.uniqueId} asks ${data.questionText}`)
+      console.log(`${data.uniqueId} asks ${data.questionText}`)
     })
 
     this.connect.on("follow", (data) => {
       this.emit('follow', data)
-      // console.log(data.uniqueId, "followed!")
+      console.log(data.uniqueId, "followed!")
     })
 
     this.connect.on("share", (data) => {
       this.emit('share', data)
-      // console.log(data.uniqueId, "shared the stream!")
+      console.log(data.uniqueId, "shared the stream!")
     })
 
     this.connect.on('streamEnd', (actionId) => {
       this.emit('streamEnd', actionId)
       webcasts.delete(this.id)
       if (actionId === 3) {
-          // console.log('Stream ended by user');
+          console.log('Stream ended by user');
       }
       if (actionId === 4) {
-          // console.log('Stream ended by platform moderator (ban)');
+          console.log('Stream ended by platform moderator (ban)');
       }
     })
 
     this.connect.on('disconnected', () => {
-      // console.log('Disconnected :(');
+      console.log('Disconnected :(');
     })
   }
 
