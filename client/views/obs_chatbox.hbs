@@ -1,4 +1,18 @@
-<div>
-  <h1>OBS chatbox widget</h1>
-  <script>{{widgetid}}</script>
+<div> 
+  <div id="aaaaa">
+
+  </div>
+  <script>
+    let list = []
+    window.connection.on('chat', (data) => {
+      list.push(data)
+      {{!-- $('<pre>').text(`${data.uniqueId} (userId:${data.userId}) writes: ${data.comment}`).prependTo($('#aaaaa')) --}}
+    })
+
+    setInterval(_ => {
+      data = list.shift()
+      data && $('<pre>').html(`<b>${data.uniqueId}:</b> ${data.comment}`).prependTo($('#aaaaa'))
+      $('#aaaaa pre:nth-child(n+ 20)').remove()
+    }, 500)
+  </script>
 </div>

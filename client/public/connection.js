@@ -10,8 +10,7 @@ window.TikTokIOConnection = class {
     this.options = null;
 
     this.socket.on('connect', () => {
-      console.info("Socket connected!");
-
+      console.info("📡 Server connected!"); 
       // Reconnect to streamer if uniqueId already set
       if (this.uniqueId) {
         this.setUniqueId();

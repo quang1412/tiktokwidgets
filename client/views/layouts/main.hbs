@@ -27,38 +27,32 @@
       crossorigin="anonymous"
     ></script> 
     
-    <script src="/connection.js?t=12312312"></script>
-
-    <script type="text/javascript">
-    (async function(){
+    <script>
       window.widgetid = '{{widgetid}}';
-      window.setting = {
-        {{#each setting}}
-        "{{@key}}": "{{this}}",
-        {{/each}} 
-      }
+      console.log('widgetid:', window.widgetid)
+      window.setting = { {{#each setting}} "{{@key}}": "{{this}}", {{/each}}  }
+      console.log('setting:', window.setting)
 
-      window.connection = new window.TikTokIOConnection(window.widgetid, window.setting.username);
-      connection.on('connect', _ => { console.log('📡 Server connected') })
-      //connection.emit('setUniqueId', window.setting.username)
-      
-    })() 
-      //window._widgetId = `{{{widgetid}}}`;
-
-      //window.ioServer = window.io("/", {query: `widgetid=${window.widgetid}&tiktokid=${window.setting.username}`});
-      //window.ioServer.on('connect', () => { console.log('📡 Server connected') })
-     // window.ioServer.emit('setUniqueId', '{{{setting.username}}}')
-      //window.ioServer.onAny((n, d) => {console.log(n, d)})
-    </script>
-    <script type="text/javascript">
       function generateOverlay() { 
         const url = ('obs?widgetid=' + window.widgetid)
-        window.obsPreview = window.open (url, "widget preview","menubar=0,resizable=1,width=800,height=400");
-      }
+        window.obsPreview = (window.obsPreview && !window.obsPreview.closed) ? window.obsPreview : window.open (url, "widget preview","menubar=0,resizable=1,width=800,height=400");
+        window.obsPreview.focus()
+      };
+
       window.onbeforeunload = function(){
         window.obsPreview && window.obsPreview.close()
-      }
+      } 
+    </script> 
+
+    <script src="/connection.js?t=12312312"></script> 
+    <script type="text/javascript">
+    (async function(){ 
+      window.connection = new window.TikTokIOConnection(window.widgetid, window.setting.username);
+      {{!-- connection.on('connect', _ => { console.log('📡 Server connected') }) --}}
+
+    })();
     </script>
+    
     <style type="text/css">
       body{ font-size: 14px; } body * {transition: opacity 0.3s ease 0s;} table tbody td{ padding: 5px; } table tbody
       td:first-child{ white-space:nowrap; } table { width: 100%; } table tbody

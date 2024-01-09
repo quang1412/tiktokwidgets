@@ -110,6 +110,7 @@
                               required
                               placeholder="Nhập @username của kênh đang livestream"
                             />
+                            <button class="btn btn-sm btn-outline-primary" type="button" id="connectButton">Kết nối</button>
                           </div>
                         </td>
                       </tr>
@@ -245,16 +246,13 @@
             </div>
           </div>
           <div class="text-end">
-            <a
-              class="btn btn-sm btn-outline-primary"
-              onclick="generateOverlay()"
-            >Xem trước</a>
-            <button class="btn btn-sm btn-primary disabled" type="submit">Lưu
-              lại</button>
+            {{!-- <a class="btn btn-sm btn-outline-primary" onclick=" ">Kết nối</a> --}}
+            <a class="btn btn-sm btn-outline-primary" onclick="generateOverlay()">Xem trước</a>
+            <button class="btn btn-sm btn-primary disabled" type="submit">Lưu lại</button>
           </div>
         </form>
         <pre class="mb-0">widget id: {{widgetid}}</pre>
-        <pre id="stateText"></pre>
+        <pre id="stateText"> </pre>
       </div>
     </div>
   </div>
@@ -263,6 +261,44 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"
   ></script>
+
+  <script>
+    (function(){
+      if(!connection) { return }
+
+      connection.on("chat", (data) => {
+        console.log(`${data.uniqueId} (userId:${data.userId}) writes: ${data.comment}`)
+      })
+
+      connection.on("like", (data) => {
+        console.log(`${data.uniqueId} sent ${data.likeCount} likes, total likes: ${data.totalLikeCount}`)
+      })
+
+      connection.on("follow", (data) => {
+        console.log(data.uniqueId, "followed!")
+      })
+
+      connection.on("share", (data) => {
+        console.log(data.uniqueId, "shared the stream!")
+      })
+
+      connection.on("gift", (data) => {
+        if (data.giftType === 1 && !data.repeatEnd) {
+          // Streak in progress => show only temporary
+        console.log(`${data.uniqueId} is sending gift ${data.giftName} x${data.repeatCount}`)
+        } else {
+          // Streak ended or non-streakable gift => process the gift with final repeat_count
+        console.log(`${data.uniqueId} has sent gift ${data.giftName} x${data.repeatCount}`)
+        }
+      })
+
+      connection.on("roomUser", (data) => {
+        console.log(`Viewer Count: ${data.viewerCount}`)
+      })
+    })();
+
+  </script>
+  
   <script type="text/javascript">
     $(document).on("input", "form#setConfig", function(event){
       const saveBtn = $(this).find('button[type="submit"]');

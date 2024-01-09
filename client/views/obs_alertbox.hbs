@@ -1,0 +1,14 @@
+<div>
+  <h1>OBS alertbox widget</h1>
+
+  <script>
+    (async function(){
+      window.runWidget = function(connection){
+
+        connection.on('like', (msg) => {
+          console.log(msg)
+        })
+      }
+    })()
+  </script>
+</div>

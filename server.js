@@ -7,8 +7,8 @@ const express = require("express"),
   cookieParser = require("cookie-parser"),
   engine = require("express-handlebars").engine,
   fs = require("fs"),
-  // ProxyAgent = require("proxy-agent").ProxyAgent,
   { WebcastPushConnection } = require("tiktok-live-connector")
+  // ProxyAgent = require("proxy-agent").ProxyAgent,
 
 app.use(express.static("client/public"))
 app.use(cookieParser())
@@ -23,9 +23,7 @@ server.listen(5000)
 
 const io = socketIO(server, {
   // cors: { origin: "https://quang.codocla.vn", methods: ["GET", "POST"] },
-})
-const io_widget = io.of("/widget")
-const io_web = io.of("/web")
+}) 
 
 console.log("server is running")
 
@@ -40,10 +38,9 @@ function makeid(length = 10) {
     counter += 1
   }
   return result
-}
- 
+} 
 
-function getWidgetConfig(widgetid, widgetName) {
+function getWidgetSetting(widgetid, widgetName) {
   return new Promise(function (resolve, reject) {
     let filePath = __dirname + "/server/widget_setting/" + widgetid + ".json" 
     fs.readFile(filePath, { encoding: "utf-8" }, function (err, data) { 
@@ -81,40 +78,11 @@ app.use(function (req, res, next) {
  
 // })
 
-app.get("/chatbox", function (req, res) {
-  let widgetid = req.cookies.widgetid
-  getWidgetConfig(widgetid, 'chatbox').then((setting) => {  
-    res.render("config_chatbox", {
-      layout: "main",
-      title: "Chatbox",
-      widgetid: widgetid,
-      setting: setting,
-    })
-  }).catch(e => {
-    res.redirect('/error?m=error text')
-  })
-})
-app.get("/chatbox/obs", function (req, res) {
-  let widgetid = req.query.widgetid
-  if (!widgetid) { return res.redirect('/error?m=widget id not found!') }
- 
-  getWidgetConfig(widgetid).then((setting) => {  
-    res.render("obs_chatbox", {
-      layout: "obs",
-      title: "Chatbox",
-      widgetid: widgetid,
-      setting: setting,
-    })
-  }).catch(e => {
-    res.redirect('/error?m=widget setting not exist!')
-  })
-})
-
 
 app.get("/setting", function (req, res) {
   let response = {success: true, data: '', message: ''}
   let widgetid = req.query.widgetid
-  getWidgetConfig(widgetid).then((data) => {
+  getWidgetSetting(widgetid).then((data) => {
     return res.status(200).json({ ...response, data: data, message: 'ok'})
   }).catch((e) => {
     return res.status(500).json({ ...response, success: false})
@@ -136,6 +104,51 @@ app.post("/setting", function (req, res) {
 
 app.get("/", function (req, res) { 
   res.send('<p><a href="/chatbox">chatbox</a></p>')
+})
+
+app.get("/chatbox", function (req, res) {
+  let widgetid = req.cookies.widgetid
+  getWidgetSetting(widgetid, 'chatbox').then((setting) => {  
+    res.render("config_chatbox", {
+      layout: "main",
+      title: "Chatbox",
+      widgetid: widgetid,
+      setting: setting,
+    })
+  }).catch(e => {
+    res.redirect('/error?m=error text')
+  })
+})
+app.get("/chatbox/obs", function (req, res) {
+  let widgetid = req.query.widgetid
+  if (!widgetid) { return res.redirect('/error?m=widget id not found!') }
+ 
+  getWidgetSetting(widgetid).then((setting) => {  
+    res.render("obs_chatbox", {
+      layout: "obs",
+      title: "OBS chatbox widget",
+      widgetid: widgetid,
+      setting: setting,
+    })
+  }).catch(e => {
+    res.redirect('/error?m=widgetid invalid!')
+  })
+})
+
+app.get("/alertbox/obs", function (req, res) {
+  let widgetid = req.query.widgetid
+  if (!widgetid) { return res.redirect('/error?m=widget id not found!') }
+ 
+  getWidgetSetting(widgetid, alertbox).then((setting) => {  
+    res.render("obs_alertbox", {
+      layout: "obs",
+      title: "Alertbox",
+      widgetid: widgetid,
+      setting: setting,
+    })
+  }).catch(e => {
+    res.redirect('/error?m=widgetid invalid!')
+  })
 })
 
 app.get('/*', function(req, res){
@@ -161,37 +174,44 @@ const webcasts = {
 }
 
 class tiktokLiveRoom {
-  constructor(username ) {
-    this.connect = new WebcastPushConnection(username);
-    this.state = {}
-    this.username = username
+  constructor(username, options) {
+    this.connect = new WebcastPushConnection(username, options);
+    this.state = null
+    this.username = username 
 
-    this.connect.connect().then((state) => {
+    this.doConnect()
+    this.doListen()
+  }
+
+  doConnect() {
+    this.connect.connect().then((state) => { 
       this.emit('tiktokConnected', state)
       this.state = state
       console.log(`Connected to roomId ${state.roomId}`)
     }).catch((err) => {
-      console.error("Failed to connect", err)
-      webcasts.delete(this.username)
+      this.emit('tiktokDisconnected', err.message) 
     })
-    
-    this.doListen()
   }
 
-  doListen() {
+  doListen() { 
     this.connect.on("chat", (data) => {
       this.emit('chat', data)
       console.log(`${data.uniqueId} (userId:${data.userId}) writes: ${data.comment}`)
     })
 
-    this.connect.on("gift", (data) => {
-      this.emit('gift', data)
-      console.log(`${data.uniqueId} (userId:${data.userId}) sends ${data.giftId}`)
+    this.connect.on("like", (data) => {
+      this.emit('like', data)
+      console.log(`${data.uniqueId} sent ${data.likeCount} likes, total likes: ${data.totalLikeCount}`)
     })
 
-    this.connect.on("member", (data) => {
-      this.emit('member', data)
-      console.log(`${data.uniqueId} joins the stream!`)
+    this.connect.on("follow", (data) => {
+      this.emit('follow', data)
+      console.log(data.uniqueId, "followed!")
+    })
+
+    this.connect.on("share", (data) => {
+      this.emit('share', data)
+      console.log(data.uniqueId, "shared the stream!")
     })
 
     this.connect.on("gift", (data) => {
@@ -211,44 +231,9 @@ class tiktokLiveRoom {
       console.log(`Viewer Count: ${data.viewerCount}`)
     })
 
-    this.connect.on("like", (data) => {
-      this.emit('like', data)
-      console.log(`${data.uniqueId} sent ${data.likeCount} likes, total likes: ${data.totalLikeCount}`)
-    })
-
-    //this.connect.on("social", (data) => {
-      //this.emit('social', data)
-      //console.log("social event data:", data)
-    //})
-
-    this.connect.on("emote", (data) => {
-      this.emit('emote', data)
-      console.log("emote received", data)
-    })
-
-    this.connect.on("envelope", (data) => {
-      this.emit('envelope', data)
-      console.log("envelope received", data)
-    })
-
-    this.connect.on("questionNew", (data) => {
-      this.emit('questionNew', data)
-      console.log(`${data.uniqueId} asks ${data.questionText}`)
-    })
-
-    this.connect.on("follow", (data) => {
-      this.emit('follow', data)
-      console.log(data.uniqueId, "followed!")
-    })
-
-    this.connect.on("share", (data) => {
-      this.emit('share', data)
-      console.log(data.uniqueId, "shared the stream!")
-    })
-
-    this.connect.on('streamEnd', (actionId) => {
+    this.connect.on('streamEnd', (actionId) => { 
       this.emit('streamEnd', actionId)
-      webcasts.delete(this.id)
+      this.state.isConnected = false 
       if (actionId === 3) {
           console.log('Stream ended by user');
       }
@@ -258,100 +243,84 @@ class tiktokLiveRoom {
     })
 
     this.connect.on('disconnected', () => {
-      console.log('Disconnected :(');
+      this.state.isConnected = false
+      this.emit('tiktokDisconnected', 'network disconnected') 
+      console.log('\n\n DISCONNECTED :( \n\n');
     })
+
+    // this.connect.on("gift", (data) => {
+    //   this.emit('gift', data)
+    //   console.log(`${data.uniqueId} (userId:${data.userId}) sends ${data.giftId}`)
+    // })
+
+    // this.connect.on("member", (data) => {
+    //   this.emit('member', data)
+    //   console.log(`${data.uniqueId} joins the stream!`)
+    // })
+
+    // this.connect.on("social", (data) => {
+    //   this.emit('social', data)
+    //   console.log("social event data:", data)
+    // })
+
+    // this.connect.on("emote", (data) => {
+    //   this.emit('emote', data)
+    //   console.log("emote received", data)
+    // })
+
+    // this.connect.on("envelope", (data) => {
+    //   this.emit('envelope', data)
+    //   console.log("envelope received", data)
+    // })
+
+    // this.connect.on("questionNew", (data) => {
+    //   this.emit('questionNew', data)
+    //   console.log(`${data.uniqueId} asks ${data.questionText}`)
+    // })
   }
 
   emit(eventName, data){
-    io.to(this.username).emit(eventName, data)
-    // io_widget.to(this.username).emit(eventName, data)
-    // io_web.to(this.username).emit(eventName, data)
+    io.to(this.username).emit(eventName, data) 
   }
 }
 
-io_widget.on("connection", function (socket) {
-  let widgetId = socket.handshake.query.widgetid
-  socket.join(widgetId)
-  let tiktokid = socket.handshake.query.tiktokid
-  //let tiktokid = socket.handshake.query.tiktokid
-  //socket.join(tiktokid)
-  
-  socket.on("setUniqueId", function (newtiktokId, options) {
-    console.log(newtiktokId, options)
-      
-    socket.leave(tiktokid)
-    socket.join(newtiktokId)
-    
-    if(newtiktokId !== tiktokid){
-      let webcast = webcasts.get(newtiktokId);
-      
-      if(webcast){
-        webcast.emit('tiktokConnected', webcast.state) 
-      } else {
-        webcast = new tiktokLiveRoom(newtiktokId)
-        webcasts.add(newtiktokId, webcast)
-      }
-    }
-
-    tiktokid = newtiktokId
-  }) 
-
-  console.log("new widget socket client",  widgetId)
-})
-
-io_web.on("connection", function (socket) {
-  let widgetId = socket.handshake.query.widgetid
-  socket.join(widgetId) 
-  let tiktokid = socket.handshake.query.tiktokid
-  socket.join(tiktokid) 
-
-  // socket.on("setUniqueId", function (id, options) {
-  //   changeTiktokId(id)
-  // })
-
-  socket.on("updateSetting", (data) => {
-    io_widget.to(widgetId).emit("updateSetting", data) 
-    
-    let i = data.username
-    socket.leave(tiktokid)
-    socket.join(i)
-    tiktokid = i
-  })
-
-  console.log("new webpage connected", widgetId)
-})
-
 
 io.on("connection", function (socket) {
-  let widgetId = socket.handshake.query.widgetid
-  socket.join(widgetId)
+  let widgetid = socket.handshake.query.widgetid
+  widgetid && socket.join(widgetid)
   let tiktokid = socket.handshake.query.tiktokid
-  socket.join(tiktokid)
+  tiktokid && socket.join(tiktokid)
 
   socket.on("setUniqueId", function (id, options) {
+    id = id.replace('@', '')
+
+    if(!id || id == null || id == '' || id == undefined || id == tiktokid){ return }
+    if(typeof(options) != 'object'){ return }
+
     socket.leave(tiktokid)
     socket.join(id)
-    
-    if(id !== tiktokid){
-      let webcast = webcasts.get(id);
-      
-      if(webcast){
-        socket.emit('tiktokConnected', webcast.state)
-      } else {
-        webcast = new tiktokLiveRoom(id, options)
-        webcasts.add(id, webcast)
-      }
-    }
 
     tiktokid = id
-  }) 
+
+    let webcast = webcasts.get(id);
+
+    if(webcast){
+      webcast.state.isConnected ? socket.emit('tiktokConnected', webcast.state) : webcast.doConnect()
+      return
+    }
+
+    webcast = new tiktokLiveRoom(id, options)
+    webcasts.add(id, webcast)  
+  })
 
   socket.on("updateSetting", (data) => {
-    io.to(widgetId).emit("updateSetting", data)
+    if(typeof(data) != 'object' || !data.username){ return }
+
+    io.to(widgetid).emit("updateSetting", data)
     
     let i = data.username
     socket.leave(tiktokid)
     socket.join(i)
     tiktokid = i
   })
-})
+}) 
