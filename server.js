@@ -126,7 +126,7 @@ io.of("/").adapter.on("delete-room", (room) => {
 
     setTimeout(function(){
         if(io.sockets.adapter.rooms.has(room)){ return }
-        if(io.sockets.adapter.rooms.get(room).size){ return }
+        // if(io.sockets.adapter.rooms.get(room).size){ return }
         tiktokConnectionWrapper.disconnect();
         delete socketRooms[uniqueId];
         console.log(`room ${room} was deleted`);
