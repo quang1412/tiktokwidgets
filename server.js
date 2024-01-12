@@ -16,7 +16,7 @@ const io = new Server(httpServer, {
     }
 });
 
-const tiktokPrefix = 'tiktok_';
+const tiktokPrefix = 'reqsdqwe_';
 const socketRooms = new Object();
 
 io.on('connection', (socket) => {
@@ -57,62 +57,58 @@ io.on('connection', (socket) => {
     });
 });
 
-io.of("/").adapter.on("create-room", (room) => {
-    if(!room.includes(tiktokPrefix)){ return }
-
-    // Connect to the given username (uniqueId)
-    let tiktokConnectionWrapper;
-    const uniqueId = room.replace(tiktokPrefix, '');
-    const options = new Object();
-
-    if(socketRooms[uniqueId]){ return }
-
-    const roomEmit = function(event, ...data){ io.sockets.in(room).emit(event, ...data) }
-
-    try {
-        tiktokConnectionWrapper = new TikTokConnectionWrapper(uniqueId, options, true);
-        socketRooms[uniqueId] = tiktokConnectionWrapper;
-        tiktokConnectionWrapper.connect();
-    } catch (err) {
-        return roomEmit('tiktokDisconnected', err.toString());
-    }
-
-    tiktokConnectionWrapper.once('connected', state => roomEmit('tiktokConnected', state));
-    tiktokConnectionWrapper.once('disconnected', reason => roomEmit('tiktokDisconnected', reason));
-    
-    tiktokConnectionWrapper.connection.on('streamEnd', () => roomEmit('streamEnd'));
-
-    tiktokConnectionWrapper.connection.on('roomUser', msg => roomEmit('roomUser', msg));
-    tiktokConnectionWrapper.connection.on('member', msg => roomEmit('member', msg));
-    tiktokConnectionWrapper.connection.on('chat', msg => roomEmit('chat', msg));
-    tiktokConnectionWrapper.connection.on('gift', msg => roomEmit('gift', msg));
-    tiktokConnectionWrapper.connection.on('social', msg => roomEmit('social', msg));
-    tiktokConnectionWrapper.connection.on('like', msg => roomEmit('like', msg));
-    tiktokConnectionWrapper.connection.on('questionNew', msg => roomEmit('questionNew', msg));
-    tiktokConnectionWrapper.connection.on('linkMicBattle', msg => roomEmit('linkMicBattle', msg));
-    tiktokConnectionWrapper.connection.on('linkMicArmies', msg => roomEmit('linkMicArmies', msg));
-    tiktokConnectionWrapper.connection.on('liveIntro', msg => roomEmit('liveIntro', msg));
-    tiktokConnectionWrapper.connection.on('emote', msg => roomEmit('emote', msg));
-    tiktokConnectionWrapper.connection.on('envelope', msg => roomEmit('envelope', msg));
-    tiktokConnectionWrapper.connection.on('subscribe', msg => roomEmit('subscribe', msg));
-    
-    console.log(`room ${room} was created`);
-});
+// io.of("/").adapter.on("create-room", (room) => {
+//     if(!room.includes(tiktokPrefix)){ return } 
+     
+//     console.log(`room ${room} was created`);
+// }); 
 
 io.of("/").adapter.on("join-room", (room, id) => {
     if(!room.includes(tiktokPrefix)){ return }
 
+    const roomEmit = function(event, ...data){ io.sockets.in(room).emit(event, ...data) };
     const uniqueId = room.replace(tiktokPrefix, '');
     let tiktokConnectionWrapper = socketRooms[uniqueId];
-    
-    if (tiktokConnectionWrapper) {
-        let state = tiktokConnectionWrapper.connection.getState();
-        if (state.isConnected){
-            io.sockets.in(room).to(id).emit('tiktokConnected', state)
-        } else {
 
+    if(tiktokConnectionWrapper){
+        let state = tiktokConnectionWrapper.connection.getState();
+        state.isConnected && io.sockets.in(room).to(id).emit('tiktokConnected', state); 
+        return;
+    } else { 
+        try {
+            tiktokConnectionWrapper = new TikTokConnectionWrapper(uniqueId, {}, true);
+            socketRooms[uniqueId] = tiktokConnectionWrapper;
+            tiktokConnectionWrapper.connect();
+        } catch (err) {
+            roomEmit('tiktokDisconnected', err.toString());
+            delete socketRooms[uniqueId]; 
         }
-    }
+        
+        tiktokConnectionWrapper.once('connected', state => roomEmit('tiktokConnected', state));
+        tiktokConnectionWrapper.once('disconnected', reason => {
+            roomEmit('tiktokDisconnected', reason);
+            delete socketRooms[uniqueId];
+        });
+
+        tiktokConnectionWrapper.connection.on('roomUser', msg => roomEmit('roomUser', msg));
+        tiktokConnectionWrapper.connection.on('member', msg => roomEmit('member', msg));
+        tiktokConnectionWrapper.connection.on('chat', msg => roomEmit('chat', msg));
+        tiktokConnectionWrapper.connection.on('gift', msg => roomEmit('gift', msg));
+        tiktokConnectionWrapper.connection.on('social', msg => roomEmit('social', msg));
+        tiktokConnectionWrapper.connection.on('like', msg => roomEmit('like', msg));
+        tiktokConnectionWrapper.connection.on('questionNew', msg => roomEmit('questionNew', msg));
+        tiktokConnectionWrapper.connection.on('linkMicBattle', msg => roomEmit('linkMicBattle', msg));
+        tiktokConnectionWrapper.connection.on('linkMicArmies', msg => roomEmit('linkMicArmies', msg));
+        tiktokConnectionWrapper.connection.on('liveIntro', msg => roomEmit('liveIntro', msg));
+        tiktokConnectionWrapper.connection.on('emote', msg => roomEmit('emote', msg));
+        tiktokConnectionWrapper.connection.on('envelope', msg =>     roomEmit('envelope', msg));
+        tiktokConnectionWrapper.connection.on('subscribe', msg => roomEmit('subscribe', msg));
+        
+        tiktokConnectionWrapper.connection.on('streamEnd', () => {
+            roomEmit('streamEnd');
+            delete socketRooms[uniqueId];
+        });
+    } 
 
 });
 
@@ -125,11 +121,11 @@ io.of("/").adapter.on("delete-room", (room) => {
     if(!tiktokConnectionWrapper){ return }
 
     setTimeout(function(){
-        if(io.sockets.adapter.rooms.has(room)){ return }
-        // if(io.sockets.adapter.rooms.get(room).size){ return }
-        tiktokConnectionWrapper.disconnect();
-        delete socketRooms[uniqueId];
-        console.log(`room ${room} was deleted`);
+        if(!io.sockets.adapter.rooms.has(room)){
+            tiktokConnectionWrapper.disconnect();
+            delete socketRooms[uniqueId];
+            console.log(`room ${room} was deleted`);
+        }
     }, 10000)
 
     // if (tiktokConnectionWrapper) {
